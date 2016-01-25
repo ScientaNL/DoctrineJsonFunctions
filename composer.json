@@ -1,5 +1,5 @@
 {
-	"name": "syslogic/DoctrineJsonFunctions",
+	"name": "syslogic/doctrine-json-functions",
 	"type": "library",
 	"description": "A set of extensions to Doctrine 2 that add support for json query functions.",
 	"keywords": ["doctrine", "orm", "json", "dql", "database"],
