@@ -8,14 +8,10 @@ Table of Contents
     - [Installation](#installation)
     - [Functions Registration](#functions-registration)
         - [Doctrine2](#doctrine2)
-        - [Symfony2](#symfony2)
-        - [Silex](#silex)
-        - [Zend Framework 2](#zend-framework-2)
     - [Extendability and Database Support](#extendability-and-database-support)
         - [Architecture](#architecture)
         - [Adding new platform](#adding-new-platform)
         - [Adding new function](#adding-new-function)
-- [Field Types](#field-types)
 
 DQL Functions
 =============
