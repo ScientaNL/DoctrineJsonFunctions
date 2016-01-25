@@ -4,14 +4,14 @@ A set of extensions to Doctrine 2 that add support for json query functions.
 Table of Contents
 -----------------
 
-- [DQL Functions](#dql-functions-list)
+- [DQL Functions](#dql-functions)
     - [Installation](#installation)
     - [Functions Registration](#functions-registration)
         - [Doctrine2](#doctrine2)
     - [Extendability and Database Support](#extendability-and-database-support)
         - [Architecture](#architecture)
-        - [Adding new platform](#adding-new-platform)
-        - [Adding new function](#adding-new-function)
+        - [Adding new platform](#adding-a-new-platform)
+        - [Adding new function](#adding-a-new-function)
 
 DQL Functions
 =============
