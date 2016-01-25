@@ -90,11 +90,11 @@ Functions Registration
 ```php
 <?php
 
-use Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mysql as JsonDqlFunctions;
+use Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mysql as DqlFunctions;
 
 $config = new \Doctrine\ORM\Configuration();
-$config->addCustomStringFunction(JsonDqlFunctions\JsonExtract::FUNCTION_NAME, JsonDqlFunctions\JsonExtract::class);
-$config->addCustomStringFunction(JsonDqlFunctions\JsonSearch::FUNCTION_NAME, JsonDqlFunctions\JsonSearch::class);
+$config->addCustomStringFunction(DqlFunctions\JsonExtract::FUNCTION_NAME, DqlFunctions\JsonExtract::class);
+$config->addCustomStringFunction(DqlFunctions\JsonSearch::FUNCTION_NAME, DqlFunctions\JsonSearch::class);
 
 $em = EntityManager::create($dbParams, $config);
 ```
