@@ -68,12 +68,6 @@ Installation
 Add the following dependency to your composer.json
 ```json
 {
-	"repositories": [
-		{
-			"type": "vcs",
-			"url": "https://github.com/SyslogicNL/DoctrineJsonFunctions"
-		}
-	],
 	"require": {
 		"syslogic/doctrine-json-functions": "dev-master"
 	}
