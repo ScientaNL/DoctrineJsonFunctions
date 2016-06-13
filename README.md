@@ -92,6 +92,23 @@ $config->addCustomStringFunction(DqlFunctions\JsonSearch::FUNCTION_NAME, DqlFunc
 
 $em = EntityManager::create($dbParams, $config);
 ```
+Usage
+-----
+
+Mind the comparison when creating the expression and escape the parameters to be valid JSON.
+
+```php
+<?php
+$queryBuilder = $entityManager->createQueryBuilder();
+$queryBuilder->select('c')
+ ->from('Customer', 'c')
+ ->where("JSON_CONTAINS(c.attributes, :certificates, '$.certificates') = 1");
+ 
+ $result = $q->execute(array(
+    'certificates' => '"BIO"'
+    ));
+```
+
 
 Extendability and Database Support
 ----------------------------------
