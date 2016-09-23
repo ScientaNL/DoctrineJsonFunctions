@@ -3,7 +3,7 @@
 namespace Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 
 use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\Platforms\MySQL57Platform;
+use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
 use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
@@ -36,7 +36,7 @@ class JsonContainsPath extends JsonSearch
 			$paths[] = $sqlWalker->walkStringPrimary($path);
 		}
 
-		if ($sqlWalker->getConnection()->getDatabasePlatform() instanceof MySQL57Platform)
+		if ($sqlWalker->getConnection()->getDatabasePlatform() instanceof MySqlPlatform)
 		{
 			return sprintf('%s(%s, %s, %s)', static::FUNCTION_NAME, $jsonDoc, $mode, implode(', ', $paths));
 		}
