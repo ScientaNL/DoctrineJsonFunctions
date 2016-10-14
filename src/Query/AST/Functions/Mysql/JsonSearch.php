@@ -126,17 +126,15 @@ class JsonSearch extends FunctionNode
 		$value = $lexer->lookahead['value'];
 
 		if (strcasecmp(self::MODE_ONE, $value) === 0) {
-			$parser->match(Lexer::T_LEADING);
-
 			$this->mode = self::MODE_ONE;
+			$parser->StringPrimary();
 
 			return;
 		}
 
 		if (strcasecmp(self::MODE_ALL, $value) === 0) {
-			$parser->match(Lexer::T_TRAILING);
-
 			$this->mode = self::MODE_ALL;
+			$parser->StringPrimary();
 
 			return;
 		}
