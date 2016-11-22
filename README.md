@@ -5,13 +5,16 @@ Table of Contents
 -----------------
 
 - [DQL Functions](#dql-functions)
-    - [Installation](#installation)
-    - [Functions Registration](#functions-registration)
-        - [Doctrine2](#doctrine2)
-    - [Extendability and Database Support](#extendability-and-database-support)
-        - [Architecture](#architecture)
-        - [Adding new platform](#adding-a-new-platform)
-        - [Adding new function](#adding-a-new-function)
+  - [PostgreSQL 9.3+ JSON operators](#postgresql-93-json-operators)
+- [Installation](#installation)
+- [Functions Registration](#functions-registration)
+  - [Doctrine2](#doctrine2)
+- [Usage](#usage)
+  - [Using PostgreSQL 9.3+ JSON operators](#using-postgresql-93-json-operators)
+- [Extendability and Database Support](#extendability-and-database-support)
+  - [Architecture](#architecture)
+  - [Adding new platform](#adding-a-new-platform)
+  - [Adding new function](#adding-a-new-function)
 
 DQL Functions
 =============
@@ -62,7 +65,7 @@ Available Mysql functions:
 * [JSON_VALID(val)](https://dev.mysql.com/doc/refman/5.7/en/json-attribute-functions.html#function_json-valid)
 	- Returns 0 or 1 to indicate whether a value is a valid JSON document.
 
-### PostgreSQL 9.3+ operators
+### PostgreSQL 9.3+ JSON operators
 Basic support for JSON operators is implemented. This works even with `Doctrine\DBAL` v2.5. [Official documentation of JSON operators](https://www.postgresql.org/docs/9.3/static/functions-json.html).
 
 * **GT(jsondoc, path)**
@@ -130,7 +133,7 @@ $result = $q->execute(array(
 ));
 ```
 
-### PostgreSQL 9.3+ JSON operators
+### Using PostgreSQL 9.3+ JSON operators
 ```php
 $queryBuilder
   ->select('c')
