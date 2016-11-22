@@ -5,13 +5,16 @@ Table of Contents
 -----------------
 
 - [DQL Functions](#dql-functions)
-    - [Installation](#installation)
-    - [Functions Registration](#functions-registration)
-        - [Doctrine2](#doctrine2)
-    - [Extendability and Database Support](#extendability-and-database-support)
-        - [Architecture](#architecture)
-        - [Adding new platform](#adding-a-new-platform)
-        - [Adding new function](#adding-a-new-function)
+  - [PostgreSQL 9.3+ JSON operators](#postgresql-93-json-operators)
+- [Installation](#installation)
+- [Functions Registration](#functions-registration)
+  - [Doctrine2](#doctrine2)
+- [Usage](#usage)
+  - [Using PostgreSQL 9.3+ JSON operators](#using-postgresql-93-json-operators)
+- [Extendability and Database Support](#extendability-and-database-support)
+  - [Architecture](#architecture)
+  - [Adding new platform](#adding-a-new-platform)
+  - [Adding new function](#adding-a-new-function)
 
 DQL Functions
 =============
@@ -62,6 +65,26 @@ Available Mysql functions:
 * [JSON_VALID(val)](https://dev.mysql.com/doc/refman/5.7/en/json-attribute-functions.html#function_json-valid)
 	- Returns 0 or 1 to indicate whether a value is a valid JSON document.
 
+### PostgreSQL 9.3+ JSON operators
+Basic support for JSON operators is implemented. This works even with `Doctrine\DBAL` v2.5. [Official documentation of JSON operators](https://www.postgresql.org/docs/9.3/static/functions-json.html).
+
+* **GT(jsondoc, path)**
+	- expands to `jsondoc->path` in case of numeric `path` (use with JSON arrays)
+	- expands to `jsondoc->'path'` in case of non-numeric `path` (use with JSON objects)
+
+* **GT_GT(jsondoc, path)**
+	- expands to `jsondoc->>path` in case of numeric `path` (use with JSON arrays)
+	- expands to `jsondoc->>'path'` in case of non-numeric `path` (use with JSON objects)
+
+* **SHARP_GT(jsondoc, path)**
+	- expands to `jsondoc#>'path'`
+
+* **SHARP_GT_GT(jsondoc, path)**
+	- expands to `jsondoc#>>'path'`
+
+Please note that chaining of JSON operators in not supported (PR is welcomed)!
+
+
 Installation
 ------------
 
@@ -91,23 +114,37 @@ $config->addCustomStringFunction(DqlFunctions\JsonExtract::FUNCTION_NAME, DqlFun
 $config->addCustomStringFunction(DqlFunctions\JsonSearch::FUNCTION_NAME, DqlFunctions\JsonSearch::class);
 
 $em = EntityManager::create($dbParams, $config);
+$queryBuilder = $em->createQueryBuilder();
 ```
+
 Usage
 -----
 
 Mind the comparison when creating the expression and escape the parameters to be valid JSON.
 
 ```php
-<?php
-$queryBuilder = $entityManager->createQueryBuilder();
-$queryBuilder->select('c')
- ->from('Customer', 'c')
- ->where("JSON_CONTAINS(c.attributes, :certificates, '$.certificates') = 1");
+$queryBuilder
+  ->select('c')
+  ->from('Customer', 'c')
+  ->where("JSON_CONTAINS(c.attributes, :certificates, '$.certificates') = 1");
+ 
+$result = $q->execute(array(
+  'certificates' => '"BIO"',
+));
+```
+
+### Using PostgreSQL 9.3+ JSON operators
+```php
+$queryBuilder
+  ->select('c')
+  ->from('Customer', 'c')
+  ->where("GT_GT(c.attributes, 'gender') = :gender");
  
  $result = $q->execute(array(
-    'certificates' => '"BIO"'
-    ));
+    'gender' => 'male',
+ ));
 ```
+
 
 
 Extendability and Database Support
