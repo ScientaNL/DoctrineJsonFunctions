@@ -37,7 +37,7 @@ class JsonKeys extends FunctionNode
 
 		$jsonPath = '';
 		if (!empty($this->jsonPathExpr)) {
-			$jsonPath = ', ' . $sqlWalker->walkStringPrimary($this->jsonPath);
+			$jsonPath = ', ' . $sqlWalker->walkStringPrimary($this->jsonPathExpr);
 		}
 
 		if ($sqlWalker->getConnection()->getDatabasePlatform() instanceof MySqlPlatform)
