@@ -1,8 +1,6 @@
-[![Latest Stable Version](https://poser.pugx.org/syslogic/doctrine-json-functions/v/stable)](https://packagist.org/packages/syslogic/doctrine-json-functions)
-[![Total Downloads](https://poser.pugx.org/syslogic/doctrine-json-functions/downloads)](https://packagist.org/packages/syslogic/doctrine-json-functions)
-[![Latest Unstable Version](https://poser.pugx.org/syslogic/doctrine-json-functions/v/unstable)](https://packagist.org/packages/syslogic/doctrine-json-functions)
+[![Latest Stable Version](https://poser.pugx.org/syslogic/doctrine-json-functions/v/stable?format=flat)](https://packagist.org/packages/syslogic/doctrine-json-functions)
+[![Total Downloads](https://poser.pugx.org/syslogic/doctrine-json-functions/downloads?format=flat)](https://packagist.org/packages/syslogic/doctrine-json-functions)
 [![License](https://poser.pugx.org/syslogic/doctrine-json-functions/license)](https://packagist.org/packages/syslogic/doctrine-json-functions)
-[![composer.lock](https://poser.pugx.org/syslogic/doctrine-json-functions/composerlock)](https://packagist.org/packages/syslogic/doctrine-json-functions)
 
 # DoctrineJsonFunctions
 A set of extensions to Doctrine 2 that add support for json query functions.
@@ -11,11 +9,13 @@ Table of Contents
 -----------------
 
 - [DQL Functions](#dql-functions)
+  - [Mysql 5.7+ JSON operators](#mysql-57-json-operators)
   - [PostgreSQL 9.3+ JSON operators](#postgresql-93-json-operators)
 - [Installation](#installation)
 - [Functions Registration](#functions-registration)
   - [Doctrine2](#doctrine2)
 - [Usage](#usage)
+  - [Using Mysql 5.7+ JSON operators](#using-mysql-57-json-operators)
   - [Using PostgreSQL 9.3+ JSON operators](#using-postgresql-93-json-operators)
 - [Extendability and Database Support](#extendability-and-database-support)
   - [Architecture](#architecture)
@@ -26,8 +26,8 @@ DQL Functions
 =============
 
 This library provide set of DQL functions.
-Available Mysql functions:
 
+### Mysql 5.7+ JSON operators
 * [JSON_APPEND(json_doc, path, val[, path, val] ...)](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-append)
 	- Appends values to the end of the indicated arrays within a JSON document and returns the result.
 * [JSON_ARRAY_APPEND(json_doc, path, val[, path, val] ...)](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-array-append)
@@ -129,6 +129,7 @@ Usage
 
 Mind the comparison when creating the expression and escape the parameters to be valid JSON.
 
+### Using Mysql 5.7+ JSON operators
 ```php
 $queryBuilder
   ->select('c')
