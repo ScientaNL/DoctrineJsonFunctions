@@ -70,15 +70,16 @@ Available Mysql functions:
 
 Installation
 ------------
-
+The recommended way to install DoctrineJsonFunctions is through [Composer](https://getcomposer.org/).
 Add the following dependency to your composer.json
 ```json
 {
 	"require": {
-		"syslogic/doctrine-json-functions": "dev-master"
+		"syslogic/doctrine-json-functions": "~1.0"
 	}
 }
 ```
+Alternatively, you can download the [source code as a file](https://github.com/SyslogicNL/DoctrineJsonFunctions/releases) and extract it.
 
 Functions Registration
 ----------------------
