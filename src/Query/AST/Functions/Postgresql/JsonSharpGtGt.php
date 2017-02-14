@@ -9,9 +9,9 @@ use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\SqlWalker;
 
 
-class JsonSharpGt extends FunctionNode
+class JsonSharpGtGt extends FunctionNode
 {
-	const FUNCTION_NAME = 'GT';
+	const FUNCTION_NAME = 'SHARP_GT_GT';
 	const OPERATOR = '#>>';
 
 	/** @var \Doctrine\ORM\Query\AST\Node */

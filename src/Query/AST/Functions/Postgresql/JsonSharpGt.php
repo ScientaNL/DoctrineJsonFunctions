@@ -11,7 +11,7 @@ use Doctrine\ORM\Query\SqlWalker;
 
 class JsonSharpGt extends FunctionNode
 {
-	const FUNCTION_NAME = 'GT';
+	const FUNCTION_NAME = 'SHARP_GT';
 	const OPERATOR = '#>';
 
 	/** @var \Doctrine\ORM\Query\AST\Node */
