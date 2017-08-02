@@ -9,10 +9,10 @@ use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\SqlWalker;
 
 
-class JsonSharpGt extends FunctionNode
+class JsonGet extends FunctionNode
 {
-	const FUNCTION_NAME = 'SHARP_GT';
-	const OPERATOR = '#>';
+	const FUNCTION_NAME = 'JSON_GET';
+	const OPERATOR = '->';
 
 	/** @var \Doctrine\ORM\Query\AST\Node */
 	public $jsonData;
@@ -32,7 +32,12 @@ class JsonSharpGt extends FunctionNode
 
 		// TODO test for PostgreSQL 9.3  (not until Doctrine\DBAL v2.6)
 
-		return $jsonData . self::OPERATOR . "'$jsonPath'";
+		if (is_numeric($jsonPath)) {
+			return $jsonData . self::OPERATOR . $jsonPath;
+		}
+		else {
+			return $jsonData . self::OPERATOR . "'$jsonPath'";
+		}
 	}
 
 

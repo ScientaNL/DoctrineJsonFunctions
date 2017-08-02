@@ -9,9 +9,9 @@ use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\SqlWalker;
 
 
-class JsonGtGt extends FunctionNode
+class JsonGetText extends FunctionNode
 {
-	const FUNCTION_NAME = 'GT_GT';
+	const FUNCTION_NAME = 'JSON_GET_TEXT';
 	const OPERATOR = '->>';
 
 	/** @var \Doctrine\ORM\Query\AST\Node */
