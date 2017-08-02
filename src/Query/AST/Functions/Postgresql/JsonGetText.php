@@ -32,12 +32,7 @@ class JsonGetText extends FunctionNode
 
 		// TODO test for PostgreSQL 9.3  (not until Doctrine\DBAL v2.6)
 
-		if (is_numeric($jsonPath)) {
-			return $jsonData . self::OPERATOR . $jsonPath;
-		}
-		else {
-			return $jsonData . self::OPERATOR . "'$jsonPath'";
-		}
+        return $jsonData . self::OPERATOR . "'$jsonPath'";
 	}
 
 
