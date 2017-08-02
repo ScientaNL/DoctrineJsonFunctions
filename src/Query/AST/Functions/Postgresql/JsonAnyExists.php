@@ -2,14 +2,11 @@
 
 namespace Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Postgresql;
 
-use Doctrine\DBAL\DBALException;
-use Doctrine\ORM\Query\AST\Functions\FunctionNode;
 use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
-use Doctrine\ORM\Query\SqlWalker;
 
 
-class JsonAnyExists extends FunctionNode
+class JsonAnyExists extends PostgresqlBinaryFunctionNode
 {
 	const FUNCTION_NAME = 'JSON_ANY_EXISTS';
 	const OPERATOR = '?|';
@@ -19,21 +16,6 @@ class JsonAnyExists extends FunctionNode
 
 	/** @var \Doctrine\ORM\Query\AST\Node */
 	public $jsonPath;
-
-
-	/**
-	 * @param SqlWalker $sqlWalker
-	 * @return string
-	 */
-	public function getSql(SqlWalker $sqlWalker)
-	{
-		$jsonData = $sqlWalker->walkStringPrimary($this->jsonData);
-		$jsonPath = $this->jsonPath->value;
-
-		// TODO test for PostgreSQL 9.3  (not until Doctrine\DBAL v2.6)
-
-        return $jsonData . self::OPERATOR . "'$jsonPath'";
-	}
 
 
 	/**
