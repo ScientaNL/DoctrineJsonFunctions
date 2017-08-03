@@ -3,8 +3,8 @@
 namespace Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Postgresql;
 
 
-class JsonIsContained extends PostgresqlBinaryFunctionNode
+class JsonbIsContained extends PostgresqlBinaryFunctionNode
 {
-	const FUNCTION_NAME = 'JSON_IS_CONTAINED';
+	const FUNCTION_NAME = 'JSONB_IS_CONTAINED';
 	const OPERATOR = '<@';
 }

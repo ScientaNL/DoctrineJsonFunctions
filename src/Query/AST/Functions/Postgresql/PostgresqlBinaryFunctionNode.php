@@ -5,16 +5,17 @@ namespace Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Postgresql;
 
 
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
+use Doctrine\ORM\Query\AST\Node;
 use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\SqlWalker;
 
 abstract class PostgresqlBinaryFunctionNode extends FunctionNode
 {
-    /** @var \Doctrine\ORM\Query\AST\Node */
+    /** @var Node */
     protected $jsonData;
 
-    /** @var \Doctrine\ORM\Query\AST\Node */
+    /** @var Node */
     protected $jsonPath;
 
 
@@ -42,12 +43,16 @@ abstract class PostgresqlBinaryFunctionNode extends FunctionNode
      */
     public function getSql(SqlWalker $sqlWalker)
     {
-        $jsonData = $sqlWalker->walkStringPrimary($this->jsonData);
-        $jsonPath = $this->jsonPath->dispatch($sqlWalker);
+        $leftValue = $sqlWalker->walkStringPrimary($this->jsonData);
+        $rightValue = $this->jsonPath->dispatch($sqlWalker);
 
         // TODO test for PostgreSQL 9.3  (not until Doctrine\DBAL v2.6)
 
+        return $this->getSqlForParams($leftValue, $rightValue);
+    }
+
+    protected function getSqlForParams($left, $right) {
         /** @noinspection PhpUndefinedClassConstantInspection */
-        return $jsonData . static::OPERATOR . $jsonPath;
+        return $left . static::OPERATOR . $right;
     }
 }
