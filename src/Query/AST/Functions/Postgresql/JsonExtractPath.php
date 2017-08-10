@@ -41,7 +41,7 @@ class JsonExtractPath extends FunctionNode
 		$jsonPaths = array();
 
 		foreach ($this->jsonPaths as $path) {
-			$jsonPaths[] = $sqlWalker->walkStringPrimary($path);
+			$jsonPaths[] = $path->dispatch($sqlWalker);
 		}
 
 		if ($sqlWalker->getConnection()->getDatabasePlatform() instanceof PostgreSQL92Platform) {
