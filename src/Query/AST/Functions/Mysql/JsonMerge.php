@@ -61,7 +61,7 @@ class JsonMerge extends FunctionNode
 		$parser->match(Lexer::T_OPEN_PARENTHESIS);
 
 		$this->firstJsonDocExpr = $parser->StringPrimary();
-        $this->jsonDocs[] = $this->firstJsonDocExpr;
+		$this->jsonDocs[] = $this->firstJsonDocExpr;
 
 		$parser->match(Lexer::T_COMMA);
 
