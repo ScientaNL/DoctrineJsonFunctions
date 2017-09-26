@@ -15,7 +15,8 @@ Table of Contents
   - [PostgreSQL 9.3+ JSON operators](#postgresql-93-json-operators)
 - [Installation](#installation)
 - [Functions Registration](#functions-registration)
-  - [Doctrine2](#doctrine2)
+  - [Doctrine 2](#vanilla-doctrine-2-orm)
+  - [Symfony 2 & 3](#symfony-2--3-with-doctrine-bundle)
 - [Usage](#usage)
   - [Using Mysql 5.7+ JSON operators](#using-mysql-57-json-operators)
   - [Using PostgreSQL 9.3+ JSON operators](#using-postgresql-93-json-operators)
@@ -109,9 +110,9 @@ Alternatively, you can download the [source code as a file](https://github.com/S
 Functions Registration
 ----------------------
 
-### Doctrine2
+### Vanilla Doctrine 2 ORM
 
-[Doctrine2 Documentation: "DQL User Defined Functions"](http://docs.doctrine-project.org/en/latest/cookbook/dql-user-defined-functions.html)
+[Doctrine 2 documentation: "DQL User Defined Functions"](http://docs.doctrine-project.org/en/latest/cookbook/dql-user-defined-functions.html)
 
 ```php
 <?php
@@ -124,6 +125,22 @@ $config->addCustomStringFunction(DqlFunctions\JsonSearch::FUNCTION_NAME, DqlFunc
 
 $em = EntityManager::create($dbParams, $config);
 $queryBuilder = $em->createQueryBuilder();
+```
+
+### Symfony 2 & 3 with Doctrine bundle
+
+[Symfony documentation: "DoctrineBundle Configuration"](http://symfony.com/doc/master/reference/configuration/doctrine.html#full-default-configuration)
+
+```yaml
+# app/config/config.yml
+doctrine:
+    orm:
+        entity_managers:
+            some_em: # usually also "default"
+                dql:
+                    string_functions:
+                        JSON_EXTRACT: Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonExtract
+                        JSON_SEARCH: Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonSearch
 ```
 
 Usage
