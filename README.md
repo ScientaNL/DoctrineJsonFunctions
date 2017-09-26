@@ -77,21 +77,21 @@ This library provide set of DQL functions.
 ### PostgreSQL 9.3+ JSON operators
 Basic support for JSON operators is implemented. This works even with `Doctrine\DBAL` v2.5. [Official documentation of JSON operators](https://www.postgresql.org/docs/9.3/static/functions-json.html).
 
-* **GT(jsondoc, path)**
+* **JSON_GET(jsondoc, path)**
 	- expands to `jsondoc->path` in case of numeric `path` (use with JSON arrays)
 	- expands to `jsondoc->'path'` in case of non-numeric `path` (use with JSON objects)
 
-* **GT_GT(jsondoc, path)**
+* **JSON_GET_TEXT(jsondoc, path)**
 	- expands to `jsondoc->>path` in case of numeric `path` (use with JSON arrays)
 	- expands to `jsondoc->>'path'` in case of non-numeric `path` (use with JSON objects)
 
-* **SHARP_GT(jsondoc, path)**
+* **JSON_GET_PATH(jsondoc, path)**
 	- expands to `jsondoc#>'path'`
 
-* **SHARP_GT_GT(jsondoc, path)**
+* **JSON_GET_PATH_TEXT(jsondoc, path)**
 	- expands to `jsondoc#>>'path'`
 
-Please note that chaining of JSON operators in not supported (PR is welcomed)!
+Please note that chaining of JSON operators is not supported.
 
 
 Installation
@@ -101,7 +101,7 @@ Add the following dependency to your composer.json
 ```json
 {
 	"require": {
-		"syslogic/doctrine-json-functions": "~1.0"
+		"syslogic/doctrine-json-functions": "~2.0"
 	}
 }
 ```
@@ -165,7 +165,7 @@ $result = $q->execute(array(
 $queryBuilder
   ->select('c')
   ->from('Customer', 'c')
-  ->where("GT_GT(c.attributes, 'gender') = :gender");
+  ->where("JSON_GET_TEXT(c.attributes, 'gender') = :gender");
  
  $result = $q->execute(array(
     'gender' => 'male',
