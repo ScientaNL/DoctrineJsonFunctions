@@ -6,6 +6,13 @@
 
 # DoctrineJsonFunctions
 A set of extensions to Doctrine 2 that add support for json query functions.
++Functions are available for MySQL, MariaDb and PostgreSQL.
+
+| DB | Functions |
+|:--:|:---------:|
+| MySQL | `JSON_APPEND, JSON_ARRAY, JSON_ARRAY_APPEND, JSON_ARRAY_INSERT, JSON_CONTAINS, JSON_CONTAINS_PATH, JSON_DEPTH, JSON_EXTRACT, JSON_INSERT, JSON_KEYS, JSON_LENGTH, JSON_MERGE, JSON_OBJECT, JSON_QUOTE, JSON_REMOVE, JSON_REPLACE, JSON_SEARCH, JSON_SET, JSON_TYPE, JSON_UNQUOTE, JSON_VALID` |
+| PostgreSQL | `JSON_EXTRACT_PATH, GT, GT_GT, SHARP_GT, SHARP_GT_GT` |
+| MariaDb | `JSON_VALUE` |
 
 Table of Contents
 -----------------
