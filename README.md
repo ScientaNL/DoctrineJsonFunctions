@@ -74,6 +74,10 @@ This library provide set of DQL functions.
 * [JSON_VALID(val)](https://dev.mysql.com/doc/refman/5.7/en/json-attribute-functions.html#function_json-valid)
 	- Returns 0 or 1 to indicate whether a value is a valid JSON document.
 
+### MariaDb 10.2.3 JSON operators
+* [JSON_VALUE(json_doc, path)](https://mariadb.com/kb/en/library/json_value/)
+	- Returns the scalar specified by the path. Returns NULL if there is no match.
+
 ### PostgreSQL 9.3+ JSON operators
 Basic support for JSON operators is implemented. This works even with `Doctrine\DBAL` v2.5. [Official documentation of JSON operators](https://www.postgresql.org/docs/9.3/static/functions-json.html).
 
