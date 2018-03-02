@@ -12,7 +12,7 @@ A set of extensions to Doctrine 2 that add support for json query functions.
 |:--:|:---------:|
 | MySQL | `JSON_APPEND, JSON_ARRAY, JSON_ARRAY_APPEND, JSON_ARRAY_INSERT, JSON_CONTAINS, JSON_CONTAINS_PATH, JSON_DEPTH, JSON_EXTRACT, JSON_INSERT, JSON_KEYS, JSON_LENGTH, JSON_MERGE, JSON_OBJECT, JSON_QUOTE, JSON_REMOVE, JSON_REPLACE, JSON_SEARCH, JSON_SET, JSON_TYPE, JSON_UNQUOTE, JSON_VALID` |
 | PostgreSQL | `JSON_EXTRACT_PATH, GT, GT_GT, SHARP_GT, SHARP_GT_GT` |
-| MariaDb | `JSON_VALUE` |
+| MariaDb | `JSON_VALUE, JSON_EXISTS` |
 
 Table of Contents
 -----------------
@@ -84,6 +84,8 @@ This library provide set of DQL functions.
 ### MariaDb 10.2.3 JSON operators
 * [JSON_VALUE(json_doc, path)](https://mariadb.com/kb/en/library/json_value/)
 	- Returns the scalar specified by the path. Returns NULL if there is no match.
+* [JSON_EXISTS(json_doc, path)](https://mariadb.com/kb/en/library/json_exists/)
+    - Determines whether a specified JSON value exists in the given data. Returns 1 if found, 0 if not, or NULL if any of the inputs were NULL.
 
 ### PostgreSQL 9.3+ JSON operators
 Basic support for JSON operators is implemented. This works even with `Doctrine\DBAL` v2.5. [Official documentation of JSON operators](https://www.postgresql.org/docs/9.3/static/functions-json.html).
