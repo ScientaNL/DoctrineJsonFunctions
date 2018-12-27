@@ -2,9 +2,11 @@
 
 namespace Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Postgresql;
 
-
-class JsonGetText extends PostgresqlBinaryFunctionNode
+/**
+ * "JSON_GET_TEXT" "(" StringPrimary "," StringPrimary ")"
+ */
+class JsonGetText extends PostgresqlJsonOperatorFunctionNode
 {
-	const FUNCTION_NAME = 'JSON_GET_TEXT';
-	const OPERATOR = '->>';
+    public const FUNCTION_NAME = 'JSON_GET_TEXT';
+    public const OPERATOR = '->>';
 }

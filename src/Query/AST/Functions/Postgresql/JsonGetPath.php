@@ -2,9 +2,11 @@
 
 namespace Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Postgresql;
 
-
-class JsonGetPath extends PostgresqlBinaryFunctionNode
+/**
+ * "JSON_GET_PATH" "(" StringPrimary "," StringPrimary ")"
+ */
+class JsonGetPath extends PostgresqlJsonOperatorFunctionNode
 {
-	const FUNCTION_NAME = 'JSON_GET_PATH';
-	const OPERATOR = '#>';
+    public const FUNCTION_NAME = 'JSON_GET_PATH';
+	public const OPERATOR = '#>';
 }
