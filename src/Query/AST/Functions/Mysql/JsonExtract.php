@@ -12,69 +12,16 @@ use Doctrine\ORM\Query\SqlWalker;
 /**
  * "JSON_EXTRACT" "(" StringPrimary "," StringPrimary {"," StringPrimary }* ")"
  */
-class JsonExtract extends FunctionNode
+class JsonExtract extends MysqlJsonFunctionNode
 {
 	const FUNCTION_NAME = 'JSON_EXTRACT';
 
-	/**
-	 * @var \Doctrine\ORM\Query\AST\Node
-	 */
-	public $jsonDocExpr;
+    /** @var int */
+    protected $requiredArgumentCount = 2;
 
-	/**
-	 * @var \Doctrine\ORM\Query\AST\Node
-	 */
-	public $firstJsonPathExpr;
+    /** @var int */
+    protected $optionalArgumentCount = 1;
 
-	/**
-	 * @var \Doctrine\ORM\Query\AST\Node[]
-	 */
-	public $jsonPaths = array();
-
-	/**
-	 * @param SqlWalker $sqlWalker
-	 * @return string
-	 * @throws DBALException
-	 */
-	public function getSql(SqlWalker $sqlWalker)
-	{
-		$jsonDoc = $sqlWalker->walkStringPrimary($this->jsonDocExpr);
-
-		$paths = array();
-		foreach ($this->jsonPaths as $path) {
-			$paths[] = $sqlWalker->walkStringPrimary($path);
-		}
-
-		if ($sqlWalker->getConnection()->getDatabasePlatform() instanceof MySqlPlatform)
-		{
-			return sprintf('%s(%s, %s)', static::FUNCTION_NAME, $jsonDoc, implode(', ', $paths));
-		}
-
-		throw DBALException::notSupported(static::FUNCTION_NAME);
-	}
-
-	/**
-	 * @param Parser $parser
-	 * @throws \Doctrine\ORM\Query\QueryException
-	 */
-	public function parse(Parser $parser)
-	{
-		$parser->match(Lexer::T_IDENTIFIER);
-		$parser->match(Lexer::T_OPEN_PARENTHESIS);
-
-		$this->jsonDocExpr = $parser->StringPrimary();
-
-		$parser->match(Lexer::T_COMMA);
-
-		$this->firstJsonPathExpr = $parser->StringPrimary();
-		$this->jsonPaths[] = $this->firstJsonPathExpr;
-
-		while ($parser->getLexer()->isNextToken(Lexer::T_COMMA)) {
-			$parser->match(Lexer::T_COMMA);
-			$this->jsonPaths[] = $parser->StringPrimary();
-		}
-
-		$parser->match(Lexer::T_CLOSE_PARENTHESIS);
-	}
-
+    /** @var bool */
+    protected $allowOptionalArgumentRepeat = true;
 }

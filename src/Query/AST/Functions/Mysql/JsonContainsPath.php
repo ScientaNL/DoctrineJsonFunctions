@@ -3,11 +3,8 @@
 namespace Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 
 use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
-use Doctrine\ORM\Query\AST\Functions\FunctionNode;
 use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
-use Doctrine\ORM\Query\SqlWalker;
 
 /**
  * "JSON_CONTAINS_PATH" "(" StringPrimary "," ["one" | "all"] {"," StringPrimary }* ")"
@@ -16,59 +13,26 @@ class JsonContainsPath extends JsonSearch
 {
 	const FUNCTION_NAME = 'JSON_CONTAINS_PATH';
 
-	/**
-	 * @var \Doctrine\ORM\Query\AST\Node
-	 */
-	public $firstJsonPathExpr;
+    /**
+     * @param Parser $parser
+     * @throws DBALException
+     * @throws \Doctrine\ORM\Query\QueryException
+     */
+    public function parse(Parser $parser): void
+    {
+        $parser->match(Lexer::T_IDENTIFIER);
+        $parser->match(Lexer::T_OPEN_PARENTHESIS);
 
-	/**
-	 * @param SqlWalker $sqlWalker
-	 * @return string
-	 * @throws DBALException
-	 */
-	public function getSql(SqlWalker $sqlWalker)
-	{
-		$jsonDoc = $sqlWalker->walkStringPrimary($this->jsonDocExpr);
-		$mode = $sqlWalker->walkStringPrimary($this->mode);
+        $this->parsedArguments[] = $parser->StringPrimary();
 
-		$paths = array();
-		foreach ($this->jsonPaths as $path) {
-			$paths[] = $sqlWalker->walkStringPrimary($path);
-		}
+        $parser->match(Lexer::T_COMMA);
 
-		if ($sqlWalker->getConnection()->getDatabasePlatform() instanceof MySqlPlatform)
-		{
-			return sprintf('%s(%s, %s, %s)', static::FUNCTION_NAME, $jsonDoc, $mode, implode(', ', $paths));
-		}
+        $this->parsedArguments[] = $this->parsePathMode($parser);
 
-		throw DBALException::notSupported(static::FUNCTION_NAME);
-	}
+        $parser->match(Lexer::T_COMMA);
 
-	/**
-	 * @param Parser $parser
-	 * @throws \Doctrine\ORM\Query\QueryException
-	 */
-	public function parse(Parser $parser)
-	{
-		$parser->match(Lexer::T_IDENTIFIER);
-		$parser->match(Lexer::T_OPEN_PARENTHESIS);
+        $this->parseOptionalArguments($parser, true);
 
-		$this->jsonDocExpr = $parser->StringPrimary();
-
-		$parser->match(Lexer::T_COMMA);
-
-		$this->parsePathMode($parser);
-
-		$parser->match(Lexer::T_COMMA);
-
-		$this->firstJsonPathExpr = $parser->StringPrimary();
-		$this->jsonPaths[] = $this->firstJsonPathExpr;
-
-		while ($parser->getLexer()->isNextToken(Lexer::T_COMMA)) {
-			$parser->match(Lexer::T_COMMA);
-			$this->jsonPaths[] = $parser->StringPrimary();
-		}
-
-		$parser->match(Lexer::T_CLOSE_PARENTHESIS);
-	}
+        $parser->match(Lexer::T_CLOSE_PARENTHESIS);
+    }
 }

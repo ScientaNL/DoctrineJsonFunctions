@@ -2,9 +2,13 @@
 
 namespace Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Postgresql;
 
-
-class JsonbExistsAll extends PostgresqlBinaryDirectFunctionNode
+/**
+ * "JSONB_EXISTS_ALL" "(" StringPrimary "," StringPrimary ")"
+ */
+class JsonbExistsAll extends PostgresqlJsonFunctionNode
 {
-    const FUNCTION_NAME = 'JSONB_EXISTS_ALL';
-    const DIRECT_FUNCTION = 'jsonb_exists_all';
+    public const FUNCTION_NAME = 'JSONB_EXISTS_ALL';
+
+    /** @var int */
+    protected $requiredArgumentCount = 2;
 }

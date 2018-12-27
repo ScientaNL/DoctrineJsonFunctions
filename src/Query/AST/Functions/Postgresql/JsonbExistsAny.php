@@ -2,9 +2,10 @@
 
 namespace Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Postgresql;
 
-
-class JsonbExistsAny extends PostgresqlBinaryDirectFunctionNode
+/**
+ * "JSONB_EXISTS_ANY" "(" StringPrimary "," StringPrimary ")"
+ */
+class JsonbExistsAny extends PostgresqlJsonFunctionNode
 {
-	const FUNCTION_NAME = 'JSONB_EXISTS_ANY';
-	const DIRECT_FUNCTION = 'jsonb_exists_any';
+	public const FUNCTION_NAME = 'JSONB_EXISTS_ANY';
 }

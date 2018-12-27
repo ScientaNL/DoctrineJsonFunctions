@@ -31,11 +31,93 @@ Table of Contents
   - [Architecture](#architecture)
   - [Adding new platform](#adding-a-new-platform)
   - [Adding new function](#adding-a-new-function)
+  
+
+Installation
+------------
+The recommended way to install DoctrineJsonFunctions is through [Composer](https://getcomposer.org/).
+Add the following dependency to your composer.json
+```json
+{
+	"require": {
+		"syslogic/doctrine-json-functions": "~2.0"
+	}
+}
+```
+Alternatively, you can download the [source code as a file](https://github.com/SyslogicNL/DoctrineJsonFunctions/releases) and extract it.
+
+
+Functions Registration
+----------------------
+
+### Doctrine 2 ORM
+
+[Doctrine 2 documentation: "DQL User Defined Functions"](http://docs.doctrine-project.org/en/latest/cookbook/dql-user-defined-functions.html)
+
+```php
+<?php
+
+use Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mysql as DqlFunctions;
+
+$config = new \Doctrine\ORM\Configuration();
+$config->addCustomStringFunction(DqlFunctions\JsonExtract::FUNCTION_NAME, DqlFunctions\JsonExtract::class);
+$config->addCustomStringFunction(DqlFunctions\JsonSearch::FUNCTION_NAME, DqlFunctions\JsonSearch::class);
+
+$em = EntityManager::create($dbParams, $config);
+$queryBuilder = $em->createQueryBuilder();
+```
+
+### Symfony 2 & 3 with Doctrine bundle
+
+[Symfony documentation: "DoctrineBundle Configuration"](http://symfony.com/doc/master/reference/configuration/doctrine.html#full-default-configuration)
+
+```yaml
+# app/config/config.yml
+doctrine:
+    orm:
+        entity_managers:
+            some_em: # usually also "default"
+                dql:
+                    string_functions:
+                        JSON_EXTRACT: Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonExtract
+                        JSON_SEARCH: Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonSearch
+```
+
+
+Usage
+-----
+
+Mind the comparison when creating the expression and escape the parameters to be valid JSON.
+
+### Using Mysql 5.7+ JSON operators
+```php
+$queryBuilder
+  ->select('c')
+  ->from('Customer', 'c')
+  ->where("JSON_CONTAINS(c.attributes, :certificates, '$.certificates') = 1");
+ 
+$result = $q->execute(array(
+  'certificates' => '"BIO"',
+));
+```
+
+### Using PostgreSQL 9.3+ JSON operators
+```php
+$queryBuilder
+  ->select('c')
+  ->from('Customer', 'c')
+  ->where("JSON_GET_TEXT(c.attributes, 'gender') = :gender");
+ 
+ $result = $q->execute(array(
+    'gender' => 'male',
+ ));
+```
+
 
 DQL Functions
-=============
+-------------
 
-This library provide set of DQL functions.
+The library provides this set of DQL functions.
 
 ### Mysql 5.7+ JSON operators
 * [JSON_APPEND(json_doc, path, val[, path, val] ...)](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-append)
@@ -105,86 +187,6 @@ Basic support for JSON operators is implemented. This works even with `Doctrine\
 	- expands to `jsondoc#>>'path'`
 
 Please note that chaining of JSON operators is not supported.
-
-
-Installation
-------------
-The recommended way to install DoctrineJsonFunctions is through [Composer](https://getcomposer.org/).
-Add the following dependency to your composer.json
-```json
-{
-	"require": {
-		"syslogic/doctrine-json-functions": "~2.0"
-	}
-}
-```
-Alternatively, you can download the [source code as a file](https://github.com/SyslogicNL/DoctrineJsonFunctions/releases) and extract it.
-
-Functions Registration
-----------------------
-
-### Vanilla Doctrine 2 ORM
-
-[Doctrine 2 documentation: "DQL User Defined Functions"](http://docs.doctrine-project.org/en/latest/cookbook/dql-user-defined-functions.html)
-
-```php
-<?php
-
-use Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mysql as DqlFunctions;
-
-$config = new \Doctrine\ORM\Configuration();
-$config->addCustomStringFunction(DqlFunctions\JsonExtract::FUNCTION_NAME, DqlFunctions\JsonExtract::class);
-$config->addCustomStringFunction(DqlFunctions\JsonSearch::FUNCTION_NAME, DqlFunctions\JsonSearch::class);
-
-$em = EntityManager::create($dbParams, $config);
-$queryBuilder = $em->createQueryBuilder();
-```
-
-### Symfony 2 & 3 with Doctrine bundle
-
-[Symfony documentation: "DoctrineBundle Configuration"](http://symfony.com/doc/master/reference/configuration/doctrine.html#full-default-configuration)
-
-```yaml
-# app/config/config.yml
-doctrine:
-    orm:
-        entity_managers:
-            some_em: # usually also "default"
-                dql:
-                    string_functions:
-                        JSON_EXTRACT: Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonExtract
-                        JSON_SEARCH: Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonSearch
-```
-
-Usage
------
-
-Mind the comparison when creating the expression and escape the parameters to be valid JSON.
-
-### Using Mysql 5.7+ JSON operators
-```php
-$queryBuilder
-  ->select('c')
-  ->from('Customer', 'c')
-  ->where("JSON_CONTAINS(c.attributes, :certificates, '$.certificates') = 1");
- 
-$result = $q->execute(array(
-  'certificates' => '"BIO"',
-));
-```
-
-### Using PostgreSQL 9.3+ JSON operators
-```php
-$queryBuilder
-  ->select('c')
-  ->from('Customer', 'c')
-  ->where("JSON_GET_TEXT(c.attributes, 'gender') = :gender");
- 
- $result = $q->execute(array(
-    'gender' => 'male',
- ));
-```
-
 
 
 Extendability and Database Support

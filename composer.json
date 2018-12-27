@@ -11,19 +11,28 @@
 		}
 	],
 	"require": {
-		"php": ">=5.3.2"
+		"php": "^7.1",
+		"ext-pdo": "*"
 	},
 	"require-dev": {
-		"doctrine/orm": "~2.1"
+		"doctrine/orm": "~2.6",
+		"doctrine/coding-standard": "^5.0",
+		"phpunit/phpunit": "^6.5"
 	},
 	"autoload": {
 		"psr-4": {
 			"Syslogic\\DoctrineJsonFunctions\\" : "src/"
 		}
 	},
+	"autoload-dev": {
+		"psr-4": {
+			"Doctrine\\Tests\\": "tests/Doctrine/Tests",
+			"Syslogic\\DoctrineJsonFunctions\\Tests\\": "tests/"
+		}
+	},
 	"extra": {
 		"branch-alias": {
-			"dev-master": "2.1-dev"
+			"dev-master": "3.0-dev"
 		}
 	}
 }

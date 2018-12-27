@@ -2,9 +2,11 @@
 
 namespace Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Postgresql;
 
-
-class JsonbContains extends PostgresqlBinaryFunctionNode
+/**
+ * "JSONB_CONTAINS" "(" StringPrimary "," StringPrimary ")"
+ */
+class JsonbContains extends PostgresqlJsonOperatorFunctionNode
 {
-	const FUNCTION_NAME = 'JSONB_CONTAINS';
-	const OPERATOR = '@>';
+	public const FUNCTION_NAME = 'JSONB_CONTAINS';
+	public const OPERATOR = '@>';
 }

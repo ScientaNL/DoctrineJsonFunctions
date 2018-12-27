@@ -8,4 +8,13 @@ namespace Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 class JsonArrayAppend extends JsonAppend
 {
 	const FUNCTION_NAME = 'JSON_ARRAY_APPEND';
+
+    /** @var int */
+    protected $requiredArgumentCount = 3;
+
+    /** @var int */
+    protected $optionalArgumentCount = 2;
+
+    /** @var bool */
+    protected $allowOptionalArgumentRepeat = true;
 }

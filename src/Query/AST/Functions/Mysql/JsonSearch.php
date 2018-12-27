@@ -3,114 +3,58 @@
 namespace Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 
 use Doctrine\DBAL\DBALException;
-use Doctrine\DBAL\Platforms\MySqlPlatform;
-use Doctrine\ORM\Query\AST\Functions\FunctionNode;
+use Doctrine\ORM\Query\AST\Node;
 use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
-use Doctrine\ORM\Query\SqlWalker;
 
 /**
- * "JSON_SEARCH" "(" StringPrimary "," ["one" | "all"] "," StringPrimary {"," StringPrimary {"," StringPrimary }* } ")"
+ * "JSON_SEARCH" "(" StringPrimary "," ["one" | "all"] "," StringPrimary {"," StringPrimary }* } ")"
  */
-class JsonSearch extends FunctionNode
+class JsonSearch extends MysqlJsonFunctionNode
 {
 	const FUNCTION_NAME = 'JSON_SEARCH';
 
-	/**
-	 * @var string
-	 */
 	const MODE_ONE = 'one';
 
-	/**
-	 * @var string
-	 */
 	const MODE_ALL = 'all';
+
+    /** @var int */
+    protected $requiredArgumentCount = 0;
+
+    /** @var int */
+    protected $optionalArgumentCount = 1;
+
+    /** @var bool */
+    protected $allowOptionalArgumentRepeat = false;
 
 	/**
 	 * @var boolean
 	 */
 	public $mode;
 
-	/**
-	 * @var \Doctrine\ORM\Query\AST\Node
-	 */
-	public $jsonDocExpr;
-
-	/**
-	 * @var \Doctrine\ORM\Query\AST\Node
-	 */
-	public $jsonSearchExpr;
-
-	/**
-	 * @var \Doctrine\ORM\Query\AST\Node
-	 */
-	public $jsonEscapeExpr;
-
-	/**
-	 * @var \Doctrine\ORM\Query\AST\Node[]
-	 */
-	public $jsonPaths = array();
-
-	/**
-	 * @param SqlWalker $sqlWalker
-	 * @return string
-	 * @throws DBALException
-	 */
-	public function getSql(SqlWalker $sqlWalker)
-	{
-		$jsonDoc = $sqlWalker->walkStringPrimary($this->jsonDocExpr);
-		$mode = $sqlWalker->walkStringPrimary($this->mode);
-		$searchArgs = $sqlWalker->walkStringPrimary($this->jsonSearchExpr);
-
-		if (!empty($this->jsonEscapeExpr)) {
-			$searchArgs .= ', ' . $sqlWalker->walkStringPrimary($this->jsonEscapeExpr);
-
-			if (!empty($this->jsonPaths)) {
-				$jsonPaths = array();
-				foreach ($this->jsonPaths as $path) {
-					$jsonPaths[] = $sqlWalker->walkStringPrimary($path);
-				}
-				$searchArgs .= ', ' . implode(', ', $jsonPaths);
-			}
-		}
-
-		if ($sqlWalker->getConnection()->getDatabasePlatform() instanceof MySqlPlatform)
-		{
-			return sprintf('%s(%s, %s, %s)', static::FUNCTION_NAME, $jsonDoc, $mode, $searchArgs);
-		}
-
-		throw DBALException::notSupported(static::FUNCTION_NAME);
-	}
-
-	/**
-	 * @param Parser $parser
-	 * @throws \Doctrine\ORM\Query\QueryException
-	 */
-	public function parse(Parser $parser)
+    /**
+     * @param Parser $parser
+     * @throws DBALException
+     * @throws \Doctrine\ORM\Query\QueryException
+     */
+	public function parse(Parser $parser): void
 	{
 		$parser->match(Lexer::T_IDENTIFIER);
 		$parser->match(Lexer::T_OPEN_PARENTHESIS);
 
-		$this->jsonDocExpr = $parser->StringPrimary();
+        $this->parsedArguments[] = $parser->StringPrimary();
 
 		$parser->match(Lexer::T_COMMA);
 
-		$this->parsePathMode($parser);
+        $this->parsedArguments[] = $this->parsePathMode($parser);
 
 		$parser->match(Lexer::T_COMMA);
 
-		$this->jsonSearchExpr = $parser->StringPrimary();
+        $this->parsedArguments[] = $parser->StringPrimary();
 
+        $parser->match(Lexer::T_COMMA);
 
-		if ($parser->getLexer()->isNextToken(Lexer::T_COMMA)) {
-			$parser->match(Lexer::T_COMMA);
-			$this->jsonEscapeExpr = $parser->StringPrimary();
-
-			while ($parser->getLexer()->isNextToken(Lexer::T_COMMA)) {
-				$parser->match(Lexer::T_COMMA);
-				$this->jsonPaths[] = $parser->StringPrimary();
-			}
-		}
+        $this->parseOptionalArguments($parser, true);
 
 		$parser->match(Lexer::T_CLOSE_PARENTHESIS);
 	}
@@ -118,25 +62,20 @@ class JsonSearch extends FunctionNode
 	/**
 	 * @param Parser $parser
 	 * @throws DBALException
-	 * @return void
+	 * @return Node
 	 */
 	protected function parsePathMode(Parser $parser)
 	{
-		$lexer = $parser->getLexer();
-		$value = $lexer->lookahead['value'];
+		$value = $parser->getLexer()->lookahead['value'];
 
 		if (strcasecmp(self::MODE_ONE, $value) === 0) {
 			$this->mode = self::MODE_ONE;
-			$parser->StringPrimary();
-
-			return;
+			return $parser->StringPrimary();
 		}
 
 		if (strcasecmp(self::MODE_ALL, $value) === 0) {
 			$this->mode = self::MODE_ALL;
-			$parser->StringPrimary();
-
-			return;
+            return $parser->StringPrimary();
 		}
 
 		throw DBALException::notSupported("Mode '$value' is not supported by " . static::FUNCTION_NAME . ".");
