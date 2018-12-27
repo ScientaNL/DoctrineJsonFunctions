@@ -1,8 +1,6 @@
 [![Latest Stable Version](https://poser.pugx.org/syslogic/doctrine-json-functions/v/stable?format=flat)](https://packagist.org/packages/syslogic/doctrine-json-functions)
 [![Total Downloads](https://poser.pugx.org/syslogic/doctrine-json-functions/downloads?format=flat)](https://packagist.org/packages/syslogic/doctrine-json-functions)
 [![License](https://poser.pugx.org/syslogic/doctrine-json-functions/license)](https://packagist.org/packages/syslogic/doctrine-json-functions)
-[![Issue Stats](http://issuestats.com/github/SyslogicNL/DoctrineJsonFunctions/badge/pr?style=flat)](http://issuestats.com/github/SyslogicNL/DoctrineJsonFunctions)
-[![Issue Stats](http://issuestats.com/github/SyslogicNL/DoctrineJsonFunctions/badge/issue?style=flat)](http://issuestats.com/github/SyslogicNL/DoctrineJsonFunctions)
 
 # DoctrineJsonFunctions
 A set of extensions to Doctrine 2 that add support for json query functions.
