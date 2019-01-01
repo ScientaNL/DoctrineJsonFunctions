@@ -4,8 +4,8 @@ namespace Syslogic\DoctrineJsonFunctions\Query\AST\Functions;
 
 abstract class AbstractJsonOperatorFunctionNode extends AbstractJsonFunctionNode
 {
-    /** @var int */
-    protected $requiredArgumentCount = 2;
+    /** @var string[] */
+    protected $requiredArgumentTypes = [self::STRING_ARG, self::STRING_ARG];
 
     abstract public function getOperator(): string;
 

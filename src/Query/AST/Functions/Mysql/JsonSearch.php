@@ -18,14 +18,11 @@ class JsonSearch extends MysqlJsonFunctionNode
 
 	const MODE_ALL = 'all';
 
-    /** @var int */
-    protected $requiredArgumentCount = 0;
-
-    /** @var int */
-    protected $optionalArgumentCount = 1;
+    /** @var string[] */
+    protected $optionalArgumentTypes = [self::STRING_ARG];
 
     /** @var bool */
-    protected $allowOptionalArgumentRepeat = false;
+    protected $allowOptionalArgumentRepeat = true;
 
 	/**
 	 * @var boolean

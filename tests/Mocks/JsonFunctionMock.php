@@ -16,10 +16,10 @@ class JsonFunctionMock extends AbstractJsonFunctionNode
     public function __construct(string $name)
     {
         if (self::$initRequiredArgumentCount !== null) {
-            $this->requiredArgumentCount = self::$initRequiredArgumentCount;
+            $this->requiredArgumentTypes = array_fill(0, self::$initRequiredArgumentCount, self::STRING_ARG);
         }
         if (self::$initOptionalArgumentCount !== null) {
-            $this->optionalArgumentCount = self::$initOptionalArgumentCount;
+            $this->optionalArgumentTypes = array_fill(0, self::$initOptionalArgumentCount, self::STRING_ARG);
         }
         if (self::$initAllowOptionalArgumentRepeat !== null) {
             $this->allowOptionalArgumentRepeat = self::$initAllowOptionalArgumentRepeat;

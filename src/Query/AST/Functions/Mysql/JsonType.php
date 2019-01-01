@@ -15,4 +15,7 @@ use Doctrine\ORM\Query\SqlWalker;
 class JsonType extends MysqlJsonFunctionNode
 {
 	const FUNCTION_NAME = 'JSON_TYPE';
+
+    /** @var string[] */
+    protected $requiredArgumentTypes = [self::STRING_ARG];
 }

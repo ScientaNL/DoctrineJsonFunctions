@@ -7,17 +7,21 @@ use Doctrine\ORM\Query\AST\Functions\FunctionNode;
 use Doctrine\ORM\Query\AST\Node;
 use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
+use Doctrine\ORM\Query\QueryException;
 use Doctrine\ORM\Query\SqlWalker;
 
 abstract class AbstractJsonFunctionNode extends FunctionNode
 {
     public const FUNCTION_NAME = null;
 
-    /** @var int */
-    protected $requiredArgumentCount = 1;
+    protected const STRING_ARG = 'stringPrimary';
+    protected const VALUE_ARG = 'newValue';
 
-    /** @var int */
-    protected $optionalArgumentCount = 0;
+    /** @var string[] */
+    protected $requiredArgumentTypes = [];
+
+    /** @var string[] */
+    protected $optionalArgumentTypes = [];
 
     /** @var bool */
     protected $allowOptionalArgumentRepeat = false;
@@ -34,15 +38,10 @@ abstract class AbstractJsonFunctionNode extends FunctionNode
         $parser->match(Lexer::T_IDENTIFIER);
         $parser->match(Lexer::T_OPEN_PARENTHESIS);
 
-        for ($i = 0; $i < $this->requiredArgumentCount; $i++) {
-            if ($i > 0) {
-                $parser->match(Lexer::T_COMMA);
-            }
-            $this->parsedArguments[] = $parser->StringPrimary();
-        }
+        $argumentParsed = $this->parseArguments($parser, $this->requiredArgumentTypes);
 
-        if ($this->optionalArgumentCount > 0) {
-            $this->parseOptionalArguments($parser, $this->requiredArgumentCount < 1);
+        if (!empty($this->optionalArgumentTypes)) {
+            $this->parseOptionalArguments($parser, $argumentParsed);
         }
 
         $parser->match(Lexer::T_CLOSE_PARENTHESIS);
@@ -50,43 +49,66 @@ abstract class AbstractJsonFunctionNode extends FunctionNode
 
     /**
      * @param Parser $parser
-     * @param bool $argumentsParsed
+     * @param bool $argumentParsed
      * @throws \Doctrine\ORM\Query\QueryException
      */
-    protected function parseOptionalArguments(Parser $parser, bool $argumentsParsed): void
+    protected function parseOptionalArguments(Parser $parser, bool $argumentParsed): void
     {
-        $isFirstArg = false;
-        if ($argumentsParsed) {
-            $continueParsing = !$parser->getLexer()->isNextToken(Lexer::T_CLOSE_PARENTHESIS);
-            $isFirstArg = true;
-        } else {
-            $continueParsing = $parser->getLexer()->isNextToken(Lexer::T_COMMA);
-        }
+        $continueParsing = !$parser->getLexer()->isNextToken(Lexer::T_CLOSE_PARENTHESIS);
         while ($continueParsing) {
-            for ($i = 0; $i < $this->optionalArgumentCount; $i++) {
-                if (!$isFirstArg) {
-                    $parser->match(Lexer::T_COMMA);
-                } else {
-                    $isFirstArg = false;
-                }
-                $this->parsedArguments[] = $parser->StringPrimary();
-            }
+            $argumentParsed = $this->parseArguments($parser, $this->optionalArgumentTypes, $argumentParsed);
             $continueParsing = $this->allowOptionalArgumentRepeat && $parser->getLexer()->isNextToken(Lexer::T_COMMA);
         }
+    }
+
+    /**
+     * @param Parser $parser
+     * @param string[] $argumentTypes
+     * @param bool $argumentParsed
+     * @return bool
+     * @throws \Doctrine\ORM\Query\QueryException
+     */
+    protected function parseArguments(Parser $parser, array $argumentTypes, bool $argumentParsed = false): bool
+    {
+        foreach ($argumentTypes as $argType) {
+            if ($argumentParsed) {
+                $parser->match(Lexer::T_COMMA);
+            } else {
+                $argumentParsed = true;
+            }
+
+            switch ($argType) {
+                case self::STRING_ARG:
+                    $this->parsedArguments[] = $parser->StringPrimary();
+                    break;
+                case self::VALUE_ARG:
+                    $this->parsedArguments[] = $parser->NewValue();
+                    break;
+                default:
+                    throw QueryException::semanticalError(sprintf('Unknown function argument type %s for %s()', $argType, static::FUNCTION_NAME));
+            }
+        }
+
+        return $argumentParsed;
     }
 
     /**
      * @param SqlWalker $sqlWalker
      * @return string
      * @throws DBALException
+     * @throws \Doctrine\ORM\Query\AST\ASTException
      */
     public function getSql(SqlWalker $sqlWalker): string
     {
         $this->validatePlatform($sqlWalker);
 
         $args = [];
-        foreach ($this->parsedArguments as $argumentString) {
-            $args[] = $sqlWalker->walkStringPrimary($argumentString);
+        foreach ($this->parsedArguments as $parsedArgument) {
+            if ($parsedArgument === null) {
+                $args[] = 'NULL';
+            } else {
+                $args[] = $parsedArgument->dispatch($sqlWalker);
+            }
         }
         return $this->getSqlForArgs($args);
     }

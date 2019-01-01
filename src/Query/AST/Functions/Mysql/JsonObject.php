@@ -9,11 +9,8 @@ class JsonObject extends MysqlJsonFunctionNode
 {
 	const FUNCTION_NAME = 'JSON_OBJECT';
 
-    /** @var int */
-    protected $requiredArgumentCount = 0;
-
-    /** @var int */
-    protected $optionalArgumentCount = 2;
+    /** @var string[] */
+    protected $optionalArgumentTypes = [self::STRING_ARG, self::STRING_ARG];
 
     /** @var bool */
     protected $allowOptionalArgumentRepeat = true;

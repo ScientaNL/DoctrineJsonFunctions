@@ -16,11 +16,11 @@ class JsonContains extends MysqlJsonFunctionNode
 {
 	const FUNCTION_NAME = 'JSON_CONTAINS';
 
-    /** @var int */
-    protected $requiredArgumentCount = 2;
+    /** @var string[] */
+    protected $requiredArgumentTypes = [self::STRING_ARG, self::STRING_ARG];
 
-    /** @var int */
-    protected $optionalArgumentCount = 1;
+    /** @var string[] */
+    protected $optionalArgumentTypes = [self::STRING_ARG];
 
     /** @var bool */
     protected $allowOptionalArgumentRepeat = false;

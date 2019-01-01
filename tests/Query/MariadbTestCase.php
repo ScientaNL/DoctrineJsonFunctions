@@ -26,5 +26,6 @@ abstract class MariadbTestCase extends DbTestCase
     public static function loadDqlFunctions(Configuration $configuration)
     {
         $configuration->addCustomStringFunction(DqlFunctions\JsonValue::FUNCTION_NAME, DqlFunctions\JsonValue::class);
+        $configuration->addCustomStringFunction(DqlFunctions\JsonExists::FUNCTION_NAME, DqlFunctions\JsonExists::class);
     }
 }
