@@ -9,6 +9,6 @@ class JsonbExists extends PostgresqlJsonFunctionNode
 {
 	public const FUNCTION_NAME = 'JSONB_EXISTS';
 
-    /** @var int */
-    protected $requiredArgumentCount = 2;
+    /** @var string[] */
+    protected $requiredArgumentTypes = [self::STRING_ARG, self::STRING_ARG];
 }

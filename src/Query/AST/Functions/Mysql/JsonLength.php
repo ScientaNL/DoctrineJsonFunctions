@@ -8,4 +8,7 @@ namespace Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 class JsonLength extends MysqlJsonFunctionNode
 {
 	const FUNCTION_NAME = 'JSON_LENGTH';
+
+    /** @var string[] */
+    protected $requiredArgumentTypes = [self::STRING_ARG];
 }

@@ -118,8 +118,6 @@ DQL Functions
 The library provides this set of DQL functions.
 
 ### Mysql 5.7+ JSON operators
-* [JSON_APPEND(json_doc, path, val[, path, val] ...)](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-append)
-	- Appends values to the end of the indicated arrays within a JSON document and returns the result.
 * [JSON_ARRAY_APPEND(json_doc, path, val[, path, val] ...)](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-array-append)
 	- Appends values to the end of the indicated arrays within a JSON document and returns the result.
 * [JSON_ARRAY_INSERT(json_doc, path, val[, path, val] ...)](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-array-insert)

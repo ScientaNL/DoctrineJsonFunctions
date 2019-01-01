@@ -1,0 +1,17 @@
+version: '3.3'
+services:
+
+  mysql:
+    container_name: mysql
+    image: mysql:8
+    restart: always
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql/mysql.cnf:/etc/mysql/conf.d/config-file.cnf
+      - ./mysql/import_jsondb.sql:/docker-entrypoint-initdb.d/jsondb.sql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=jsondb
+      - MYSQL_USER=jsondb
+      - MYSQL_PASSWORD=jsondb

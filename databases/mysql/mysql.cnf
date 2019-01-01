@@ -1,0 +1,2 @@
+[mysqld]
+datadir=/var/lib/db-data/

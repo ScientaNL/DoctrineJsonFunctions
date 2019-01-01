@@ -16,12 +16,9 @@ class JsonKeys extends MysqlJsonFunctionNode
 {
 	const FUNCTION_NAME = 'JSON_KEYS';
 
-    /** @var int */
-    protected $requiredArgumentCount = 1;
+    /** @var string[] */
+    protected $requiredArgumentTypes = [self::STRING_ARG];
 
-    /** @var int */
-    protected $optionalArgumentCount = 1;
-
-    /** @var bool */
-    protected $allowOptionalArgumentRepeat = false;
+    /** @var string[] */
+    protected $optionalArgumentTypes = [self::STRING_ARG];
 }
