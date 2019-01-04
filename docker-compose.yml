@@ -1,0 +1,24 @@
+version: '3.3'
+services:
+
+  mysql:
+    container_name: doctrine-json-mysql
+    image: mysql:8
+    restart: always
+    ports:
+      - "3306:3306"
+    volumes:
+      - .docker/mysql/mysql.cnf:/etc/mysql/conf.d/config-file.cnf
+      - .docker/mysql/import_jsondb.sql:/docker-entrypoint-initdb.d/jsondb.sql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=jsondb
+      - MYSQL_USER=jsondb
+      - MYSQL_PASSWORD=jsondb
+
+  php:
+    container_name: doctrine-json-php
+    image: composer:latest
+    volumes:
+      - .:/app
+    command: tail -f /dev/null
