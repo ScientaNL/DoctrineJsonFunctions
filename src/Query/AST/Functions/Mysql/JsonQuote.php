@@ -10,12 +10,12 @@ use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\SqlWalker;
 
 /**
- * "JSON_QUOTE" "(" StringPrimary ")"
+ * "JSON_QUOTE" "(" string ")"
  */
 class JsonQuote extends MysqlJsonFunctionNode
 {
 	const FUNCTION_NAME = 'JSON_QUOTE';
 
     /** @var string[] */
-    protected $requiredArgumentTypes = [self::STRING_ARG];
+    protected $requiredArgumentTypes = [self::STRING_LITERAL_ARG];
 }

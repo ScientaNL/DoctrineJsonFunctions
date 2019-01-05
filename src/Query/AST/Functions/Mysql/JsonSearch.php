@@ -8,7 +8,7 @@ use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
 
 /**
- * "JSON_SEARCH" "(" StringPrimary "," ["one" | "all"] "," StringPrimary {"," StringPrimary }* } ")"
+ * "JSON_SEARCH" "(" StringPrimary "," ["one" | "all"] "," StringPrimary {"," NewValue { "," StringPrimary }* } ")"
  */
 class JsonSearch extends MysqlJsonFunctionNode
 {
@@ -49,7 +49,10 @@ class JsonSearch extends MysqlJsonFunctionNode
 
         $this->parsedArguments[] = $parser->StringPrimary();
 
-        $parser->match(Lexer::T_COMMA);
+        $continueParsing = !$parser->getLexer()->isNextToken(Lexer::T_CLOSE_PARENTHESIS);
+        if ($continueParsing) {
+            $this->parseArguments($parser, [self::VALUE_ARG, self::STRING_ARG], true);
+        }
 
         $this->parseOptionalArguments($parser, true);
 
@@ -67,12 +70,12 @@ class JsonSearch extends MysqlJsonFunctionNode
 
 		if (strcasecmp(self::MODE_ONE, $value) === 0) {
 			$this->mode = self::MODE_ONE;
-			return $parser->StringPrimary();
+			return $parser->Literal();
 		}
 
 		if (strcasecmp(self::MODE_ALL, $value) === 0) {
 			$this->mode = self::MODE_ALL;
-            return $parser->StringPrimary();
+            return $parser->Literal();
 		}
 
 		throw DBALException::notSupported("Mode '$value' is not supported by " . static::FUNCTION_NAME . ".");

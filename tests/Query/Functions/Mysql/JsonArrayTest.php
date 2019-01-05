@@ -14,6 +14,7 @@ class JsonArrayTest extends MysqlTestCase
             "SELECT JSON_ARRAY(1, 'abc', NULL, b0_.id, CURRENT_TIME, CONCAT('a', 'my')) AS sclr_0 FROM Blank b0_"
         );
     }
+
     public function testJsonArrayEmpty()
     {
         $this->assertDqlProducesSql(
@@ -43,7 +44,7 @@ class JsonArrayTest extends MysqlTestCase
         );
     }
 
-    public function testJsonArithmeticOperator()
+    public function testJsonArrayArithmeticOperator()
     {
         $this->assertDqlProducesSql(
             "SELECT JSON_ARRAY(30 + 20) from Syslogic\DoctrineJsonFunctions\Tests\Entities\Blank b",
