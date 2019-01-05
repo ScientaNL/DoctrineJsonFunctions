@@ -29,8 +29,6 @@ class JsonContainsPath extends JsonSearch
 
         $this->parsedArguments[] = $this->parsePathMode($parser);
 
-        $parser->match(Lexer::T_COMMA);
-
         $this->parseOptionalArguments($parser, true);
 
         $parser->match(Lexer::T_CLOSE_PARENTHESIS);

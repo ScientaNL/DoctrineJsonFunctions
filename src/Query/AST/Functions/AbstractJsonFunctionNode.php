@@ -4,6 +4,7 @@ namespace Syslogic\DoctrineJsonFunctions\Query\AST\Functions;
 
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
+use Doctrine\ORM\Query\AST\Literal;
 use Doctrine\ORM\Query\AST\Node;
 use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
@@ -15,6 +16,7 @@ abstract class AbstractJsonFunctionNode extends FunctionNode
     public const FUNCTION_NAME = null;
 
     protected const STRING_ARG = 'stringPrimary';
+    protected const STRING_LITERAL_ARG = 'string';
     protected const VALUE_ARG = 'newValue';
 
     /** @var string[] */
@@ -81,6 +83,9 @@ abstract class AbstractJsonFunctionNode extends FunctionNode
                 case self::STRING_ARG:
                     $this->parsedArguments[] = $parser->StringPrimary();
                     break;
+                case self::STRING_LITERAL_ARG:
+                    $this->parsedArguments[] = $this->parseStringLiteral($parser);
+                    break;
                 case self::VALUE_ARG:
                     $this->parsedArguments[] = $parser->NewValue();
                     break;
@@ -90,6 +95,24 @@ abstract class AbstractJsonFunctionNode extends FunctionNode
         }
 
         return $argumentParsed;
+    }
+
+    /**
+     * @param Parser $parser
+     * @return Literal
+     * @throws QueryException
+     */
+    protected function parseStringLiteral(Parser $parser): Literal
+    {
+        $lexer = $parser->getLexer();
+        $lookaheadType = $lexer->lookahead['type'];
+
+        if ($lookaheadType != Lexer::T_STRING) {
+            $parser->syntaxError('string');
+        }
+
+        $parser->match(Lexer::T_STRING);
+        return new Literal(Literal::STRING, $lexer->token['value']);
     }
 
     /**

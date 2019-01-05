@@ -3,7 +3,7 @@
 namespace Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 
 /**
- * "JSON_LENGTH" "(" StringPrimary ")"
+ * "JSON_LENGTH" "(" StringPrimary {"," StringPrimary } ")"
  */
 class JsonLength extends MysqlJsonFunctionNode
 {
@@ -11,4 +11,7 @@ class JsonLength extends MysqlJsonFunctionNode
 
     /** @var string[] */
     protected $requiredArgumentTypes = [self::STRING_ARG];
+
+    /** @var string[] */
+    protected $optionalArgumentTypes = [self::STRING_ARG];
 }

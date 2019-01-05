@@ -3,17 +3,17 @@
 namespace Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 
 /**
- * "JSON_ARRAY_APPEND" "(" StringPrimary "," StringPrimary "," StringPrimary { "," StringPrimary "," StringPrimary }* ")"
+ * "JSON_ARRAY_APPEND" "(" StringPrimary "," StringPrimary "," NewValue { "," StringPrimary "," NewValue }* ")"
  */
 class JsonArrayAppend extends MysqlJsonFunctionNode
 {
 	const FUNCTION_NAME = 'JSON_ARRAY_APPEND';
 
     /** @var string[] */
-    protected $requiredArgumentTypes = [self::STRING_ARG, self::STRING_ARG, self::STRING_ARG];
+    protected $requiredArgumentTypes = [self::STRING_ARG, self::STRING_ARG, self::VALUE_ARG];
 
     /** @var string[] */
-    protected $optionalArgumentTypes = [self::STRING_ARG, self::STRING_ARG];
+    protected $optionalArgumentTypes = [self::STRING_ARG, self::VALUE_ARG];
 
     /** @var bool */
     protected $allowOptionalArgumentRepeat = true;
