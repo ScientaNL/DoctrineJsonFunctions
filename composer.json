@@ -1,5 +1,5 @@
 {
-	"name": "syslogic/doctrine-json-functions",
+	"name": "scienta/doctrine-json-functions",
 	"abandoned": "scienta/doctrine-json-functions",
 	"type": "library",
 	"description": "A set of extensions to Doctrine 2 that add support for json query functions.",
@@ -8,7 +8,7 @@
 	"authors": [
 		{
 			"name": "Doctrine Json Functions Contributors",
-			"homepage": "https://github.com/SyslogicNL/DoctrineJsonFunctions/contributors"
+			"homepage": "https://github.com/ScientaNL/DoctrineJsonFunctions/contributors"
 		}
 	],
 	"require": {
