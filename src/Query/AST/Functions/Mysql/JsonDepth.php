@@ -1,6 +1,6 @@
 <?php
 
-namespace Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
+namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 
 /**
  * "JSON_DEPTH" "(" StringPrimary ")"

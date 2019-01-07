@@ -1,6 +1,6 @@
 <?php
 
-namespace Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mariadb;
+namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mariadb;
 
 /**
  * "JSON_VALUE" "(" StringPrimary "," StringPrimary ")"

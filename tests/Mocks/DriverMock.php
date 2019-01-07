@@ -1,6 +1,6 @@
 <?php
 
-namespace Syslogic\DoctrineJsonFunctions\Tests\Mocks;
+namespace Scienta\DoctrineJsonFunctions\Tests\Mocks;
 
 /**
  * Mock class for Driver.

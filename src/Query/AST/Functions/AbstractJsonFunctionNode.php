@@ -1,6 +1,6 @@
 <?php
 
-namespace Syslogic\DoctrineJsonFunctions\Query\AST\Functions;
+namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions;
 
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Syslogic\DoctrineJsonFunctions\Tests\Mocks;
+namespace Scienta\DoctrineJsonFunctions\Tests\Mocks;
 
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Platforms\AbstractPlatform;

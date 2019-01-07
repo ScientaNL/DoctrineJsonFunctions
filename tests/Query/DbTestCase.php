@@ -1,12 +1,12 @@
 <?php
 
-namespace Syslogic\DoctrineJsonFunctions\Tests\Query;
+namespace Scienta\DoctrineJsonFunctions\Tests\Query;
 
 use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
-use Syslogic\DoctrineJsonFunctions\Tests\DoctrineJsonTestcase;
-use Syslogic\DoctrineJsonFunctions\Tests\Mocks;
+use Scienta\DoctrineJsonFunctions\Tests\DoctrineJsonTestcase;
+use Scienta\DoctrineJsonFunctions\Tests\Mocks;
 
 abstract class DbTestCase extends DoctrineJsonTestcase
 {

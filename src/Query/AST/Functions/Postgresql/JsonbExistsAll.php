@@ -1,6 +1,6 @@
 <?php
 
-namespace Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Postgresql;
+namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Postgresql;
 
 /**
  * "JSONB_EXISTS_ALL" "(" StringPrimary "," StringPrimary ")"

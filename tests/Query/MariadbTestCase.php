@@ -1,11 +1,11 @@
 <?php
 
-namespace Syslogic\DoctrineJsonFunctions\Tests\Query;
+namespace Scienta\DoctrineJsonFunctions\Tests\Query;
 
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\ORM\Configuration;
-use Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mariadb as DqlFunctions;
-use Syslogic\DoctrineJsonFunctions\Tests\Mocks\ConnectionMock;
+use Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mariadb as DqlFunctions;
+use Scienta\DoctrineJsonFunctions\Tests\Mocks\ConnectionMock;
 
 abstract class MariadbTestCase extends DbTestCase
 {

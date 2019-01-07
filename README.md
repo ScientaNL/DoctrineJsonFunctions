@@ -1,6 +1,6 @@
-[![Latest Stable Version](https://poser.pugx.org/syslogic/doctrine-json-functions/v/stable?format=flat)](https://packagist.org/packages/syslogic/doctrine-json-functions)
+[![Latest Stable Version](https://poser.pugx.org/scienta/doctrine-json-functions/v/stable?format=flat)](https://packagist.org/packages/scienta/doctrine-json-functions)
 [![Total Downloads](https://poser.pugx.org/syslogic/doctrine-json-functions/downloads?format=flat)](https://packagist.org/packages/syslogic/doctrine-json-functions)
-[![License](https://poser.pugx.org/syslogic/doctrine-json-functions/license)](https://packagist.org/packages/syslogic/doctrine-json-functions)
+[![License](https://poser.pugx.org/scienta/doctrine-json-functions/license)](https://packagist.org/packages/scienta/doctrine-json-functions)
 
 # DoctrineJsonFunctions
 A set of extensions to Doctrine 2 that add support for json query functions.
@@ -55,7 +55,7 @@ Functions Registration
 ```php
 <?php
 
-use Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mysql as DqlFunctions;
+use Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql as DqlFunctions;
 
 $config = new \Doctrine\ORM\Configuration();
 $config->addCustomStringFunction(DqlFunctions\JsonExtract::FUNCTION_NAME, DqlFunctions\JsonExtract::class);
@@ -77,8 +77,8 @@ doctrine:
             some_em: # usually also "default"
                 dql:
                     string_functions:
-                        JSON_EXTRACT: Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonExtract
-                        JSON_SEARCH: Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonSearch
+                        JSON_EXTRACT: Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonExtract
+                        JSON_SEARCH: Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonSearch
 ```
 
 
@@ -193,12 +193,12 @@ Extendability and Database Support
 Platform function classes naming rule is:
 
 ```
-Syslogic\DoctrineJsonFunctions\Query\AST\Functions\$platformName\$functionName
+Scienta\DoctrineJsonFunctions\Query\AST\Functions\$platformName\$functionName
 ```
 
 ### Adding a new platform
 
-To add support of new platform you just need to create new folder `Syslogic\DoctrineJsonFunctions\Query\AST\Functions\$platformName`
+To add support of new platform you just need to create new folder `Scienta\DoctrineJsonFunctions\Query\AST\Functions\$platformName`
 and implement required function there according to naming rules
 
 ### Adding a new function

@@ -22,13 +22,13 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"Syslogic\\DoctrineJsonFunctions\\" : "src/"
+			"Scienta\\DoctrineJsonFunctions\\" : "src/"
 		}
 	},
 	"autoload-dev": {
 		"psr-4": {
 			"Doctrine\\Tests\\": "tests/Doctrine/Tests",
-			"Syslogic\\DoctrineJsonFunctions\\Tests\\": "tests/"
+			"Scienta\\DoctrineJsonFunctions\\Tests\\": "tests/"
 		}
 	},
 	"extra": {

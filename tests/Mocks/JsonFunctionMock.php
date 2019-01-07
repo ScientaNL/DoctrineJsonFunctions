@@ -1,9 +1,9 @@
 <?php
 
-namespace Syslogic\DoctrineJsonFunctions\Tests\Mocks;
+namespace Scienta\DoctrineJsonFunctions\Tests\Mocks;
 
 use Doctrine\ORM\Query\SqlWalker;
-use Syslogic\DoctrineJsonFunctions\Query\AST\Functions\AbstractJsonFunctionNode;
+use Scienta\DoctrineJsonFunctions\Query\AST\Functions\AbstractJsonFunctionNode;
 
 class JsonFunctionMock extends AbstractJsonFunctionNode
 {

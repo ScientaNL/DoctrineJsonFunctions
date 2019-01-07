@@ -1,9 +1,9 @@
 <?php
 
-namespace Syslogic\DoctrineJsonFunctions\Tests\Query\Functions;
+namespace Scienta\DoctrineJsonFunctions\Tests\Query\Functions;
 
-use Syslogic\DoctrineJsonFunctions\Tests\Mocks\JsonFunctionMock;
-use Syslogic\DoctrineJsonFunctions\Tests\Query\DbTestCase;
+use Scienta\DoctrineJsonFunctions\Tests\Mocks\JsonFunctionMock;
+use Scienta\DoctrineJsonFunctions\Tests\Query\DbTestCase;
 
 class JsonFunctionStructureTest extends DbTestCase
 {
@@ -28,7 +28,7 @@ class JsonFunctionStructureTest extends DbTestCase
         $this->configureMock(1, 0, false);
 
         $this->assertDqlProducesSql(
-            "SELECT JSON_MOCK('{\"key1\":123}') FROM Syslogic\DoctrineJsonFunctions\Tests\Entities\Blank b",
+            "SELECT JSON_MOCK('{\"key1\":123}') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b",
             "SELECT JSON_MOCK('{\"key1\":123}') AS sclr_0 FROM Blank b0_"
         );
     }
@@ -40,7 +40,7 @@ class JsonFunctionStructureTest extends DbTestCase
     {
         $this->configureMock(1, 0, false);
 
-        $this->produceSql("SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}') FROM Syslogic\DoctrineJsonFunctions\Tests\Entities\Blank b");
+        $this->produceSql("SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b");
     }
 
     /**
@@ -50,7 +50,7 @@ class JsonFunctionStructureTest extends DbTestCase
     {
         $this->configureMock(1, 0, false);
 
-        $this->produceSql("SELECT JSON_MOCK() FROM Syslogic\DoctrineJsonFunctions\Tests\Entities\Blank b");
+        $this->produceSql("SELECT JSON_MOCK() FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b");
     }
 
     public function testMoreRequiredArguments()
@@ -58,7 +58,7 @@ class JsonFunctionStructureTest extends DbTestCase
         $this->configureMock(5, 0, false);
 
         $this->assertDqlProducesSql(
-            "SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}') FROM Syslogic\DoctrineJsonFunctions\Tests\Entities\Blank b",
+            "SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b",
             "SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}') AS sclr_0 FROM Blank b0_"
         );
     }
@@ -70,7 +70,7 @@ class JsonFunctionStructureTest extends DbTestCase
     {
         $this->configureMock(5, 0, false);
 
-        $this->produceSql("SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}') FROM Syslogic\DoctrineJsonFunctions\Tests\Entities\Blank b");
+        $this->produceSql("SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b");
     }
 
     /**
@@ -80,7 +80,7 @@ class JsonFunctionStructureTest extends DbTestCase
     {
         $this->configureMock(5, 0, false);
 
-        $this->produceSql("SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}') FROM Syslogic\DoctrineJsonFunctions\Tests\Entities\Blank b");
+        $this->produceSql("SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b");
     }
 
 
@@ -90,12 +90,12 @@ class JsonFunctionStructureTest extends DbTestCase
         $this->configureMock(0, 1, false);
 
         $this->assertDqlProducesSql(
-            "SELECT JSON_MOCK() FROM Syslogic\DoctrineJsonFunctions\Tests\Entities\Blank b",
+            "SELECT JSON_MOCK() FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b",
             "SELECT JSON_MOCK() AS sclr_0 FROM Blank b0_"
         );
 
         $this->assertDqlProducesSql(
-            "SELECT JSON_MOCK('{\"key1\":123}') FROM Syslogic\DoctrineJsonFunctions\Tests\Entities\Blank b",
+            "SELECT JSON_MOCK('{\"key1\":123}') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b",
             "SELECT JSON_MOCK('{\"key1\":123}') AS sclr_0 FROM Blank b0_"
         );
     }
@@ -107,7 +107,7 @@ class JsonFunctionStructureTest extends DbTestCase
     {
         $this->configureMock(0, 1, false);
 
-        $this->produceSql("SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}') FROM Syslogic\DoctrineJsonFunctions\Tests\Entities\Blank b");
+        $this->produceSql("SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b");
     }
 
 
@@ -117,12 +117,12 @@ class JsonFunctionStructureTest extends DbTestCase
         $this->configureMock(1, 1, false);
 
         $this->assertDqlProducesSql(
-            "SELECT JSON_MOCK('{\"key1\":123}') FROM Syslogic\DoctrineJsonFunctions\Tests\Entities\Blank b",
+            "SELECT JSON_MOCK('{\"key1\":123}') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b",
             "SELECT JSON_MOCK('{\"key1\":123}') AS sclr_0 FROM Blank b0_"
         );
 
         $this->assertDqlProducesSql(
-            "SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}') FROM Syslogic\DoctrineJsonFunctions\Tests\Entities\Blank b",
+            "SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b",
             "SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}') AS sclr_0 FROM Blank b0_"
         );
     }
@@ -134,7 +134,7 @@ class JsonFunctionStructureTest extends DbTestCase
     {
         $this->configureMock(1, 1, false);
 
-        $this->produceSql("SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}') FROM Syslogic\DoctrineJsonFunctions\Tests\Entities\Blank b");
+        $this->produceSql("SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b");
     }
 
     /**
@@ -144,7 +144,7 @@ class JsonFunctionStructureTest extends DbTestCase
     {
         $this->configureMock(1, 1, false);
 
-        $this->produceSql("SELECT JSON_MOCK() FROM Syslogic\DoctrineJsonFunctions\Tests\Entities\Blank b");
+        $this->produceSql("SELECT JSON_MOCK() FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b");
     }
 
     public function testOneRequiredOneOptionalRepeatingArgument()
@@ -152,12 +152,12 @@ class JsonFunctionStructureTest extends DbTestCase
         $this->configureMock(1, 1, true);
 
         $this->assertDqlProducesSql(
-            "SELECT JSON_MOCK('{\"key1\":123}') FROM Syslogic\DoctrineJsonFunctions\Tests\Entities\Blank b",
+            "SELECT JSON_MOCK('{\"key1\":123}') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b",
             "SELECT JSON_MOCK('{\"key1\":123}') AS sclr_0 FROM Blank b0_"
         );
 
         $this->assertDqlProducesSql(
-            "SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}') FROM Syslogic\DoctrineJsonFunctions\Tests\Entities\Blank b",
+            "SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b",
             "SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}') AS sclr_0 FROM Blank b0_"
         );
     }
@@ -169,12 +169,12 @@ class JsonFunctionStructureTest extends DbTestCase
         $this->configureMock(0, 2, false);
 
         $this->assertDqlProducesSql(
-            "SELECT JSON_MOCK() FROM Syslogic\DoctrineJsonFunctions\Tests\Entities\Blank b",
+            "SELECT JSON_MOCK() FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b",
             "SELECT JSON_MOCK() AS sclr_0 FROM Blank b0_"
         );
 
         $this->assertDqlProducesSql(
-            "SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}') FROM Syslogic\DoctrineJsonFunctions\Tests\Entities\Blank b",
+            "SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b",
             "SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}') AS sclr_0 FROM Blank b0_"
         );
     }
@@ -187,7 +187,7 @@ class JsonFunctionStructureTest extends DbTestCase
         $this->configureMock(0, 2, false);
 
         $this->produceSql(
-            "SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}') FROM Syslogic\DoctrineJsonFunctions\Tests\Entities\Blank b"
+            "SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b"
         );
     }
 
@@ -199,7 +199,7 @@ class JsonFunctionStructureTest extends DbTestCase
         $this->configureMock(0, 2, false);
 
         $this->produceSql(
-            "SELECT JSON_MOCK('{\"key1\":123}') FROM Syslogic\DoctrineJsonFunctions\Tests\Entities\Blank b"
+            "SELECT JSON_MOCK('{\"key1\":123}') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b"
         );
     }
 
@@ -210,17 +210,17 @@ class JsonFunctionStructureTest extends DbTestCase
         $this->configureMock(0, 1, true);
 
         $this->assertDqlProducesSql(
-            "SELECT JSON_MOCK() FROM Syslogic\DoctrineJsonFunctions\Tests\Entities\Blank b",
+            "SELECT JSON_MOCK() FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b",
             "SELECT JSON_MOCK() AS sclr_0 FROM Blank b0_"
         );
 
         $this->assertDqlProducesSql(
-            "SELECT JSON_MOCK('{\"key1\":123}') FROM Syslogic\DoctrineJsonFunctions\Tests\Entities\Blank b",
+            "SELECT JSON_MOCK('{\"key1\":123}') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b",
             "SELECT JSON_MOCK('{\"key1\":123}') AS sclr_0 FROM Blank b0_"
         );
 
         $this->assertDqlProducesSql(
-            "SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}') FROM Syslogic\DoctrineJsonFunctions\Tests\Entities\Blank b",
+            "SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b",
             "SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}') AS sclr_0 FROM Blank b0_"
         );
     }
@@ -230,17 +230,17 @@ class JsonFunctionStructureTest extends DbTestCase
         $this->configureMock(0, 3, true);
 
         $this->assertDqlProducesSql(
-            "SELECT JSON_MOCK() FROM Syslogic\DoctrineJsonFunctions\Tests\Entities\Blank b",
+            "SELECT JSON_MOCK() FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b",
             "SELECT JSON_MOCK() AS sclr_0 FROM Blank b0_"
         );
 
         $this->assertDqlProducesSql(
-            "SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}') FROM Syslogic\DoctrineJsonFunctions\Tests\Entities\Blank b",
+            "SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b",
             "SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}') AS sclr_0 FROM Blank b0_"
         );
 
         $this->assertDqlProducesSql(
-            "SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}') FROM Syslogic\DoctrineJsonFunctions\Tests\Entities\Blank b",
+            "SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b",
             "SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}') AS sclr_0 FROM Blank b0_"
         );
     }
@@ -253,7 +253,7 @@ class JsonFunctionStructureTest extends DbTestCase
         $this->configureMock(0, 3, true);
 
         $this->produceSql(
-            "SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}') FROM Syslogic\DoctrineJsonFunctions\Tests\Entities\Blank b"
+            "SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b"
         );
     }
 
@@ -265,7 +265,7 @@ class JsonFunctionStructureTest extends DbTestCase
         $this->configureMock(0, 3, true);
 
         $this->produceSql(
-            "SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}') FROM Syslogic\DoctrineJsonFunctions\Tests\Entities\Blank b"
+            "SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b"
         );
     }
 
@@ -277,7 +277,7 @@ class JsonFunctionStructureTest extends DbTestCase
         $this->configureMock(0, 3, true);
 
         $this->produceSql(
-            "SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}') FROM Syslogic\DoctrineJsonFunctions\Tests\Entities\Blank b"
+            "SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b"
         );
     }
 }

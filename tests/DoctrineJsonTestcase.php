@@ -1,6 +1,6 @@
 <?php
 
-namespace Syslogic\DoctrineJsonFunctions\Tests;
+namespace Scienta\DoctrineJsonFunctions\Tests;
 
 use PHPUnit\Framework\TestCase;
 
