@@ -1,6 +1,6 @@
 <?php
 
-namespace Syslogic\DoctrineJsonFunctions\Tests\Entities;
+namespace Scienta\DoctrineJsonFunctions\Tests\Entities;
 
 /**
  * @Entity

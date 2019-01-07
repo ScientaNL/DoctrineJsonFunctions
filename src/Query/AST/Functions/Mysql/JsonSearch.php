@@ -1,6 +1,6 @@
 <?php
 
-namespace Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
+namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\Query\AST\Node;
@@ -19,7 +19,7 @@ class JsonSearch extends MysqlJsonFunctionNode
 	const MODE_ALL = 'all';
 
     /** @var string[] */
-    protected $optionalArgumentTypes = [self::STRING_ARG];
+    protected $optionalArgumentTypes = [self::STRING_PRIMARY_ARG];
 
     /** @var bool */
     protected $allowOptionalArgumentRepeat = true;
@@ -51,7 +51,7 @@ class JsonSearch extends MysqlJsonFunctionNode
 
         $continueParsing = !$parser->getLexer()->isNextToken(Lexer::T_CLOSE_PARENTHESIS);
         if ($continueParsing) {
-            $this->parseArguments($parser, [self::VALUE_ARG, self::STRING_ARG], true);
+            $this->parseArguments($parser, [self::VALUE_ARG, self::STRING_PRIMARY_ARG], true);
         }
 
         $this->parseOptionalArguments($parser, true);

@@ -1,6 +1,6 @@
 <?php
 
-namespace Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
+namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
@@ -17,5 +17,5 @@ class JsonType extends MysqlJsonFunctionNode
 	const FUNCTION_NAME = 'JSON_TYPE';
 
     /** @var string[] */
-    protected $requiredArgumentTypes = [self::STRING_ARG];
+    protected $requiredArgumentTypes = [self::STRING_PRIMARY_ARG];
 }

@@ -1,11 +1,11 @@
 <?php
 
-namespace Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Postgresql;
+namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Postgresql;
 
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Platforms\PostgreSqlPlatform;
 use Doctrine\ORM\Query\SqlWalker;
-use Syslogic\DoctrineJsonFunctions\Query\AST\Functions\AbstractJsonOperatorFunctionNode;
+use Scienta\DoctrineJsonFunctions\Query\AST\Functions\AbstractJsonOperatorFunctionNode;
 
 abstract class PostgresqlJsonOperatorFunctionNode extends AbstractJsonOperatorFunctionNode
 {

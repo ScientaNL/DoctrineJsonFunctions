@@ -1,6 +1,6 @@
 <?php
 
-namespace Syslogic\DoctrineJsonFunctions\Query\AST\Functions;
+namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions;
 
 use Doctrine\DBAL\DBALException;
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
@@ -15,8 +15,8 @@ abstract class AbstractJsonFunctionNode extends FunctionNode
 {
     public const FUNCTION_NAME = null;
 
-    protected const STRING_ARG = 'stringPrimary';
-    protected const STRING_LITERAL_ARG = 'string';
+    protected const STRING_PRIMARY_ARG = 'stringPrimary';
+    protected const STRING_ARG = 'string';
     protected const VALUE_ARG = 'newValue';
 
     /** @var string[] */
@@ -80,10 +80,10 @@ abstract class AbstractJsonFunctionNode extends FunctionNode
             }
 
             switch ($argType) {
-                case self::STRING_ARG:
+                case self::STRING_PRIMARY_ARG:
                     $this->parsedArguments[] = $parser->StringPrimary();
                     break;
-                case self::STRING_LITERAL_ARG:
+                case self::STRING_ARG:
                     $this->parsedArguments[] = $this->parseStringLiteral($parser);
                     break;
                 case self::VALUE_ARG:

@@ -1,11 +1,11 @@
 <?php
 
-namespace Syslogic\DoctrineJsonFunctions\Query\AST\Functions\Mariadb;
+namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mariadb;
 
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Platforms\MySqlPlatform;
 use Doctrine\ORM\Query\SqlWalker;
-use Syslogic\DoctrineJsonFunctions\Query\AST\Functions\AbstractJsonFunctionNode;
+use Scienta\DoctrineJsonFunctions\Query\AST\Functions\AbstractJsonFunctionNode;
 
 abstract class MariadbJsonFunctionNode extends AbstractJsonFunctionNode
 {
