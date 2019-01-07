@@ -38,11 +38,11 @@ Add the following dependency to your composer.json
 ```json
 {
 	"require": {
-		"syslogic/doctrine-json-functions": "~2.0"
+		"scienta/doctrine-json-functions": "~3.1"
 	}
 }
 ```
-Alternatively, you can download the [source code as a file](https://github.com/SyslogicNL/DoctrineJsonFunctions/releases) and extract it.
+Alternatively, you can download the [source code as a file](https://github.com/ScientaNL/DoctrineJsonFunctions/releases) and extract it.
 
 
 Functions Registration
