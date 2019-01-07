@@ -10,5 +10,5 @@ class JsonValue extends MariadbJsonFunctionNode
     public const FUNCTION_NAME = 'JSON_VALUE';
 
     /** @var string[] */
-    protected $requiredArgumentTypes = [self::STRING_ARG, self::STRING_ARG];
+    protected $requiredArgumentTypes = [self::STRING_PRIMARY_ARG, self::STRING_PRIMARY_ARG];
 }

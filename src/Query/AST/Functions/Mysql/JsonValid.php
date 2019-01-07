@@ -10,5 +10,5 @@ class JsonValid extends MysqlJsonFunctionNode
 	const FUNCTION_NAME = 'JSON_VALID';
 
     /** @var string[] */
-    protected $requiredArgumentTypes = [self::STRING_ARG];
+    protected $requiredArgumentTypes = [self::STRING_PRIMARY_ARG];
 }

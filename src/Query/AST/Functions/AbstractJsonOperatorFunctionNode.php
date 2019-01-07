@@ -5,7 +5,7 @@ namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions;
 abstract class AbstractJsonOperatorFunctionNode extends AbstractJsonFunctionNode
 {
     /** @var string[] */
-    protected $requiredArgumentTypes = [self::STRING_ARG, self::STRING_ARG];
+    protected $requiredArgumentTypes = [self::STRING_PRIMARY_ARG, self::STRING_PRIMARY_ARG];
 
     abstract public function getOperator(): string;
 
