@@ -38,7 +38,7 @@ Add the following dependency to your composer.json
 ```json
 {
 	"require": {
-		"scienta/doctrine-json-functions": "~3.1"
+		"scienta/doctrine-json-functions": "~4.0"
 	}
 }
 ```
