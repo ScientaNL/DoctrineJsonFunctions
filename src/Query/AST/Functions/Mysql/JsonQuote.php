@@ -17,5 +17,5 @@ class JsonQuote extends MysqlJsonFunctionNode
 	const FUNCTION_NAME = 'JSON_QUOTE';
 
     /** @var string[] */
-    protected $requiredArgumentTypes = [self::STRING_ARG];
+    protected $requiredArgumentTypes = [self::VALUE_ARG];
 }
