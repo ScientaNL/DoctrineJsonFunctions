@@ -19,6 +19,7 @@ Table of Contents
   - [Mysql 5.7+ JSON operators](#mysql-57-json-operators)
   - [PostgreSQL 9.3+ JSON operators](#postgresql-93-json-operators)
 - [Installation](#installation)
+- [Testing](#testing)
 - [Functions Registration](#functions-registration)
   - [Doctrine 2](#vanilla-doctrine-2-orm)
   - [Symfony 2 & 3](#symfony-2--3-with-doctrine-bundle)
@@ -29,7 +30,7 @@ Table of Contents
   - [Architecture](#architecture)
   - [Adding new platform](#adding-a-new-platform)
   - [Adding new function](#adding-a-new-function)
-  
+
 
 Installation
 ------------
@@ -43,6 +44,16 @@ Add the following dependency to your composer.json
 }
 ```
 Alternatively, you can download the [source code as a file](https://github.com/ScientaNL/DoctrineJsonFunctions/releases) and extract it.
+
+
+Testing
+------------
+This repository uses docker for testing purposes.
+If you just want to run the tests you can use the composer image to install and run phpunit.
+There is a docker-compose file with the correct mount but if you want to use just docker you can run this:
+```bash
+docker run -it -v ${PWD}:/app composer:latest /bin/bash -c "composer install && ./vendor/bin/phpunit"
+```
 
 
 Functions Registration

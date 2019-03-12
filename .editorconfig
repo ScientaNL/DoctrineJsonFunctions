@@ -1,0 +1,46 @@
+# http://editorconfig.org
+
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Overwrite specific file types
+[*.{yml,yaml}]
+indent_size = 2
+indent_style = space
+
+# Overwrite specifics from vendors
+[*.{php,sh,json,js,ts,xml}]
+indent_size = 4
+indent_style = space
+
+# Overwrite for poeditor
+[resources/language/*.json]
+indent_style = space
+indent_size = 4
+
+# Overwrite specifics from vendors
+[php]
+indent_size = 4
+indent_style = space
+
+# Overwrite specifics from vendors
+[Component/**.php]
+indent_size = 4
+indent_style = space
+
+# Ignore vendor path
+[vendor/**]
+root = unset
+charset = none
+end_of_line = none
+indent_style = none
+insert_final_newline = none
+tab_width = none
+trim_trailing_whitespace = none
