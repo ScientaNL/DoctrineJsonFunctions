@@ -48,8 +48,8 @@ Alternatively, you can download the [source code as a file](https://github.com/S
 
 Testing
 ------------
-This repository uses docker for testing purposes.
-If you just want to run the tests you can use the composer image to install and run phpunit.
+This repository uses phpunit for testing purposes.
+If you just want to run the tests you can use the docker composer image to install and run phpunit.
 There is a docker-compose file with the correct mount but if you want to use just docker you can run this:
 ```bash
 docker run -it -v ${PWD}:/app composer:latest /bin/bash -c "composer install && ./vendor/bin/phpunit"
