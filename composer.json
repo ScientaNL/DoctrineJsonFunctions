@@ -35,5 +35,8 @@
 		"branch-alias": {
 			"dev-master": "4.0-dev"
 		}
+	},
+	"suggest": {
+		"dunglas/doctrine-json-odm": "To serialize / deserialize objects as JSON documents."
 	}
 }

@@ -216,3 +216,9 @@ and implement required function there according to naming rules
 
 If you want to add new function to this library feel free to fork it and create pull request with your implementation.
 Please, remember to update documentation with your new functions.
+
+
+See also
+--------
+
+[dunglas/doctrine-json-odm](https://github.com/dunglas/doctrine-json-odm): Serialize / deserialize plain old PHP objects into JSON columns.
