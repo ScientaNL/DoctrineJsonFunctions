@@ -8,7 +8,7 @@ A set of extensions to Doctrine 2 that add support for json query functions.
 
 | DB | Functions |
 |:--:|:---------:|
-| MySQL | `JSON_APPEND, JSON_ARRAY, JSON_ARRAY_APPEND, JSON_ARRAY_INSERT, JSON_CONTAINS, JSON_CONTAINS_PATH, JSON_DEPTH, JSON_EXTRACT, JSON_INSERT, JSON_KEYS, JSON_LENGTH, JSON_MERGE, JSON_MERGE_PATCH, JSON_OBJECT, JSON_QUOTE, JSON_REMOVE, JSON_REPLACE, JSON_SEARCH, JSON_SET, JSON_TYPE, JSON_UNQUOTE, JSON_VALID` |
+| MySQL | `JSON_APPEND, JSON_ARRAY, JSON_ARRAY_APPEND, JSON_ARRAY_INSERT, JSON_CONTAINS, JSON_CONTAINS_PATH, JSON_DEPTH, JSON_EXTRACT, JSON_INSERT, JSON_KEYS, JSON_LENGTH, JSON_MERGE, JSON_MERGE_PATCH, JSON_OBJECT, JSON_PRETTY, JSON_QUOTE, JSON_REMOVE, JSON_REPLACE, JSON_SEARCH, JSON_SET, JSON_TYPE, JSON_UNQUOTE, JSON_VALID` |
 | PostgreSQL | `JSON_EXTRACT_PATH, GT, GT_GT, SHARP_GT, SHARP_GT_GT` |
 | MariaDb | `JSON_VALUE, JSON_EXISTS` |
 
@@ -104,7 +104,7 @@ $queryBuilder
   ->select('c')
   ->from('Customer', 'c')
   ->where("JSON_CONTAINS(c.attributes, :certificates, '$.certificates') = 1");
- 
+
 $result = $q->execute(array(
   'certificates' => '"BIO"',
 ));
@@ -116,7 +116,7 @@ $queryBuilder
   ->select('c')
   ->from('Customer', 'c')
   ->where("JSON_GET_TEXT(c.attributes, 'gender') = :gender");
- 
+
  $result = $q->execute(array(
     'gender' => 'male',
  ));
@@ -155,6 +155,8 @@ The library provides this set of DQL functions.
     - Performs an RFC 7396 compliant merge of two or more JSON documents and returns the merged result.
 * [JSON_OBJECT([key, val[, key, val] ...])](https://dev.mysql.com/doc/refman/5.7/en/json-creation-functions.html#function_json-object)
 	- Evaluates a (possibly empty) list of key/value pairs and returns a JSON object containing those pairs.
+* [JSON_PRETTY(json_val)](https://dev.mysql.com/doc/refman/5.7/en/json-utility-functions.html#function_json-pretty)
+	- Provides pretty-printing of JSON values similar to that implemented in PHP and by other languages and database systems
 * [JSON_QUOTE(json_val)](https://dev.mysql.com/doc/refman/5.7/en/json-creation-functions.html#function_json-quote)
 	- Quotes a string as a JSON value by wrapping it with double quote characters and escaping interior quote and other characters, then returning the result as a utf8mb4 string.
 * [JSON_REMOVE(json_doc, path[, path] ...)](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-remove)
