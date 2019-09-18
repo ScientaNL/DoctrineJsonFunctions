@@ -38,6 +38,7 @@ abstract class MysqlTestCase extends DbTestCase
         $configuration->addCustomStringFunction(DqlFunctions\JsonMerge::FUNCTION_NAME, DqlFunctions\JsonMerge::class);
         $configuration->addCustomStringFunction(DqlFunctions\JsonMergePatch::FUNCTION_NAME, DqlFunctions\JsonMergePatch::class);
         $configuration->addCustomStringFunction(DqlFunctions\JsonObject::FUNCTION_NAME, DqlFunctions\JsonObject::class);
+        $configuration->addCustomStringFunction(DqlFunctions\JsonPretty::FUNCTION_NAME, DqlFunctions\JsonPretty::class);
         $configuration->addCustomStringFunction(DqlFunctions\JsonQuote::FUNCTION_NAME, DqlFunctions\JsonQuote::class);
         $configuration->addCustomStringFunction(DqlFunctions\JsonRemove::FUNCTION_NAME, DqlFunctions\JsonRemove::class);
         $configuration->addCustomStringFunction(DqlFunctions\JsonReplace::FUNCTION_NAME, DqlFunctions\JsonReplace::class);
