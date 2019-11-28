@@ -1,0 +1,17 @@
+<?php
+
+namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Sqlite;
+
+/**
+ * "JSON_ARRAY" "(" { StringPrimary ","}* ")"
+ */
+class JsonArray extends SqliteJsonFunctionNode
+{
+    const FUNCTION_NAME = 'JSON_EXTRACT';
+
+    /** @var string[] */
+    protected $optionalArgumentTypes = [self::STRING_PRIMARY_ARG];
+
+    /** @var bool */
+    protected $allowOptionalArgumentRepeat = true;
+}
