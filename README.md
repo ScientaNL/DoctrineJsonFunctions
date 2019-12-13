@@ -1,5 +1,5 @@
 [![Latest Stable Version](https://poser.pugx.org/scienta/doctrine-json-functions/v/stable?format=flat)](https://packagist.org/packages/scienta/doctrine-json-functions)
-[![Total Downloads](https://poser.pugx.org/syslogic/doctrine-json-functions/downloads?format=flat)](https://packagist.org/packages/syslogic/doctrine-json-functions)
+[![Total Downloads](https://poser.pugx.org/scienta/doctrine-json-functions/downloads?format=flat)](https://packagist.org/packages/scienta/doctrine-json-functions)
 [![License](https://poser.pugx.org/scienta/doctrine-json-functions/license)](https://packagist.org/packages/scienta/doctrine-json-functions)
 
 # DoctrineJsonFunctions
@@ -41,7 +41,7 @@ Add the following dependency to your composer.json
 ```json
 {
 	"require": {
-		"scienta/doctrine-json-functions": "~4.0"
+		"scienta/doctrine-json-functions": "~4.1"
 	}
 }
 ```
@@ -102,7 +102,7 @@ Mind the comparison when creating the expression and escape the parameters to be
 
 ### Using Mysql 5.7+ JSON operators
 ```php
-$queryBuilder
+$q = $queryBuilder
   ->select('c')
   ->from('Customer', 'c')
   ->where("JSON_CONTAINS(c.attributes, :certificates, '$.certificates') = 1");
@@ -114,7 +114,7 @@ $result = $q->execute(array(
 
 ### Using PostgreSQL 9.3+ JSON operators
 ```php
-$queryBuilder
+$q = $queryBuilder
   ->select('c')
   ->from('Customer', 'c')
   ->where("JSON_GET_TEXT(c.attributes, 'gender') = :gender");
@@ -125,9 +125,14 @@ $queryBuilder
 ```
 
 ### Using SQLite JSON operators
+```php
+$q = $queryBuilder
+  ->select('c')
+  ->from('Customer', 'c')
+  ->where("JSON_EXTRACT(c.attributes, '$.gender') = :gender");
 
-See the [JSON1 extension documentation](https://www.sqlite.org/json1.html).
-
+ $result = $q->execute();
+```
 
 DQL Functions
 -------------

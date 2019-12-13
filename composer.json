@@ -1,9 +1,9 @@
 {
 	"name": "scienta/doctrine-json-functions",
-	"abandoned": "scienta/doctrine-json-functions",
+    "abandoned": false,
 	"type": "library",
 	"description": "A set of extensions to Doctrine 2 that add support for json query functions.",
-	"keywords": ["doctrine", "orm", "json", "dql", "database", "mysql", "postgres", "postgresql", "mariadb"],
+	"keywords": ["doctrine", "orm", "json", "dql", "database", "mysql", "postgres", "postgresql", "mariadb", "sqlite"],
 	"license": "MIT",
 	"authors": [
 		{
@@ -33,7 +33,7 @@
 	},
 	"extra": {
 		"branch-alias": {
-			"dev-master": "4.0-dev"
+			"dev-master": "4.1-dev"
 		}
 	},
 	"suggest": {
