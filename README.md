@@ -11,6 +11,7 @@ A set of extensions to Doctrine 2 that add support for json query functions.
 | MySQL | `JSON_APPEND, JSON_ARRAY, JSON_ARRAY_APPEND, JSON_ARRAY_INSERT, JSON_CONTAINS, JSON_CONTAINS_PATH, JSON_DEPTH, JSON_EXTRACT, JSON_INSERT, JSON_KEYS, JSON_LENGTH, JSON_MERGE, JSON_MERGE_PATCH, JSON_OBJECT, JSON_QUOTE, JSON_REMOVE, JSON_REPLACE, JSON_SEARCH, JSON_SET, JSON_TYPE, JSON_UNQUOTE, JSON_VALID` |
 | PostgreSQL | `JSON_EXTRACT_PATH, GT, GT_GT, SHARP_GT, SHARP_GT_GT` |
 | MariaDb | `JSON_VALUE, JSON_EXISTS` |
+| SQLite | `JSON, JSON_ARRAY, JSON_ARRAY_LENGTH, JSON_EXTRACT, JSON_GROUP_ARRAY, JSON_GROUP_OBJECT, JSON_INSERT, JSON_OBJECT, JSON_PATCH, JSON_QUOTE, JSON_REMOVE, JSON_REPLACE, JSON_SET, JSON_TYPE, JSON_VALID` |
 
 Table of Contents
 -----------------
@@ -18,6 +19,7 @@ Table of Contents
 - [DQL Functions](#dql-functions)
   - [Mysql 5.7+ JSON operators](#mysql-57-json-operators)
   - [PostgreSQL 9.3+ JSON operators](#postgresql-93-json-operators)
+  - [SQLite json1 extension operators](#sqlite-json1-extension-operators)
 - [Installation](#installation)
 - [Testing](#testing)
 - [Functions Registration](#functions-registration)
@@ -104,7 +106,7 @@ $queryBuilder
   ->select('c')
   ->from('Customer', 'c')
   ->where("JSON_CONTAINS(c.attributes, :certificates, '$.certificates') = 1");
- 
+
 $result = $q->execute(array(
   'certificates' => '"BIO"',
 ));
@@ -116,11 +118,15 @@ $queryBuilder
   ->select('c')
   ->from('Customer', 'c')
   ->where("JSON_GET_TEXT(c.attributes, 'gender') = :gender");
- 
+
  $result = $q->execute(array(
     'gender' => 'male',
  ));
 ```
+
+### Using SQLite JSON operators
+
+See the [JSON1 extension documentation](https://www.sqlite.org/json1.html).
 
 
 DQL Functions
@@ -197,6 +203,45 @@ Basic support for JSON operators is implemented. This works even with `Doctrine\
 
 Please note that chaining of JSON operators is not supported.
 
+### SQLite JSON1 Extension operators
+
+Support for all the scalar and aggregare functions as seen in the [JSON1 Extension documentation](https://www.sqlite.org/json1.html).
+
+#### Scalar functions
+
+* JSON(json)
+    - Verifies that its argument is a valid JSON string and returns a minified version of that JSON string.
+* JSON_ARRAY([val[, val] ...])
+    - Accepts zero or more arguments and returns a well-formed JSON array that is composed from those arguments.
+* JSON_ARRAY_LENGTH(json[, path])
+    - Returns the number of elements in the JSON array `json`, or 0 if `json` is some kind of JSON value other than an array.
+* JSON_EXTRACT(json, path[, path ], ...)
+    - Extracts and returns one or more values from the well-formed JSON.
+* JSON_INSERT(json[, path, value],...)
+    - Given zero or more sets of paths and values, it inserts (without overwriting) each value at its corresponding path of the `json`.
+* JSON_OBJECT(label, value[, label, value], ...)
+    - Accepts zero or more pairs of arguments and returns a well-formed JSON object that is composed from those arguments.
+* JSON_PATCH(target, patch)
+    - Applies a `patch` to `target`.
+* JSON_QUOTE(value)
+    - Converts the SQL `value` (a number or a string) into its corresponding JSON representation.
+* JSON_REMOVE(json[, path], ...)
+    - Removes the values at each given `path`.
+* JSON_REPLACE(json[, path, value],...)
+    - Given zero or more sets of paths and values, it overwrites each value at its corresponding path of the `json`.
+* JSON_SET(json[, path, value],...)
+    - Given zero or more sets of paths and values, it inserts or overwrites each value at its corresponding path of the `json`.
+* JSON_TYPE(json[, path])
+    - Returns the type of the outermost element of `json` or of the value at `path`.
+* JSON_VALID(json)
+    - Returns 1 if the argument `json` is well-formed JSON or 0 otherwise.
+
+#### Aggregate functions
+
+* JSON_GROUP_ARRAY(value)
+    - Returns a JSON array comprised of all `value` in the aggregation
+* JSON_GROUP_OBJECT(name, value)
+    - Returns a JSON object comprised of all `name/value` pairs in the aggregation.
 
 Extendability and Database Support
 ----------------------------------
