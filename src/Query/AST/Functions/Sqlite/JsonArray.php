@@ -7,10 +7,10 @@ namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Sqlite;
  */
 class JsonArray extends SqliteJsonFunctionNode
 {
-    const FUNCTION_NAME = 'JSON_EXTRACT';
+    const FUNCTION_NAME = 'JSON_ARRAY';
 
     /** @var string[] */
-    protected $optionalArgumentTypes = [self::STRING_PRIMARY_ARG];
+    protected $optionalArgumentTypes = [self::VALUE_ARG];
 
     /** @var bool */
     protected $allowOptionalArgumentRepeat = true;

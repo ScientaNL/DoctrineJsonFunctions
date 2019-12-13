@@ -11,7 +11,7 @@ class JsonArrayTest extends SqliteTestCase
     {
         $this->assertDqlProducesSql(
             "SELECT JSON_ARRAY(1, 'abc', NULL, b.id, CURRENT_TIME(), CONCAT('a','my')) from Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b",
-            "SELECT JSON_ARRAY(1, 'abc', NULL, b0_.id, CURRENT_TIME, CONCAT('a', 'my')) AS sclr_0 FROM Blank b0_"
+            "SELECT JSON_ARRAY(1, 'abc', NULL, b0_.id, CURRENT_TIME, 'a' || 'my') AS sclr_0 FROM Blank b0_"
         );
     }
 
