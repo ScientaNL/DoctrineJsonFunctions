@@ -11,5 +11,5 @@ class JsonGetText extends PostgresqlJsonOperatorFunctionNode
     public const OPERATOR = '->>';
 
     /** @var string[] */
-    protected $requiredArgumentTypes = [self::STRING_PRIMARY_ARG, self::ALPHA_NUMERIC];
+    protected $requiredArgumentTypes = [self::STRING_PRIMARY_ARG, self::VALUE_ARG];
 }
