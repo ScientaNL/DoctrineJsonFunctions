@@ -108,7 +108,7 @@ $q = $queryBuilder
   ->where("JSON_CONTAINS(c.attributes, :certificates, '$.certificates') = 1");
 
 $result = $q->execute(array(
-  'certificates' => '"BIO"',
+  'certificates' => json_encode('BIO'),
 ));
 ```
 
