@@ -80,7 +80,7 @@ $queryBuilder = $em->createQueryBuilder();
 
 ### Symfony 2 & 3 with Doctrine bundle
 
-[Symfony documentation: "DoctrineBundle Configuration"](http://symfony.com/doc/master/reference/configuration/doctrine.html#full-default-configuration)
+[Symfony documentation: "DoctrineBundle Configuration"](https://symfony.com/doc/3.3/reference/configuration/doctrine.html#full-default-configuration)
 
 ```yaml
 # app/config/config.yml
@@ -92,6 +92,20 @@ doctrine:
                     string_functions:
                         JSON_EXTRACT: Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonExtract
                         JSON_SEARCH: Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonSearch
+```
+
+### Symfony 5 with Doctrine bundle
+
+[Symfony documentation: "DoctrineBundle Configuration"](https://symfony.com/doc/5.0/reference/configuration/doctrine.html#shortened-configuration-syntax)
+
+```yaml
+# config/packages/doctrine.yaml
+doctrine:
+    orm:
+        dql:
+            string_functions:
+                JSON_EXTRACT: Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonExtract
+                JSON_SEARCH: Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonSearch
 ```
 
 
