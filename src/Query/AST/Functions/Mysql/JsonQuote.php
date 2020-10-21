@@ -10,7 +10,7 @@ use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\SqlWalker;
 
 /**
- * "JSON_QUOTE" "(" string ")"
+ * "JSON_QUOTE" "(" NewValue ")"
  */
 class JsonQuote extends MysqlJsonFunctionNode
 {
