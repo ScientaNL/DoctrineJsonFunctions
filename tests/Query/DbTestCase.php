@@ -19,7 +19,7 @@ abstract class DbTestCase extends DoctrineJsonTestcase
     /**
      * @throws \Doctrine\ORM\ORMException
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->configuration = new Configuration();
         $this->configuration->setMetadataCacheImpl(new ArrayCache());

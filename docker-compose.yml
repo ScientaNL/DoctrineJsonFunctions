@@ -16,9 +16,16 @@ services:
       - MYSQL_USER=jsondb
       - MYSQL_PASSWORD=jsondb
 
-  php:
-    container_name: doctrine-json-php
-    image: composer:latest
+  php7:
+    container_name: doctrine-json-php7
+    image: scienta/php-composer:php7
+    volumes:
+      - .:/app
+    command: tail -f /dev/null
+
+  php8:
+    container_name: doctrine-json-php8
+    image: scienta/php-composer:php8
     volumes:
       - .:/app
     command: tail -f /dev/null

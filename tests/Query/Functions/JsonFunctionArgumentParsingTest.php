@@ -7,7 +7,7 @@ use Scienta\DoctrineJsonFunctions\Tests\Query\DbTestCase;
 
 class JsonFunctionArgumentParsingTest extends DbTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

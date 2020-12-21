@@ -31,11 +31,10 @@ class JsonObjectTest extends SqliteTestCase
         );
     }
 
-    /**
-     * @expectedException \Doctrine\ORM\Query\QueryException
-     */
     public function testJsonObjectArgumentMismatch()
     {
+        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+
         $this->assertDqlProducesSql(
             "SELECT JSON_OBJECT('a') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b",
             "QueryException"

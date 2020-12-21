@@ -9,7 +9,7 @@ use Scienta\DoctrineJsonFunctions\Tests\Mocks\ConnectionMock;
 
 abstract class MariadbTestCase extends DbTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
