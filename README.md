@@ -16,10 +16,7 @@ A set of extensions to Doctrine 2 that add support for json query functions.
 Table of Contents
 -----------------
 
-- [DQL Functions](#dql-functions)
-  - [Mysql 5.7+ JSON operators](#mysql-57-json-operators)
-  - [PostgreSQL 9.3+ JSON operators](#postgresql-93-json-operators)
-  - [SQLite json1 extension operators](#sqlite-json1-extension-operators)
+- [Changelog per release](#changelog)
 - [Installation](#installation)
 - [Testing](#testing)
 - [Functions Registration](#functions-registration)
@@ -28,10 +25,21 @@ Table of Contents
 - [Usage](#usage)
   - [Using Mysql 5.7+ JSON operators](#using-mysql-57-json-operators)
   - [Using PostgreSQL 9.3+ JSON operators](#using-postgresql-93-json-operators)
+  - [Using SQLite JSON operators](#using-sqlite-json-operators)
+- [DQL Functions](#dql-functions)
+    - [Mysql 5.7+ JSON operators](#mysql-57-json-operators)
+    - [PostgreSQL 9.3+ JSON operators](#postgresql-93-json-operators)
+    - [SQLite json1 extension operators](#sqlite-json1-extension-operators)
 - [Extendability and Database Support](#extendability-and-database-support)
   - [Architecture](#architecture)
   - [Adding new platform](#adding-a-new-platform)
   - [Adding new function](#adding-a-new-function)
+
+
+Changelog
+------------
+Changes per release are documented with each github release.
+You can find an overview here: https://github.com/ScientaNL/DoctrineJsonFunctions/releases
 
 
 Installation
@@ -41,7 +49,7 @@ Add the following dependency to your composer.json
 ```json
 {
 	"require": {
-		"scienta/doctrine-json-functions": "~4.1"
+		"scienta/doctrine-json-functions": "~4.3"
 	}
 }
 ```
