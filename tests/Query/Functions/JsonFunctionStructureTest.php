@@ -7,7 +7,7 @@ use Scienta\DoctrineJsonFunctions\Tests\Query\DbTestCase;
 
 class JsonFunctionStructureTest extends DbTestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -33,21 +33,19 @@ class JsonFunctionStructureTest extends DbTestCase
         );
     }
 
-    /**
-     * @expectedException \Doctrine\ORM\Query\QueryException
-     */
     public function testOneRequiredArgumentErrorsWithMore()
     {
+        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+
         $this->configureMock(1, 0, false);
 
         $this->produceSql("SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b");
     }
 
-    /**
-     * @expectedException \Doctrine\ORM\Query\QueryException
-     */
     public function testOneRequiredArgumentErrorsWithLess()
     {
+        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+
         $this->configureMock(1, 0, false);
 
         $this->produceSql("SELECT JSON_MOCK() FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b");
@@ -63,21 +61,19 @@ class JsonFunctionStructureTest extends DbTestCase
         );
     }
 
-    /**
-     * @expectedException \Doctrine\ORM\Query\QueryException
-     */
     public function testMoreRequiredArgumentsErrorsWithMore()
     {
+        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+
         $this->configureMock(5, 0, false);
 
         $this->produceSql("SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b");
     }
 
-    /**
-     * @expectedException \Doctrine\ORM\Query\QueryException
-     */
     public function testMoreRequiredArgumentsErrorsWithLess()
     {
+        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+
         $this->configureMock(5, 0, false);
 
         $this->produceSql("SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b");
@@ -100,11 +96,10 @@ class JsonFunctionStructureTest extends DbTestCase
         );
     }
 
-    /**
-     * @expectedException \Doctrine\ORM\Query\QueryException
-     */
     public function testOneOptionalArgumentErrorsWithMore()
     {
+        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+
         $this->configureMock(0, 1, false);
 
         $this->produceSql("SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b");
@@ -127,21 +122,19 @@ class JsonFunctionStructureTest extends DbTestCase
         );
     }
 
-    /**
-     * @expectedException \Doctrine\ORM\Query\QueryException
-     */
     public function testOneRequiredOneOptionalArgumentErrorsWithMore()
     {
+        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+
         $this->configureMock(1, 1, false);
 
         $this->produceSql("SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b");
     }
 
-    /**
-     * @expectedException \Doctrine\ORM\Query\QueryException
-     */
     public function testOneRequiredOneOptionalArgumentErrorsWithLess()
     {
+        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+
         $this->configureMock(1, 1, false);
 
         $this->produceSql("SELECT JSON_MOCK() FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b");
@@ -179,11 +172,10 @@ class JsonFunctionStructureTest extends DbTestCase
         );
     }
 
-    /**
-     * @expectedException \Doctrine\ORM\Query\QueryException
-     */
     public function testMoreOptionalArgumentsErrorsMore()
     {
+        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+
         $this->configureMock(0, 2, false);
 
         $this->produceSql(
@@ -191,11 +183,10 @@ class JsonFunctionStructureTest extends DbTestCase
         );
     }
 
-    /**
-     * @expectedException \Doctrine\ORM\Query\QueryException
-     */
     public function testMoreOptionalArgumentsErrorsLess()
     {
+        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+
         $this->configureMock(0, 2, false);
 
         $this->produceSql(
@@ -245,11 +236,10 @@ class JsonFunctionStructureTest extends DbTestCase
         );
     }
 
-    /**
-     * @expectedException \Doctrine\ORM\Query\QueryException
-     */
     public function testMoreOptionalArgumentsErrorsRepeatingLess()
     {
+        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+
         $this->configureMock(0, 3, true);
 
         $this->produceSql(
@@ -257,11 +247,10 @@ class JsonFunctionStructureTest extends DbTestCase
         );
     }
 
-    /**
-     * @expectedException \Doctrine\ORM\Query\QueryException
-     */
     public function testMoreOptionalArgumentsErrorsRepeatingMore()
     {
+        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+
         $this->configureMock(0, 3, true);
 
         $this->produceSql(
@@ -269,11 +258,10 @@ class JsonFunctionStructureTest extends DbTestCase
         );
     }
 
-    /**
-     * @expectedException \Doctrine\ORM\Query\QueryException
-     */
     public function testMoreOptionalArgumentsErrorsRepeatingMuchMore()
     {
+        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+
         $this->configureMock(0, 3, true);
 
         $this->produceSql(

@@ -15,11 +15,10 @@ class JsonPatchTest extends SqliteTestCase
         );
     }
 
-    /**
-     * @expectedException \Doctrine\ORM\Query\QueryException
-     */
     public function testJsonPatchSingleArgument()
     {
+        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+
         $this->assertDqlProducesSql(
             "SELECT JSON_PATCH('{\"a\": 10, \"b\": false}') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b",
             "QueryException"

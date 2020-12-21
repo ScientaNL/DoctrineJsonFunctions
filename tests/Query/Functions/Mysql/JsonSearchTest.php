@@ -3,7 +3,6 @@
 namespace Scienta\DoctrineJsonFunctions\Tests\Query\Functions\Mysql;
 
 use Scienta\DoctrineJsonFunctions\Tests\Query\MysqlTestCase;
-use Doctrine\ORM\Query\Expr;
 
 class JsonSearchTest extends MysqlTestCase
 {
@@ -30,22 +29,20 @@ class JsonSearchTest extends MysqlTestCase
         );
     }
 
-    /**
-     * @expectedException \Doctrine\DBAL\DBALException
-     */
     public function testJsonSearchNone()
     {
+        $this->expectException(\Doctrine\DBAL\DBALException::class);
+
         $this->assertDqlProducesSql(
             "SELECT JSON_SEARCH('[\"abc\", [{\"k\": \"10\"}, \"def\"], {\"x\":\"abc\"}, {\"y\":\"bcd\"}]', 'none', '$.a') from Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b",
             "SELECT JSON_SEARCH('[\"abc\", [{\"k\": \"10\"}, \"def\"], {\"x\":\"abc\"}, {\"y\":\"bcd\"}]', 'none', '$.a') AS sclr_0 FROM Blank b0_"
         );
     }
 
-    /**
-     * @expectedException \Doctrine\ORM\Query\QueryException
-     */
     public function testJsonSearchOnlyEscape()
     {
+        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+
         $this->assertDqlProducesSql(
             "SELECT JSON_SEARCH('[\"abc\", [{\"k\": \"10\"}, \"def\"], {\"x\":\"abc\"}, {\"y\":\"bcd\"}]', 'all', '%b%', '') from Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b",
             "SELECT JSON_SEARCH('[\"abc\", [{\"k\": \"10\"}, \"def\"], {\"x\":\"abc\"}, {\"y\":\"bcd\"}]', 'all', '%b%', '') AS sclr_0 FROM Blank b0_"

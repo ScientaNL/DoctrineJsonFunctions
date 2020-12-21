@@ -31,11 +31,10 @@ class JsonInsertTest extends SqliteTestCase
         );
     }
 
-    /**
-     * @expectedException \Doctrine\ORM\Query\QueryException
-     */
     public function testJsonInsertArgumentMismatch()
     {
+        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+
         $this->assertDqlProducesSql(
             "SELECT JSON_INSERT('{\"a\": 1, \"b\": 2}', '$.\"c\"') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b",
             "QueryException"

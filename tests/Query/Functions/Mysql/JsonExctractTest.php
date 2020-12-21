@@ -15,11 +15,10 @@ class JsonExctractTest extends MysqlTestCase
         );
     }
 
-    /**
-     * @expectedException \Doctrine\ORM\Query\QueryException
-     */
     public function testJsonExtractQuotes()
     {
+        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+
         $this->assertDqlProducesSql(
             'SELECT JSON_EXTRACT(d.jsonData, "$.a") FROM Scienta\DoctrineJsonFunctions\Tests\Entities\JsonData d',
             "QueryException"
