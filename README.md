@@ -62,12 +62,12 @@ This repository uses phpunit for testing purposes.
 If you just want to run the tests you can use the docker composer image to install and run phpunit.
 There is a docker-compose file with the correct mount but if you want to use just docker you can run this:
 
-###php7
+### php7
 ```bash
 docker run -it -v ${PWD}:/app scienta/php-composer:php7 /bin/bash -c "composer install && ./vendor/bin/phpunit"
 ```
 
-###php8
+### php8
 ```bash
 docker run -it -v ${PWD}:/app scienta/php-composer:php8 /bin/bash -c "composer install && ./vendor/bin/phpunit"
 ```
