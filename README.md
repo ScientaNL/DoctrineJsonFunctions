@@ -8,7 +8,7 @@ A set of extensions to Doctrine 2 that add support for json query functions.
 
 | DB | Functions |
 |:--:|:---------:|
-| MySQL | `JSON_APPEND, JSON_ARRAY, JSON_ARRAY_APPEND, JSON_ARRAY_INSERT, JSON_CONTAINS, JSON_CONTAINS_PATH, JSON_DEPTH, JSON_EXTRACT, JSON_INSERT, JSON_KEYS, JSON_LENGTH, JSON_MERGE, JSON_MERGE_PATCH, JSON_OBJECT, JSON_PRETTY, JSON_QUOTE, JSON_REMOVE, JSON_REPLACE, JSON_SEARCH, JSON_SET, JSON_TYPE, JSON_UNQUOTE, JSON_VALID` |
+| MySQL | `JSON_APPEND, JSON_ARRAY, JSON_ARRAY_APPEND, JSON_ARRAY_INSERT, JSON_CONTAINS, JSON_CONTAINS_PATH, JSON_DEPTH, JSON_EXTRACT, JSON_OVERLAPS, JSON_INSERT, JSON_KEYS, JSON_LENGTH, JSON_MERGE, JSON_MERGE_PATCH, JSON_OBJECT, JSON_PRETTY, JSON_QUOTE, JSON_REMOVE, JSON_REPLACE, JSON_SEARCH, JSON_SET, JSON_TYPE, JSON_UNQUOTE, JSON_VALID` |
 | PostgreSQL | `JSON_EXTRACT_PATH, GT, GT_GT, SHARP_GT, SHARP_GT_GT` |
 | MariaDb | `JSON_VALUE, JSON_EXISTS` |
 | SQLite | `JSON, JSON_ARRAY, JSON_ARRAY_LENGTH, JSON_EXTRACT, JSON_GROUP_ARRAY, JSON_GROUP_OBJECT, JSON_INSERT, JSON_OBJECT, JSON_PATCH, JSON_QUOTE, JSON_REMOVE, JSON_REPLACE, JSON_SET, JSON_TYPE, JSON_VALID` |
@@ -183,6 +183,8 @@ The library provides this set of DQL functions.
 	- Returns the maximum depth of a JSON document.
 * [JSON_EXTRACT(json_doc, path[, path] ...)](https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-extract)
 	- Returns data from a JSON document, selected from the parts of the document matched by the path arguments.
+* [JSON_OVERLAPS(json_doc1, json_doc2)](https://dev.mysql.com/doc/refman/8.0/en/json-search-functions.html#function_json-overlaps)
+	- Compares two JSON documents. Returns true (1) if the two document have any key-value pairs or array elements in common. If both arguments are scalars, the function performs a simple equality test.
 * [JSON_INSERT(json_doc, path, val[, path, val] ...)](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-insert)
 	- Inserts data into a JSON document and returns the result.
 * [JSON_KEYS(json_doc[, path])](https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-keys)
