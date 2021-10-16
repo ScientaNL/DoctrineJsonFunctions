@@ -25,6 +25,10 @@
 			"Scienta\\DoctrineJsonFunctions\\" : "src/"
 		}
 	},
+    "conflict": {
+        "doctrine/orm": "<2.7,>=3.0",
+        "doctrine/dbal": ">=3.0"
+	},
 	"autoload-dev": {
 		"psr-4": {
 			"Doctrine\\Tests\\": "tests/Doctrine/Tests",
