@@ -24,7 +24,7 @@ class JsonContainsPathTest extends MysqlTestCase
 
     public function testJsonContainsPathNone()
     {
-        $this->expectException(\Doctrine\DBAL\DBALException::class);
+        $this->expectException(\Doctrine\DBAL\Exception::class);
 
         $this->assertDqlProducesSql(
             "SELECT JSON_CONTAINS_PATH('{\"a\": 1, \"b\": 2, \"c\": {\"d\": 4}}', 'none', '$.a', '$.e') from Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b",

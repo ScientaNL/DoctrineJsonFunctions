@@ -2,7 +2,7 @@
 
 namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\Query\AST\Node;
 use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
@@ -31,7 +31,7 @@ class JsonSearch extends MysqlJsonFunctionNode
 
     /**
      * @param Parser $parser
-     * @throws DBALException
+     * @throws Exception
      * @throws \Doctrine\ORM\Query\QueryException
      */
 	public function parse(Parser $parser): void
@@ -61,7 +61,7 @@ class JsonSearch extends MysqlJsonFunctionNode
 
 	/**
 	 * @param Parser $parser
-	 * @throws DBALException
+	 * @throws Exception
 	 * @return Node
 	 */
 	protected function parsePathMode(Parser $parser)
@@ -78,6 +78,6 @@ class JsonSearch extends MysqlJsonFunctionNode
             return $parser->Literal();
 		}
 
-		throw DBALException::notSupported("Mode '$value' is not supported by " . static::FUNCTION_NAME . ".");
+		throw Exception::notSupported("Mode '$value' is not supported by " . static::FUNCTION_NAME . ".");
 	}
 }

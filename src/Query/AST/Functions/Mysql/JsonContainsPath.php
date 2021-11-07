@@ -2,7 +2,7 @@
 
 namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
 
@@ -15,7 +15,7 @@ class JsonContainsPath extends JsonSearch
 
     /**
      * @param Parser $parser
-     * @throws DBALException
+     * @throws Exception
      * @throws \Doctrine\ORM\Query\QueryException
      */
     public function parse(Parser $parser): void

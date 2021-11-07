@@ -2,7 +2,7 @@
 
 namespace Scienta\DoctrineJsonFunctions\Tests\Query;
 
-use Doctrine\DBAL\Platforms\MySqlPlatform;
+use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\ORM\Configuration;
 use Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql as DqlFunctions;
 use Scienta\DoctrineJsonFunctions\Tests\Mocks\ConnectionMock;
@@ -15,7 +15,7 @@ abstract class MysqlTestCase extends DbTestCase
 
         /** @var ConnectionMock $conn */
         $conn = $this->entityManager->getConnection();
-        $conn->setDatabasePlatform(new MySqlPlatform());
+        $conn->setDatabasePlatform(new MySQLPlatform());
 
         self::loadDqlFunctions($this->configuration);
     }

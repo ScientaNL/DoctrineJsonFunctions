@@ -3,7 +3,6 @@
 namespace Scienta\DoctrineJsonFunctions\Tests\Query\Functions\Sqlite;
 
 use Scienta\DoctrineJsonFunctions\Tests\Query\SqliteTestCase;
-use Doctrine\ORM\Query\Expr;
 
 class JsonTest extends SqliteTestCase
 {

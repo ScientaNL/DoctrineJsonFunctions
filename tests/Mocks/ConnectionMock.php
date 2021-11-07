@@ -4,6 +4,7 @@ namespace Scienta\DoctrineJsonFunctions\Tests\Mocks;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Result;
 
 /**
  * Mock class for Connection.
@@ -21,7 +22,7 @@ class ConnectionMock extends Connection
     private $_fetchOneException;
 
     /**
-     * @var Statement|null
+     * @var Result|null
      */
     private $_queryResult;
 
@@ -50,7 +51,7 @@ class ConnectionMock extends Connection
      * @param \Doctrine\DBAL\Driver              $driver
      * @param \Doctrine\DBAL\Configuration|null  $config
      * @param \Doctrine\Common\EventManager|null $eventManager
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Doctrine\DBAL\Exception
      */
     public function __construct(array $params, $driver, $config = null, $eventManager = null)
     {
@@ -81,9 +82,11 @@ class ConnectionMock extends Connection
     /**
      * {@inheritdoc}
      */
-    public function executeUpdate($query, array $params = [], array $types = [])
+    public function executeUpdate($query, array $params = [], array $types = []):int
     {
         $this->_executeUpdates[] = ['query' => $query, 'params' => $params, 'types' => $types];
+
+        return 0;
     }
 
     /**
@@ -110,7 +113,7 @@ class ConnectionMock extends Connection
     /**
      * {@inheritdoc}
      */
-    public function query() : Statement
+    public function query(string $sql) : Result
     {
         return $this->_queryResult;
     }
@@ -169,9 +172,9 @@ class ConnectionMock extends Connection
     }
 
     /**
-     * @param Statement $result
+     * @param Result $result
      */
-    public function setQueryResult(Statement $result)
+    public function setQueryResult(Result $result)
     {
         $this->_queryResult = $result;
     }

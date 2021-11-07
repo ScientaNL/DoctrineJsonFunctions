@@ -3,7 +3,6 @@
 namespace Scienta\DoctrineJsonFunctions\Tests\Query\Functions\Mysql;
 
 use Scienta\DoctrineJsonFunctions\Tests\Query\MysqlTestCase;
-use Doctrine\ORM\Query\Expr;
 
 class JsonTypeTest extends MysqlTestCase
 {

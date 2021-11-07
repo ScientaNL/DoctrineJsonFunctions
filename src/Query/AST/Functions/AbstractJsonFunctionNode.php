@@ -2,7 +2,7 @@
 
 namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions;
 
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception;
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
 use Doctrine\ORM\Query\AST\Literal;
 use Doctrine\ORM\Query\AST\Node;
@@ -153,7 +153,7 @@ abstract class AbstractJsonFunctionNode extends FunctionNode
     /**
      * @param SqlWalker $sqlWalker
      * @return string
-     * @throws DBALException
+     * @throws Exception
      * @throws \Doctrine\ORM\Query\AST\ASTException
      */
     public function getSql(SqlWalker $sqlWalker): string
@@ -190,7 +190,7 @@ abstract class AbstractJsonFunctionNode extends FunctionNode
 
     /**
      * @param SqlWalker $sqlWalker
-     * @throws DBALException
+     * @throws Exception
      */
     abstract protected function validatePlatform(SqlWalker $sqlWalker): void;
 }
