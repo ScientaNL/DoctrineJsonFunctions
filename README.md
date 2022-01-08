@@ -93,7 +93,7 @@ $em = EntityManager::create($dbParams, $config);
 $queryBuilder = $em->createQueryBuilder();
 ```
 
-### Symfony 2 & 3 with Doctrine bundle
+### Symfony 2 & 3 & 4 with Doctrine bundle
 
 [Symfony documentation: "DoctrineBundle Configuration"](https://symfony.com/doc/3.3/reference/configuration/doctrine.html#full-default-configuration)
 
