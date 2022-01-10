@@ -23,14 +23,15 @@
         }
     ],
     "require": {
-        "php": "^7.1 || ^8.0",
+        "php": "^7.3 || ^8.0",
         "ext-pdo": "*",
-        "doctrine/orm": "2.*",
-        "doctrine/dbal": "3.*"
+        "doctrine/orm": "^2.0",
+        "doctrine/dbal": "^3.0"
     },
     "require-dev": {
         "doctrine/coding-standard": "^8.0 || ^9.0",
-        "phpunit/phpunit": "^8.0 || ^9.0"
+        "phpunit/phpunit": "^8.0 || ^9.0",
+        "doctrine/annotations": "^1.13"
     },
     "autoload": {
         "psr-4": {
