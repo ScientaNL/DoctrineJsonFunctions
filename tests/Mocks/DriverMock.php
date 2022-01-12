@@ -2,6 +2,9 @@
 
 namespace Scienta\DoctrineJsonFunctions\Tests\Mocks;
 
+use Doctrine\DBAL\Driver\API\ExceptionConverter;
+use Doctrine\DBAL\Exception;
+
 /**
  * Mock class for Driver.
  */
@@ -39,7 +42,7 @@ class DriverMock implements \Doctrine\DBAL\Driver
     /**
      * {@inheritdoc}
      */
-    public function getSchemaManager(\Doctrine\DBAL\Connection $conn)
+    public function getSchemaManager(\Doctrine\DBAL\Connection $conn, \Doctrine\DBAL\Platforms\AbstractPlatform $platform)
     {
         if ($this->_schemaManagerMock == null) {
             return new SchemaManagerMock($conn);
@@ -89,5 +92,9 @@ class DriverMock implements \Doctrine\DBAL\Driver
     public function convertExceptionCode(\Exception $exception)
     {
         return 0;
+    }
+
+    public function getExceptionConverter(): ExceptionConverter {
+        throw Exception::notSupported(__METHOD__);
     }
 }

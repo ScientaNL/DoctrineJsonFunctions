@@ -31,7 +31,7 @@ class JsonSearchTest extends MysqlTestCase
 
     public function testJsonSearchNone()
     {
-        $this->expectException(\Doctrine\DBAL\DBALException::class);
+        $this->expectException(\Doctrine\DBAL\Exception::class);
 
         $this->assertDqlProducesSql(
             "SELECT JSON_SEARCH('[\"abc\", [{\"k\": \"10\"}, \"def\"], {\"x\":\"abc\"}, {\"y\":\"bcd\"}]', 'none', '$.a') from Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b",

@@ -2,7 +2,7 @@
 
 namespace Scienta\DoctrineJsonFunctions\Tests\Mocks;
 
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 
 /**
@@ -21,9 +21,12 @@ class DatabasePlatformMock extends AbstractPlatform
     private $_prefersIdentityColumns = true;
 
     /**
-     * @var bool
+     * {@inheritdoc}
      */
-    private $_prefersSequences = false;
+    public function supportsIdentityColumns() {
+        return true;
+    }
+
 
     /**
      * {@inheritdoc}
@@ -31,14 +34,6 @@ class DatabasePlatformMock extends AbstractPlatform
     public function prefersIdentityColumns()
     {
         return $this->_prefersIdentityColumns;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function prefersSequences()
-    {
-        return $this->_prefersSequences;
     }
 
     /**
@@ -111,16 +106,6 @@ class DatabasePlatformMock extends AbstractPlatform
     }
 
     /**
-     * @param bool $bool
-     *
-     * @return void
-     */
-    public function setPrefersSequences($bool)
-    {
-        $this->_prefersSequences = $bool;
-    }
-
-    /**
      * @param string $sql
      *
      * @return void
@@ -148,10 +133,14 @@ class DatabasePlatformMock extends AbstractPlatform
     /**
      * @param array $field
      * @return string|void
-     * @throws DBALException
+     * @throws Exception
      */
     public function getBlobTypeDeclarationSQL(array $field)
     {
-        throw DBALException::notSupported(__METHOD__);
+        throw Exception::notSupported(__METHOD__);
+    }
+
+    public function getCurrentDatabaseExpression(): string {
+        throw Exception::notSupported(__METHOD__);
     }
 }
