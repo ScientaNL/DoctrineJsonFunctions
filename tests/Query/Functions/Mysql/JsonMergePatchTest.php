@@ -4,7 +4,7 @@ namespace Scienta\DoctrineJsonFunctions\Tests\Query\Functions\Mysql;
 
 use Scienta\DoctrineJsonFunctions\Tests\Query\MysqlTestCase;
 
-class JsonMergePatchTestTest extends MysqlTestCase
+class JsonMergePatchTest extends MysqlTestCase
 {
     public function testJsonMergePatch()
     {

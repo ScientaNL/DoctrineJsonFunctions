@@ -8,9 +8,9 @@ A set of extensions to Doctrine 2 that add support for json query functions.
 
 | DB | Functions |
 |:--:|:---------:|
-| MySQL | `JSON_APPEND, JSON_ARRAY, JSON_ARRAY_APPEND, JSON_ARRAY_INSERT, JSON_CONTAINS, JSON_CONTAINS_PATH, JSON_DEPTH, JSON_EXTRACT, JSON_OVERLAPS, JSON_INSERT, JSON_KEYS, JSON_LENGTH, JSON_MERGE, JSON_MERGE_PATCH, JSON_OBJECT, JSON_PRETTY, JSON_QUOTE, JSON_REMOVE, JSON_REPLACE, JSON_SEARCH, JSON_SET, JSON_TYPE, JSON_UNQUOTE, JSON_VALID` |
+| MySQL | `JSON_APPEND, JSON_ARRAY, JSON_ARRAY_APPEND, JSON_ARRAY_INSERT, JSON_CONTAINS, JSON_CONTAINS_PATH, JSON_DEPTH, JSON_EXTRACT, JSON_OVERLAPS, JSON_INSERT, JSON_KEYS, JSON_LENGTH, JSON_MERGE, JSON_MERGE_PRESERVE, JSON_MERGE_PATCH, JSON_OBJECT, JSON_PRETTY, JSON_QUOTE, JSON_REMOVE, JSON_REPLACE, JSON_SEARCH, JSON_SET, JSON_TYPE, JSON_UNQUOTE, JSON_VALID` |
 | PostgreSQL | `JSON_EXTRACT_PATH, GT, GT_GT, SHARP_GT, SHARP_GT_GT` |
-| MariaDb | `JSON_VALUE, JSON_EXISTS` |
+| MariaDb | `JSON_VALUE, JSON_EXISTS, JSON_QUERY, JSON_COMPACT, JSON_DETAILED, JSON_LOOSE, JSON_EQUALS, JSON_NORMALIZE` |
 | SQLite | `JSON, JSON_ARRAY, JSON_ARRAY_LENGTH, JSON_EXTRACT, JSON_GROUP_ARRAY, JSON_GROUP_OBJECT, JSON_INSERT, JSON_OBJECT, JSON_PATCH, JSON_QUOTE, JSON_REMOVE, JSON_REPLACE, JSON_SET, JSON_TYPE, JSON_VALID` |
 
 Table of Contents
@@ -193,6 +193,8 @@ The library provides this set of DQL functions.
 	- Returns the length of JSON document, or, if a path argument is given, the length of the value within the document identified by the path.
 * [JSON_MERGE(json_doc, json_doc[, json_doc] ...)](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-merge)
 	- Merges two or more JSON documents and returns the merged result.
+* [JSON_MERGE_PRESERVE(json_doc, json_doc[, json_doc] ...)](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-merge_preserve)
+	- Merges two or more JSON documents and returns the merged result. Returns NULL if any argument is NULL. An error occurs if any argument is not a valid JSON document.
 * [JSON_MERGE_PATCH(json_doc, json_doc[, json_doc] ...)](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-merge-patch)
     - Performs an RFC 7396 compliant merge of two or more JSON documents and returns the merged result.
 * [JSON_OBJECT([key, val[, key, val] ...])](https://dev.mysql.com/doc/refman/5.7/en/json-creation-functions.html#function_json-object)
@@ -216,11 +218,29 @@ The library provides this set of DQL functions.
 * [JSON_VALID(val)](https://dev.mysql.com/doc/refman/5.7/en/json-attribute-functions.html#function_json-valid)
 	- Returns 0 or 1 to indicate whether a value is a valid JSON document.
 
+Note that you can use MySQL Operators with MariaDb database if compatible.
+
 ### MariaDb 10.2.3 JSON operators
-* [JSON_VALUE(json_doc, path)](https://mariadb.com/kb/en/library/json_value/)
+* [JSON_VALUE(json_doc, path)](https://mariadb.com/kb/en/json_value/)
 	- Returns the scalar specified by the path. Returns NULL if there is no match.
-* [JSON_EXISTS(json_doc, path)](https://mariadb.com/kb/en/library/json_exists/)
+* [JSON_EXISTS(json_doc, path)](https://mariadb.com/kb/en/json_exists/)
     - Determines whether a specified JSON value exists in the given data. Returns 1 if found, 0 if not, or NULL if any of the inputs were NULL.
+* [JSON_QUERY(json_doc, path)](https://mariadb.com/kb/en/json_query/)
+	- Given a JSON document, returns an object or array specified by the path. Returns NULL if not given a valid JSON document, or if there is no match.
+
+### MariaDb 10.2.4 JSON operators
+* [JSON_COMPACT(json_doc)](https://mariadb.com/kb/en/json_compact/)
+	- Removes all unnecessary spaces so the json document is as short as possible.
+* [JSON_DETAILED(json_doc[, tab_size])](https://mariadb.com/kb/en/json_detailed/)
+	- Represents JSON in the most understandable way emphasizing nested structures.
+* [JSON_LOOSE(json_doc)](https://mariadb.com/kb/en/json_loose/)
+	- Adds spaces to a JSON document to make it look more readable.
+
+### MariaDb 10.7.0 JSON operators
+* [JSON_EQUALS(json_doc, json_doc)](https://mariadb.com/kb/en/json_equals/)
+	- Checks if there is equality between two json objects. Returns 1 if it there is, 0 if not, or NULL if any of the arguments are null.
+* [JSON_NORMALIZE(json_doc)](https://mariadb.com/kb/en/json_normalize/)
+	- Recursively sorts keys and removes spaces, allowing comparison of json documents for equality.
 
 ### PostgreSQL 9.3+ JSON operators
 Basic support for JSON operators is implemented. This works even with `Doctrine\DBAL` v2.5. [Official documentation of JSON operators](https://www.postgresql.org/docs/9.3/static/functions-json.html).

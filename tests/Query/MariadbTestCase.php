@@ -27,5 +27,11 @@ abstract class MariadbTestCase extends DbTestCase
     {
         $configuration->addCustomStringFunction(DqlFunctions\JsonValue::FUNCTION_NAME, DqlFunctions\JsonValue::class);
         $configuration->addCustomStringFunction(DqlFunctions\JsonExists::FUNCTION_NAME, DqlFunctions\JsonExists::class);
+        $configuration->addCustomStringFunction(DqlFunctions\JsonQuery::FUNCTION_NAME, DqlFunctions\JsonQuery::class);
+        $configuration->addCustomStringFunction(DqlFunctions\JsonCompact::FUNCTION_NAME, DqlFunctions\JsonCompact::class);
+        $configuration->addCustomStringFunction(DqlFunctions\JsonDetailed::FUNCTION_NAME, DqlFunctions\JsonDetailed::class);
+        $configuration->addCustomStringFunction(DqlFunctions\JsonLoose::FUNCTION_NAME, DqlFunctions\JsonLoose::class);
+        $configuration->addCustomStringFunction(DqlFunctions\JsonEquals::FUNCTION_NAME, DqlFunctions\JsonEquals::class);
+        $configuration->addCustomStringFunction(DqlFunctions\JsonNormalize::FUNCTION_NAME, DqlFunctions\JsonNormalize::class);
     }
 }
