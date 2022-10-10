@@ -26,6 +26,7 @@ abstract class MysqlTestCase extends DbTestCase
     public static function loadDqlFunctions(Configuration $configuration)
     {
         $configuration->addCustomStringFunction(DqlFunctions\JsonArray::FUNCTION_NAME, DqlFunctions\JsonArray::class);
+        $configuration->addCustomStringFunction(DqlFunctions\JsonArrayAgg::FUNCTION_NAME, DqlFunctions\JsonArrayAgg::class);
         $configuration->addCustomStringFunction(DqlFunctions\JsonArrayAppend::FUNCTION_NAME, DqlFunctions\JsonArrayAppend::class);
         $configuration->addCustomStringFunction(DqlFunctions\JsonArrayInsert::FUNCTION_NAME, DqlFunctions\JsonArrayInsert::class);
         $configuration->addCustomStringFunction(DqlFunctions\JsonContains::FUNCTION_NAME, DqlFunctions\JsonContains::class);
@@ -40,6 +41,7 @@ abstract class MysqlTestCase extends DbTestCase
         $configuration->addCustomStringFunction(DqlFunctions\JsonMergePreserve::FUNCTION_NAME, DqlFunctions\JsonMergePreserve::class);
         $configuration->addCustomStringFunction(DqlFunctions\JsonMergePatch::FUNCTION_NAME, DqlFunctions\JsonMergePatch::class);
         $configuration->addCustomStringFunction(DqlFunctions\JsonObject::FUNCTION_NAME, DqlFunctions\JsonObject::class);
+        $configuration->addCustomStringFunction(DqlFunctions\JsonObjectAgg::FUNCTION_NAME, DqlFunctions\JsonObjectAgg::class);
         $configuration->addCustomStringFunction(DqlFunctions\JsonPretty::FUNCTION_NAME, DqlFunctions\JsonPretty::class);
         $configuration->addCustomStringFunction(DqlFunctions\JsonQuote::FUNCTION_NAME, DqlFunctions\JsonQuote::class);
         $configuration->addCustomStringFunction(DqlFunctions\JsonRemove::FUNCTION_NAME, DqlFunctions\JsonRemove::class);

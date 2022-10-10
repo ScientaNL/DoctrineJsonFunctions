@@ -8,7 +8,7 @@ A set of extensions to Doctrine 2 that add support for json query functions.
 
 | DB | Functions |
 |:--:|:---------:|
-| MySQL | `JSON_APPEND, JSON_ARRAY, JSON_ARRAY_APPEND, JSON_ARRAY_INSERT, JSON_CONTAINS, JSON_CONTAINS_PATH, JSON_DEPTH, JSON_EXTRACT, JSON_OVERLAPS, JSON_INSERT, JSON_KEYS, JSON_LENGTH, JSON_MERGE, JSON_MERGE_PRESERVE, JSON_MERGE_PATCH, JSON_OBJECT, JSON_PRETTY, JSON_QUOTE, JSON_REMOVE, JSON_REPLACE, JSON_SEARCH, JSON_SET, JSON_TYPE, JSON_UNQUOTE, JSON_VALID` |
+| MySQL | `JSON_APPEND, JSON_ARRAY, JSON_ARRAYAGG, JSON_ARRAY_APPEND, JSON_ARRAY_INSERT, JSON_CONTAINS, JSON_CONTAINS_PATH, JSON_DEPTH, JSON_EXTRACT, JSON_OVERLAPS, JSON_INSERT, JSON_KEYS, JSON_LENGTH, JSON_MERGE, JSON_MERGE_PRESERVE, JSON_MERGE_PATCH, JSON_OBJECT, JSON_OBJECTAGG, JSON_PRETTY, JSON_QUOTE, JSON_REMOVE, JSON_REPLACE, JSON_SEARCH, JSON_SET, JSON_TYPE, JSON_UNQUOTE, JSON_VALID` |
 | PostgreSQL | `JSON_EXTRACT_PATH, GT, GT_GT, SHARP_GT, SHARP_GT_GT` |
 | MariaDb | `JSON_VALUE, JSON_EXISTS, JSON_QUERY, JSON_COMPACT, JSON_DETAILED, JSON_LOOSE, JSON_EQUALS, JSON_NORMALIZE` |
 | SQLite | `JSON, JSON_ARRAY, JSON_ARRAY_LENGTH, JSON_EXTRACT, JSON_GROUP_ARRAY, JSON_GROUP_OBJECT, JSON_INSERT, JSON_OBJECT, JSON_PATCH, JSON_QUOTE, JSON_REMOVE, JSON_REPLACE, JSON_SET, JSON_TYPE, JSON_VALID` |
@@ -171,6 +171,8 @@ The library provides this set of DQL functions.
 ### Mysql 5.7+ JSON operators
 * [JSON_ARRAY_APPEND(json_doc, path, val[, path, val] ...)](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-array-append)
 	- Appends values to the end of the indicated arrays within a JSON document and returns the result.
+* [JSON_ARRAYAGG(value)](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_json-arrayagg)
+	- Aggregates a result set as a single JSON array whose elements consist of the rows.
 * [JSON_ARRAY_INSERT(json_doc, path, val[, path, val] ...)](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-array-insert)
 	- Updates a JSON document, inserting into an array within the document and returning the modified document.
 * [JSON_ARRAY([val[, val] ...])](https://dev.mysql.com/doc/refman/5.7/en/json-creation-functions.html#function_json-array)
@@ -199,6 +201,8 @@ The library provides this set of DQL functions.
     - Performs an RFC 7396 compliant merge of two or more JSON documents and returns the merged result.
 * [JSON_OBJECT([key, val[, key, val] ...])](https://dev.mysql.com/doc/refman/5.7/en/json-creation-functions.html#function_json-object)
 	- Evaluates a (possibly empty) list of key/value pairs and returns a JSON object containing those pairs.
+* [JSON_OBJECTAGG(key, val)](https://dev.mysql.com/doc/refman/5.7/en/json-creation-functions.html#function_json-object)
+	- Takes two column names or expressions as arguments, the first of these being used as a key and the second as a value, and returns a JSON object containing key-value pairs.
 * [JSON_PRETTY(json_val)](https://dev.mysql.com/doc/refman/5.7/en/json-utility-functions.html#function_json-pretty)
 	- Provides pretty-printing of JSON values similar to that implemented in PHP and by other languages and database systems
 * [JSON_QUOTE(json_val)](https://dev.mysql.com/doc/refman/5.7/en/json-creation-functions.html#function_json-quote)
