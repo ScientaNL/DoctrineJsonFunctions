@@ -46,12 +46,8 @@ Installation
 ------------
 The recommended way to install DoctrineJsonFunctions is through [Composer](https://getcomposer.org/).
 Add the following dependency to your composer.json
-```json
-{
-	"require": {
-		"scienta/doctrine-json-functions": "~4.3"
-	}
-}
+```bash
+$ composer require scienta/doctrine-json-functions:~4.3
 ```
 Alternatively, you can download the [source code as a file](https://github.com/ScientaNL/DoctrineJsonFunctions/releases) and extract it.
 
