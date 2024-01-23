@@ -66,7 +66,7 @@ class JsonSearch extends MysqlJsonFunctionNode
 	 */
 	protected function parsePathMode(Parser $parser)
 	{
-		$value = $parser->getLexer()->lookahead['value'];
+		$value = $parser->getLexer()->lookahead->value;
 
 		if (strcasecmp(self::MODE_ONE, $value) === 0) {
 			$this->mode = self::MODE_ONE;
