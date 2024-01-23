@@ -109,7 +109,7 @@ abstract class AbstractJsonFunctionNode extends FunctionNode
     protected function parseStringLiteral(Parser $parser): Literal
     {
         $lexer = $parser->getLexer();
-        $lookaheadType = $lexer->lookahead['type'];
+        $lookaheadType = $lexer->lookahead->type;
 
         if ($lookaheadType != Lexer::T_STRING) {
             $parser->syntaxError('string');
@@ -126,7 +126,7 @@ abstract class AbstractJsonFunctionNode extends FunctionNode
     protected function parseAlphaNumericLiteral(Parser $parser): Literal
     {
         $lexer = $parser->getLexer();
-        $lookaheadType = $lexer->lookahead['type'];
+        $lookaheadType = $lexer->lookahead->type;
 
         switch ($lookaheadType) {
             case Lexer::T_STRING:
@@ -137,7 +137,7 @@ abstract class AbstractJsonFunctionNode extends FunctionNode
                     $lexer->isNextToken(Lexer::T_INTEGER) ? Lexer::T_INTEGER : Lexer::T_FLOAT
                 );
 
-                return new Literal(Literal::NUMERIC, $lexer->token['value']);
+                return new Literal(Literal::NUMERIC, $lexer->token->value);
             default:
                 $parser->syntaxError('numeric');
         }
@@ -146,7 +146,7 @@ abstract class AbstractJsonFunctionNode extends FunctionNode
     private function matchStringLiteral(Parser $parser, Lexer $lexer): Literal
     {
         $parser->match(Lexer::T_STRING);
-        return new Literal(Literal::STRING, $lexer->token['value']);
+        return new Literal(Literal::STRING, $lexer->token->value);
     }
 
 
