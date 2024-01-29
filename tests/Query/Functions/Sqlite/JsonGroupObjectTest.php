@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Scienta\DoctrineJsonFunctions\Tests\Query\Functions\Sqlite;
 
 use Scienta\DoctrineJsonFunctions\Tests\Query\SqliteTestCase;
+use Doctrine\ORM\Query\QueryException;
 
 class JsonGroupObjectTest extends SqliteTestCase
 {
@@ -16,7 +19,7 @@ class JsonGroupObjectTest extends SqliteTestCase
 
     public function testJsonGroupObjectMissingParameter()
     {
-        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+        $this->expectException(QueryException::class);
 
         $this->assertDqlProducesSql(
             "SELECT JSON_GROUP_OBJECT('a') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b",

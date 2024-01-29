@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Scienta\DoctrineJsonFunctions\Tests\Query\Functions\Sqlite;
 
 use Scienta\DoctrineJsonFunctions\Tests\Query\SqliteTestCase;
+use Doctrine\ORM\Query\QueryException;
 
 class JsonExtractTest extends SqliteTestCase
 {
@@ -24,7 +27,7 @@ class JsonExtractTest extends SqliteTestCase
 
     public function testJsonExtractQuotes()
     {
-        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+        $this->expectException(QueryException::class);
 
         $this->assertDqlProducesSql(
             'SELECT JSON_EXTRACT(d.jsonData, "$.a") FROM Scienta\DoctrineJsonFunctions\Tests\Entities\JsonData d',

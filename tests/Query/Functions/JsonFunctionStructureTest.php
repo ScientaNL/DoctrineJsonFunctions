@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Scienta\DoctrineJsonFunctions\Tests\Query\Functions;
 
 use Scienta\DoctrineJsonFunctions\Tests\Mocks\JsonFunctionMock;
 use Scienta\DoctrineJsonFunctions\Tests\Query\DbTestCase;
+use Doctrine\ORM\Query\QueryException;
 
 class JsonFunctionStructureTest extends DbTestCase
 {
@@ -11,7 +14,8 @@ class JsonFunctionStructureTest extends DbTestCase
     {
         parent::setUp();
 
-        $this->configuration->addCustomStringFunction(JsonFunctionMock::FUNCTION_NAME,
+        $this->configuration->addCustomStringFunction(
+            JsonFunctionMock::FUNCTION_NAME,
             JsonFunctionMock::class
         );
     }
@@ -35,7 +39,7 @@ class JsonFunctionStructureTest extends DbTestCase
 
     public function testOneRequiredArgumentErrorsWithMore()
     {
-        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+        $this->expectException(QueryException::class);
 
         $this->configureMock(1, 0, false);
 
@@ -44,7 +48,7 @@ class JsonFunctionStructureTest extends DbTestCase
 
     public function testOneRequiredArgumentErrorsWithLess()
     {
-        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+        $this->expectException(QueryException::class);
 
         $this->configureMock(1, 0, false);
 
@@ -63,7 +67,7 @@ class JsonFunctionStructureTest extends DbTestCase
 
     public function testMoreRequiredArgumentsErrorsWithMore()
     {
-        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+        $this->expectException(QueryException::class);
 
         $this->configureMock(5, 0, false);
 
@@ -72,14 +76,12 @@ class JsonFunctionStructureTest extends DbTestCase
 
     public function testMoreRequiredArgumentsErrorsWithLess()
     {
-        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+        $this->expectException(QueryException::class);
 
         $this->configureMock(5, 0, false);
 
         $this->produceSql("SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}', '{\"key1\":123}') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b");
     }
-
-
 
     public function testOneOptionalArgument()
     {
@@ -98,14 +100,12 @@ class JsonFunctionStructureTest extends DbTestCase
 
     public function testOneOptionalArgumentErrorsWithMore()
     {
-        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+        $this->expectException(QueryException::class);
 
         $this->configureMock(0, 1, false);
 
         $this->produceSql("SELECT JSON_MOCK('{\"key1\":123}', '{\"key1\":123}') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b");
     }
-
-
 
     public function testOneRequiredOneOptionalArgument()
     {
@@ -124,7 +124,7 @@ class JsonFunctionStructureTest extends DbTestCase
 
     public function testOneRequiredOneOptionalArgumentErrorsWithMore()
     {
-        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+        $this->expectException(QueryException::class);
 
         $this->configureMock(1, 1, false);
 
@@ -133,7 +133,7 @@ class JsonFunctionStructureTest extends DbTestCase
 
     public function testOneRequiredOneOptionalArgumentErrorsWithLess()
     {
-        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+        $this->expectException(QueryException::class);
 
         $this->configureMock(1, 1, false);
 
@@ -155,8 +155,6 @@ class JsonFunctionStructureTest extends DbTestCase
         );
     }
 
-
-
     public function testMoreOptionalArguments()
     {
         $this->configureMock(0, 2, false);
@@ -174,7 +172,7 @@ class JsonFunctionStructureTest extends DbTestCase
 
     public function testMoreOptionalArgumentsErrorsMore()
     {
-        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+        $this->expectException(QueryException::class);
 
         $this->configureMock(0, 2, false);
 
@@ -185,7 +183,7 @@ class JsonFunctionStructureTest extends DbTestCase
 
     public function testMoreOptionalArgumentsErrorsLess()
     {
-        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+        $this->expectException(QueryException::class);
 
         $this->configureMock(0, 2, false);
 
@@ -193,8 +191,6 @@ class JsonFunctionStructureTest extends DbTestCase
             "SELECT JSON_MOCK('{\"key1\":123}') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b"
         );
     }
-
-
 
     public function testOneOptionalArgumentRepeating()
     {
@@ -238,7 +234,7 @@ class JsonFunctionStructureTest extends DbTestCase
 
     public function testMoreOptionalArgumentsErrorsRepeatingLess()
     {
-        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+        $this->expectException(QueryException::class);
 
         $this->configureMock(0, 3, true);
 
@@ -249,7 +245,7 @@ class JsonFunctionStructureTest extends DbTestCase
 
     public function testMoreOptionalArgumentsErrorsRepeatingMore()
     {
-        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+        $this->expectException(QueryException::class);
 
         $this->configureMock(0, 3, true);
 
@@ -260,7 +256,7 @@ class JsonFunctionStructureTest extends DbTestCase
 
     public function testMoreOptionalArgumentsErrorsRepeatingMuchMore()
     {
-        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+        $this->expectException(QueryException::class);
 
         $this->configureMock(0, 3, true);
 

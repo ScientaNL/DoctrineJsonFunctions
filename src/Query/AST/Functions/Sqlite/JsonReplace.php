@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Sqlite;
 
 /**
@@ -7,7 +9,7 @@ namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Sqlite;
  */
 class JsonReplace extends SqliteJsonFunctionNode
 {
-    const FUNCTION_NAME = 'JSON_REPLACE';
+    public const FUNCTION_NAME = 'JSON_REPLACE';
 
     /** @var string[] */
     protected $requiredArgumentTypes = [self::STRING_PRIMARY_ARG];

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 
 /**
@@ -7,7 +9,7 @@ namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
  */
 class JsonPretty extends MysqlJsonFunctionNode
 {
-    const FUNCTION_NAME = 'JSON_PRETTY';
+    public const FUNCTION_NAME = 'JSON_PRETTY';
 
     /** @var string[] */
     protected $requiredArgumentTypes = [self::VALUE_ARG];

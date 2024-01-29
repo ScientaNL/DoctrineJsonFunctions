@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Scienta\DoctrineJsonFunctions\Tests\Mocks;
 
 use Doctrine\DBAL\Exception;
@@ -20,18 +22,12 @@ class DatabasePlatformMock extends AbstractPlatform
      */
     private $_prefersIdentityColumns = true;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsIdentityColumns() {
+    public function supportsIdentityColumns(): bool
+    {
         return true;
     }
 
-
-    /**
-     * {@inheritdoc}
-     */
-    public function prefersIdentityColumns()
+    public function prefersIdentityColumns(): bool
     {
         return $this->_prefersIdentityColumns;
     }
@@ -39,7 +35,7 @@ class DatabasePlatformMock extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getSequenceNextValSQL($sequenceName)
+    public function getSequenceNextValSQL($sequence): string
     {
         return $this->_sequenceNextValSql;
     }
@@ -47,50 +43,57 @@ class DatabasePlatformMock extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
-    public function getBooleanTypeDeclarationSQL(array $field)
+    public function getBooleanTypeDeclarationSQL(array $column): string
     {
+        return 'TINYINT(1)';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getIntegerTypeDeclarationSQL(array $field)
+    public function getIntegerTypeDeclarationSQL(array $column): string
     {
+        return 'INT' . $this->_getCommonIntegerTypeDeclarationSQL($column);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getBigIntTypeDeclarationSQL(array $field)
+    public function getBigIntTypeDeclarationSQL(array $column): string
     {
+        return 'BIGINT' . $this->_getCommonIntegerTypeDeclarationSQL($column);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getSmallIntTypeDeclarationSQL(array $field)
+    public function getSmallIntTypeDeclarationSQL(array $column): string
     {
+        return 'SMALLINT' . $this->_getCommonIntegerTypeDeclarationSQL($column);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function _getCommonIntegerTypeDeclarationSQL(array $columnDef)
+    protected function _getCommonIntegerTypeDeclarationSQL(array $column): string
     {
+        return '';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getVarcharTypeDeclarationSQL(array $field)
+    public function getVarcharTypeDeclarationSQL(array $column): string
     {
+        return 'VARCHAR(255)';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getClobTypeDeclarationSQL(array $field)
+    public function getClobTypeDeclarationSQL(array $column): string
     {
+        return 'LONGTEXT';
     }
 
     /* MOCK API */
@@ -100,7 +103,7 @@ class DatabasePlatformMock extends AbstractPlatform
      *
      * @return void
      */
-    public function setPrefersIdentityColumns($bool)
+    public function setPrefersIdentityColumns(bool $bool)
     {
         $this->_prefersIdentityColumns = $bool;
     }
@@ -110,15 +113,12 @@ class DatabasePlatformMock extends AbstractPlatform
      *
      * @return void
      */
-    public function setSequenceNextValSql($sql)
+    public function setSequenceNextValSql(string $sql)
     {
         $this->_sequenceNextValSql = $sql;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getName(): string
     {
         return 'mock';
     }
@@ -131,16 +131,20 @@ class DatabasePlatformMock extends AbstractPlatform
     }
 
     /**
-     * @param array $field
-     * @return string|void
+     * @param array $column
+     * @return string
      * @throws Exception
      */
-    public function getBlobTypeDeclarationSQL(array $field)
+    public function getBlobTypeDeclarationSQL(array $column): string
     {
         throw Exception::notSupported(__METHOD__);
     }
 
-    public function getCurrentDatabaseExpression(): string {
+    /**
+     * @throws Exception
+     */
+    public function getCurrentDatabaseExpression(): string
+    {
         throw Exception::notSupported(__METHOD__);
     }
 }

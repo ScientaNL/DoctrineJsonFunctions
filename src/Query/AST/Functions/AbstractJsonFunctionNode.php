@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions;
 
 use Doctrine\DBAL\Exception;
@@ -29,7 +31,7 @@ abstract class AbstractJsonFunctionNode extends FunctionNode
     /** @var bool */
     protected $allowOptionalArgumentRepeat = false;
 
-    /** @var Node[] */
+    /** @var array<array-key, Node|null> */
     protected $parsedArguments = [];
 
     /**
@@ -111,7 +113,7 @@ abstract class AbstractJsonFunctionNode extends FunctionNode
         $lexer = $parser->getLexer();
         $lookaheadType = $lexer->lookahead['type'];
 
-        if ($lookaheadType != Lexer::T_STRING) {
+        if ($lookaheadType !== Lexer::T_STRING) {
             $parser->syntaxError('string');
         }
 
@@ -148,7 +150,6 @@ abstract class AbstractJsonFunctionNode extends FunctionNode
         $parser->match(Lexer::T_STRING);
         return new Literal(Literal::STRING, $lexer->token['value']);
     }
-
 
     /**
      * @param SqlWalker $sqlWalker

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 
 /**
@@ -7,7 +9,7 @@ namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
  */
 class JsonObjectAgg extends MysqlJsonFunctionNode
 {
-    const FUNCTION_NAME = 'JSON_OBJECTAGG';
+    public const FUNCTION_NAME = 'JSON_OBJECTAGG';
 
     /** @var string[] */
     protected $optionalArgumentTypes = [self::STRING_PRIMARY_ARG, self::VALUE_ARG];

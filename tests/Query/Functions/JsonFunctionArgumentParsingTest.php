@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Scienta\DoctrineJsonFunctions\Tests\Query\Functions;
 
 use Scienta\DoctrineJsonFunctions\Tests\Mocks\JsonFunctionMock;
@@ -11,7 +13,8 @@ class JsonFunctionArgumentParsingTest extends DbTestCase
     {
         parent::setUp();
 
-        $this->configuration->addCustomStringFunction(JsonFunctionMock::FUNCTION_NAME,
+        $this->configuration->addCustomStringFunction(
+            JsonFunctionMock::FUNCTION_NAME,
             JsonFunctionMock::class
         );
     }

@@ -29,9 +29,13 @@
         "doctrine/dbal": "^3.0"
     },
     "require-dev": {
+        "doctrine/annotations": "^1.13",
         "doctrine/coding-standard": "^8.0 || ^9.0",
         "phpunit/phpunit": "^8.0 || ^9.0",
-        "doctrine/annotations": "^1.13"
+        "psalm/plugin-phpunit": "^0.18",
+        "slevomat/coding-standard": "^8.4",
+        "vimeo/psalm": "^5.2",
+        "webmozart/assert": "^1.11"
     },
     "autoload": {
         "psr-4": {
@@ -51,6 +55,10 @@
     },
     "suggest": {
         "dunglas/doctrine-json-odm": "To serialize / deserialize objects as JSON documents."
+    },
+    "scripts": {
+        "codestyle": "phpcs -q --report=checkstyle",
+        "psalm": "psalm --config=psalm.xml --threads=1 --no-cache"
     },
     "config": {
         "allow-plugins": {

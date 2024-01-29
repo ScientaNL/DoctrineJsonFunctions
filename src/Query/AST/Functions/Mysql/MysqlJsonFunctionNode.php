@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 
 use Doctrine\DBAL\Exception;
@@ -13,7 +15,7 @@ abstract class MysqlJsonFunctionNode extends AbstractJsonFunctionNode
      * @param SqlWalker $sqlWalker
      * @throws Exception
      */
-    protected function validatePlatform(SqlWalker$sqlWalker): void
+    protected function validatePlatform(SqlWalker $sqlWalker): void
     {
         if (!$sqlWalker->getConnection()->getDatabasePlatform() instanceof MySQLPlatform) {
             throw Exception::notSupported(static::FUNCTION_NAME);

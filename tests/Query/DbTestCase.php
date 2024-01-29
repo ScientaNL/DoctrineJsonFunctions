@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Scienta\DoctrineJsonFunctions\Tests\Query;
 
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
 use Scienta\DoctrineJsonFunctions\Tests\DoctrineJsonTestcase;
 use Scienta\DoctrineJsonFunctions\Tests\Mocks;
+use Webmozart\Assert\Assert;
 
 abstract class DbTestCase extends DoctrineJsonTestcase
 {
@@ -49,6 +52,7 @@ abstract class DbTestCase extends DoctrineJsonTestcase
     /**
      * @param string $dql
      * @param array $params
+     * @return string
      */
     protected function produceSql(string $dql, array $params = []): string
     {
@@ -56,6 +60,8 @@ abstract class DbTestCase extends DoctrineJsonTestcase
         foreach ($params as $key => $value) {
             $q->setParameter($key, $value);
         }
-        return $q->getSql();
+        $result = $q->getSql();
+        Assert::string($result);
+        return $result;
     }
 }
