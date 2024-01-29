@@ -1,0 +1,61 @@
+name: CI
+
+on: [push]
+
+jobs:
+  phpunit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add php extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "7.4"
+          tools: pecl, composer, cs2pr
+          extensions: opcache, pcntl, pdo_mysql, zip
+
+      - name: Install php packages
+        run: composer install
+
+      - name: Run phpcs
+        run: ./vendor/bin/phpunit
+
+  phpcs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add php extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "7.4"
+          tools: pecl, composer, cs2pr
+          extensions: opcache, pcntl, pdo_mysql, zip
+
+      - name: Install php packages
+        run: composer install
+
+      - name: Run phpcs
+        run: ./vendor/bin/phpcs -q --report=checkstyle | tee -a /dev/stderr | cs2pr
+
+  psalm:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add php extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "7.4"
+          tools: pecl, composer, cs2pr
+          extensions: opcache, pcntl, pdo_mysql, zip
+
+      - name: Install php packages
+        run: composer install
+
+      - name: Run psalm
+        run: ./vendor/bin/psalm

@@ -23,7 +23,7 @@
         }
     ],
     "require": {
-        "php": "^7.3 || ^8.0",
+        "php": "^7.4 || ^8.0",
         "ext-pdo": "*",
         "doctrine/orm": "^2.0",
         "doctrine/dbal": "^3.0"
