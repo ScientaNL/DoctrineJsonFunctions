@@ -1,8 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Scienta\DoctrineJsonFunctions\Tests\Mocks;
 
 use Doctrine\DBAL\Driver\Connection;
+use Doctrine\DBAL\Driver\Result;
+use Doctrine\DBAL\Driver\Statement;
+use PDO;
 
 /**
  * Mock class for DriverConnection.
@@ -10,22 +15,22 @@ use Doctrine\DBAL\Driver\Connection;
 class DriverConnectionMock implements Connection
 {
     /**
-     * @var \Doctrine\DBAL\Driver\Statement
+     * @var Statement
      */
     private $statementMock;
 
     /**
-     * @return \Doctrine\DBAL\Driver\Statement
+     * @return Statement
      */
-    public function getStatementMock()
+    public function getStatementMock(): Statement
     {
         return $this->statementMock;
     }
 
     /**
-     * @param \Doctrine\DBAL\Driver\Statement $statementMock
+     * @param Statement $statementMock
      */
-    public function setStatementMock($statementMock)
+    public function setStatementMock(Statement $statementMock)
     {
         $this->statementMock = $statementMock;
     }
@@ -33,31 +38,34 @@ class DriverConnectionMock implements Connection
     /**
      * {@inheritdoc}
      */
-    public function prepare($prepareString)
+    public function prepare($sql): Statement
     {
         return $this->statementMock ?: new StatementMock();
     }
 
     /**
      * {@inheritdoc}
+     * @param string $sql
      */
-    public function query()
+    public function query(string $sql): Result
     {
-        return $this->statementMock ?: new StatementMock();
+        return new ResultMock();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function quote($input, $type=\PDO::PARAM_STR)
+    public function quote($value, $type = PDO::PARAM_STR)
     {
+        return $value;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function exec($statement)
+    public function exec($sql): int
     {
+        return 1;
     }
 
     /**
@@ -65,39 +73,28 @@ class DriverConnectionMock implements Connection
      */
     public function lastInsertId($name = null)
     {
+        return 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function beginTransaction()
+    public function beginTransaction(): bool
     {
+        return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function commit()
+    public function commit(): bool
     {
+        return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function rollBack()
+    public function rollBack(): bool
     {
+        return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function errorCode()
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function errorInfo()
     {
     }

@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Scienta\DoctrineJsonFunctions\Tests\Query\Functions\Mysql;
 
 use Scienta\DoctrineJsonFunctions\Tests\Query\MysqlTestCase;
+use Doctrine\ORM\Query\QueryException;
 
 class JsonObjectAggTest extends MysqlTestCase
 {
@@ -16,7 +19,7 @@ class JsonObjectAggTest extends MysqlTestCase
 
     public function testJsonObjectAggMissingParameter()
     {
-        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+        $this->expectException(QueryException::class);
 
         $this->assertDqlProducesSql(
             "SELECT JSON_OBJECTAGG('a') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b",

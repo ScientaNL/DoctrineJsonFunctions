@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Scienta\DoctrineJsonFunctions\Tests\Query\Functions\Postgresql;
 
 use Scienta\DoctrineJsonFunctions\Tests\Query\PostgresqlTestCase;

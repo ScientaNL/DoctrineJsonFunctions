@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Sqlite;
 
 /**
@@ -7,7 +9,7 @@ namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Sqlite;
  */
 class JsonArray extends SqliteJsonFunctionNode
 {
-    const FUNCTION_NAME = 'JSON_ARRAY';
+    public const FUNCTION_NAME = 'JSON_ARRAY';
 
     /** @var string[] */
     protected $optionalArgumentTypes = [self::VALUE_ARG];

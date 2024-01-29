@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Scienta\DoctrineJsonFunctions\Tests\Query\Functions\Mysql;
 
 use Scienta\DoctrineJsonFunctions\Tests\Query\MysqlTestCase;
 
-class JsonGroupArrayTest extends MysqlTestCase
+class JsonArrayAggTest extends MysqlTestCase
 {
     public function testJsonArrayAgg()
     {

@@ -1,22 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Scienta\DoctrineJsonFunctions\Tests\Mocks;
 
 use Doctrine\DBAL\Driver\API\ExceptionConverter;
 use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Driver;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Schema\AbstractSchemaManager;
 
 /**
  * Mock class for Driver.
  */
-class DriverMock implements \Doctrine\DBAL\Driver
+class DriverMock implements Driver
 {
     /**
-     * @var \Doctrine\DBAL\Platforms\AbstractPlatform|null
+     * @var AbstractPlatform|null
      */
     private $_platformMock;
 
     /**
-     * @var \Doctrine\DBAL\Schema\AbstractSchemaManager|null
+     * @var AbstractSchemaManager|null
      */
     private $_schemaManagerMock;
 
@@ -33,8 +39,8 @@ class DriverMock implements \Doctrine\DBAL\Driver
      */
     public function getDatabasePlatform()
     {
-        if ( ! $this->_platformMock) {
-            $this->_platformMock = new DatabasePlatformMock;
+        if (! $this->_platformMock) {
+            $this->_platformMock = new DatabasePlatformMock();
         }
         return $this->_platformMock;
     }
@@ -42,9 +48,9 @@ class DriverMock implements \Doctrine\DBAL\Driver
     /**
      * {@inheritdoc}
      */
-    public function getSchemaManager(\Doctrine\DBAL\Connection $conn, \Doctrine\DBAL\Platforms\AbstractPlatform $platform)
+    public function getSchemaManager(Connection $conn, AbstractPlatform $platform)
     {
-        if ($this->_schemaManagerMock == null) {
+        if ($this->_schemaManagerMock === null) {
             return new SchemaManagerMock($conn);
         } else {
             return $this->_schemaManagerMock;
@@ -54,21 +60,21 @@ class DriverMock implements \Doctrine\DBAL\Driver
     /* MOCK API */
 
     /**
-     * @param \Doctrine\DBAL\Platforms\AbstractPlatform $platform
+     * @param AbstractPlatform $platform
      *
      * @return void
      */
-    public function setDatabasePlatform(\Doctrine\DBAL\Platforms\AbstractPlatform $platform)
+    public function setDatabasePlatform(AbstractPlatform $platform)
     {
         $this->_platformMock = $platform;
     }
 
     /**
-     * @param \Doctrine\DBAL\Schema\AbstractSchemaManager $sm
+     * @param AbstractSchemaManager $sm
      *
      * @return void
      */
-    public function setSchemaManager(\Doctrine\DBAL\Schema\AbstractSchemaManager $sm)
+    public function setSchemaManager(AbstractSchemaManager $sm)
     {
         $this->_schemaManagerMock = $sm;
     }
@@ -84,17 +90,21 @@ class DriverMock implements \Doctrine\DBAL\Driver
     /**
      * {@inheritdoc}
      */
-    public function getDatabase(\Doctrine\DBAL\Connection $conn)
+    public function getDatabase(Connection $conn)
     {
         return;
     }
 
-    public function convertExceptionCode(\Exception $exception)
+    public function convertExceptionCode(Exception $exception): int
     {
         return 0;
     }
 
-    public function getExceptionConverter(): ExceptionConverter {
+    /**
+     * @throws Exception
+     */
+    public function getExceptionConverter(): ExceptionConverter
+    {
         throw Exception::notSupported(__METHOD__);
     }
 }

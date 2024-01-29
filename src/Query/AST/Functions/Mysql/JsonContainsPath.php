@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 
 use Doctrine\DBAL\Exception;
@@ -11,7 +13,7 @@ use Doctrine\ORM\Query\Parser;
  */
 class JsonContainsPath extends JsonSearch
 {
-	const FUNCTION_NAME = 'JSON_CONTAINS_PATH';
+    public const FUNCTION_NAME = 'JSON_CONTAINS_PATH';
 
     /**
      * @param Parser $parser

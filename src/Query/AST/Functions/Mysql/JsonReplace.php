@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 
 /**
@@ -7,7 +9,7 @@ namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
  */
 class JsonReplace extends MysqlJsonFunctionNode
 {
-	const FUNCTION_NAME = 'JSON_REPLACE';
+    public const FUNCTION_NAME = 'JSON_REPLACE';
 
     /** @var string[] */
     protected $requiredArgumentTypes = [self::STRING_PRIMARY_ARG, self::STRING_PRIMARY_ARG, self::VALUE_ARG];

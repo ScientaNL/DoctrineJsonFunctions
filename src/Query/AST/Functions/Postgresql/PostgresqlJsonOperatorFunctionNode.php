@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Postgresql;
 
 use Doctrine\DBAL\Exception;
@@ -15,7 +17,7 @@ abstract class PostgresqlJsonOperatorFunctionNode extends AbstractJsonOperatorFu
      * @param SqlWalker $sqlWalker
      * @throws Exception
      */
-    protected function validatePlatform(SqlWalker$sqlWalker): void
+    protected function validatePlatform(SqlWalker $sqlWalker): void
     {
         if (!$sqlWalker->getConnection()->getDatabasePlatform() instanceof PostgreSQLPlatform) {
             throw Exception::notSupported(static::FUNCTION_NAME);

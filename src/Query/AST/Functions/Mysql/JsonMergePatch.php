@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 
 /**
@@ -7,7 +9,7 @@ namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
  */
 class JsonMergePatch extends MysqlJsonFunctionNode
 {
-	const FUNCTION_NAME = 'JSON_MERGE_PATCH';
+    public const FUNCTION_NAME = 'JSON_MERGE_PATCH';
 
     /** @var string[] */
     protected $requiredArgumentTypes = [self::STRING_PRIMARY_ARG, self::STRING_PRIMARY_ARG];

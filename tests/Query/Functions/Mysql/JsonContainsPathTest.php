@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Scienta\DoctrineJsonFunctions\Tests\Query\Functions\Mysql;
 
 use Scienta\DoctrineJsonFunctions\Tests\Query\MysqlTestCase;
+use Doctrine\DBAL\Exception;
 
 class JsonContainsPathTest extends MysqlTestCase
 {
@@ -24,7 +27,7 @@ class JsonContainsPathTest extends MysqlTestCase
 
     public function testJsonContainsPathNone()
     {
-        $this->expectException(\Doctrine\DBAL\Exception::class);
+        $this->expectException(Exception::class);
 
         $this->assertDqlProducesSql(
             "SELECT JSON_CONTAINS_PATH('{\"a\": 1, \"b\": 2, \"c\": {\"d\": 4}}', 'none', '$.a', '$.e') from Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b",

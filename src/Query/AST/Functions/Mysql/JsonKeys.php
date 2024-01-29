@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 
 /**
@@ -7,7 +9,7 @@ namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
  */
 class JsonKeys extends MysqlJsonFunctionNode
 {
-	const FUNCTION_NAME = 'JSON_KEYS';
+    public const FUNCTION_NAME = 'JSON_KEYS';
 
     /** @var string[] */
     protected $requiredArgumentTypes = [self::STRING_PRIMARY_ARG];

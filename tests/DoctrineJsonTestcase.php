@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Scienta\DoctrineJsonFunctions\Tests;
 
 use PHPUnit\Framework\TestCase;
@@ -9,5 +11,4 @@ use PHPUnit\Framework\TestCase;
  */
 abstract class DoctrineJsonTestcase extends TestCase
 {
-
 }

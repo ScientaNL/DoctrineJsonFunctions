@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 
 use Doctrine\DBAL\Exception;
@@ -12,11 +14,11 @@ use Doctrine\ORM\Query\Parser;
  */
 class JsonSearch extends MysqlJsonFunctionNode
 {
-	const FUNCTION_NAME = 'JSON_SEARCH';
+    public const FUNCTION_NAME = 'JSON_SEARCH';
 
-	const MODE_ONE = 'one';
+    public const MODE_ONE = 'one';
 
-	const MODE_ALL = 'all';
+    public const MODE_ALL = 'all';
 
     /** @var string[] */
     protected $optionalArgumentTypes = [self::STRING_PRIMARY_ARG];
@@ -25,7 +27,7 @@ class JsonSearch extends MysqlJsonFunctionNode
     protected $allowOptionalArgumentRepeat = true;
 
 	/**
-	 * @var boolean
+	 * @var string
 	 */
 	public $mode;
 

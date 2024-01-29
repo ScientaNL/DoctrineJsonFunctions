@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Scienta\DoctrineJsonFunctions\Tests\Query\Functions\Mysql;
 
 use Doctrine\ORM\Query\Expr;
@@ -27,7 +29,8 @@ class JsonObjectTest extends MysqlTestCase
     {
         $qb = $this->entityManager->createQueryBuilder();
 
-        $query = $qb->select(new Expr\Func('JSON_OBJECT',
+        $query = $qb->select(new Expr\Func(
+            'JSON_OBJECT',
             [$qb->expr()->literal('id'), $qb->expr()->literal(true)]
         ))->from('Scienta\DoctrineJsonFunctions\Tests\Entities\Blank', 'b');
 

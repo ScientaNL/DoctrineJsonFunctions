@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Scienta\DoctrineJsonFunctions\Tests\Query\Functions\Sqlite;
 
 use Scienta\DoctrineJsonFunctions\Tests\Query\SqliteTestCase;
+use Doctrine\ORM\Query\QueryException;
 
 class JsonReplaceTest extends SqliteTestCase
 {
@@ -32,7 +35,7 @@ class JsonReplaceTest extends SqliteTestCase
 
     public function testJsonReplaceArgumentMismatch()
     {
-        $this->expectException(\Doctrine\ORM\Query\QueryException::class);
+        $this->expectException(QueryException::class);
 
         $this->assertDqlProducesSql(
             "SELECT JSON_REPLACE('{\"a\": 1, \"b\": 2}', '$.\"c\"') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b",

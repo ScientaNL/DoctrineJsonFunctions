@@ -1,10 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Scienta\DoctrineJsonFunctions\Tests\Mocks;
 
+use Doctrine\Common\EventManager;
+use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Driver\Statement;
+use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Result;
+use Exception;
+use Webmozart\Assert\Assert;
 
 /**
  * Mock class for Connection.
@@ -17,14 +23,14 @@ class ConnectionMock extends Connection
     private $_fetchOneResult;
 
     /**
-     * @var \Exception|null
+     * @var Exception|null
      */
     private $_fetchOneException;
 
     /**
      * @var Result|null
      */
-    private $_queryResult;
+    private $_queryResult = null;
 
     /**
      * @var DatabasePlatformMock
@@ -47,10 +53,16 @@ class ConnectionMock extends Connection
     private $_executeUpdates = [];
 
     /**
+     * @var DatabasePlatformMock
+     */
+    private $_platform;
+
+    /**
+     * @psalm-suppress InternalMethod
      * @param array                              $params
-     * @param \Doctrine\DBAL\Driver              $driver
-     * @param \Doctrine\DBAL\Configuration|null  $config
-     * @param \Doctrine\Common\EventManager|null $eventManager
+     * @param Driver              $driver
+     * @param Configuration|null  $config
+     * @param EventManager|null $eventManager
      * @throws \Doctrine\DBAL\Exception
      */
     public function __construct(array $params, $driver, $config = null, $eventManager = null)
@@ -74,59 +86,59 @@ class ConnectionMock extends Connection
     /**
      * {@inheritdoc}
      */
-    public function insert($tableName, array $data, array $types = [])
+    public function insert($table, array $data, array $types = [])
     {
-        $this->_inserts[$tableName][] = $data;
+        $this->_inserts[$table][] = $data;
+
+        return 1;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function executeUpdate($query, array $params = [], array $types = []):int
+    public function executeUpdate($sql, array $params = [], array $types = []): int
     {
-        $this->_executeUpdates[] = ['query' => $query, 'params' => $params, 'types' => $types];
+        $this->_executeUpdates[] = ['query' => $sql, 'params' => $params, 'types' => $types];
 
-        return 0;
+        return 1;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function lastInsertId($seqName = null)
+    public function lastInsertId($name = null)
     {
         return $this->_lastInsertId;
     }
 
     /**
-     * {@inheritdoc}
-     * @throws \Exception
+     * @throws Exception
      */
     public function fetchColumn($statement, array $params = [], $colnum = 0, array $types = [])
     {
-        if (null !== $this->_fetchOneException) {
+        if ($this->_fetchOneException !== null) {
             throw $this->_fetchOneException;
         }
 
         return $this->_fetchOneResult;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function query(string $sql) : Result
+    public function query(string $sql): Result
     {
-        return $this->_queryResult;
+        $result = $this->_queryResult;
+        Assert::notNull($result);
+        return $result;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function quote($input, $type = null)
+    public function quote($value, $type = null)
     {
-        if (is_string($input)) {
-            return "'" . $input . "'";
+        if (is_string($value)) {
+            return "'" . $value . "'";
         }
-        return $input;
+        return $value;
     }
 
     /* Mock API */
@@ -142,11 +154,11 @@ class ConnectionMock extends Connection
     }
 
     /**
-     * @param \Exception|null $exception
+     * @param Exception|null $exception
      *
      * @return void
      */
-    public function setFetchOneException(\Exception $exception = null)
+    public function setFetchOneException(?Exception $exception = null)
     {
         $this->_fetchOneException = $exception;
     }
