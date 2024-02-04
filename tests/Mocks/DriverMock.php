@@ -10,12 +10,15 @@ use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
+use Scienta\DoctrineJsonFunctions\Tests\Mocks\Exception\NotImplemented;
 
 /**
  * Mock class for Driver.
  */
 class DriverMock implements Driver
 {
+    use DbalDriverCompatibility;
+
     /**
      * @var AbstractPlatform|null
      */
@@ -29,20 +32,9 @@ class DriverMock implements Driver
     /**
      * {@inheritdoc}
      */
-    public function connect(array $params, $username = null, $password = null, array $driverOptions = array())
+    public function connect(array $params, $username = null, $password = null, array $driverOptions = array()): Driver\Connection
     {
         return new DriverConnectionMock();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getDatabasePlatform()
-    {
-        if (! $this->_platformMock) {
-            $this->_platformMock = new DatabasePlatformMock();
-        }
-        return $this->_platformMock;
     }
 
     /**
@@ -105,6 +97,6 @@ class DriverMock implements Driver
      */
     public function getExceptionConverter(): ExceptionConverter
     {
-        throw Exception::notSupported(__METHOD__);
+        throw new NotImplemented(__METHOD__);
     }
 }

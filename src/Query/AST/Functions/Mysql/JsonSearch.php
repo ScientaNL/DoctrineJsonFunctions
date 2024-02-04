@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 
-use Doctrine\DBAL\Exception;
+use Exception;
 use Doctrine\ORM\Query\AST\Node;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\TokenType;
+use Scienta\DoctrineJsonFunctions\DBALCompatibility;
 
 /**
  * "JSON_SEARCH" "(" StringPrimary "," ["one" | "all"] "," StringPrimary {"," NewValue { "," StringPrimary }* } ")"
@@ -80,6 +81,8 @@ class JsonSearch extends MysqlJsonFunctionNode
             return $parser->Literal();
 		}
 
-		throw Exception::notSupported("Mode '$value' is not supported by " . static::FUNCTION_NAME . ".");
+        throw DBALCompatibility::notSupportedPlatformException(
+            "Mode '$value' is not supported by " . static::FUNCTION_NAME . "."
+        );
 	}
 }
