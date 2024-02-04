@@ -12,20 +12,36 @@ jobs:
   phpunit:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        php-version:
+          - "7.4"
+          - "8.0"
+          - "8.1"
+          - "8.2"
+          - "8.3"
+        dependencies:
+          - "highest"
+        include:
+          - dependencies: "lowest"
+            php-version: "7.4"
+
     steps:
       - uses: actions/checkout@v4
 
       - name: Add php extensions
         uses: shivammathur/setup-php@v2
         with:
-          php-version: "7.4"
-          tools: pecl, composer, cs2pr
+          php-version: "${{ matrix.php-version }}"
+          tools: pecl, cs2pr
           extensions: opcache, pcntl, pdo_mysql, zip
 
-      - name: Install php packages
-        run: composer install
+      - name: "Install dependencies with Composer"
+        uses: "ramsey/composer-install@v2"
+        with:
+          dependency-versions: "${{ matrix.dependencies }}"
 
-      - name: Run phpcs
+      - name: Run phpunit
         run: ./vendor/bin/phpunit
 
   phpcs:
