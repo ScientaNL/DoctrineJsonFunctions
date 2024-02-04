@@ -12,9 +12,8 @@ class StatementMock implements Statement
     /**
      * {@inheritdoc}
      */
-    public function bindValue($param, $value, $type = null): bool
+    public function bindValue($param, $value, $type = null): void
     {
-        return true;
     }
 
     /**

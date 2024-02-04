@@ -6,12 +6,15 @@ namespace Scienta\DoctrineJsonFunctions\Tests\Mocks;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Scienta\DoctrineJsonFunctions\Tests\Mocks\Exception\NotImplemented;
 
 /**
  * Mock class for DatabasePlatform.
  */
 class DatabasePlatformMock extends AbstractPlatform
 {
+    use DbalPlatformCompatibility;
+
     /**
      * @var string
      */
@@ -123,10 +126,7 @@ class DatabasePlatformMock extends AbstractPlatform
         return 'mock';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function initializeDoctrineTypeMappings()
+    protected function initializeDoctrineTypeMappings(): void
     {
     }
 
@@ -137,7 +137,7 @@ class DatabasePlatformMock extends AbstractPlatform
      */
     public function getBlobTypeDeclarationSQL(array $column): string
     {
-        throw Exception::notSupported(__METHOD__);
+        throw new NotImplemented(__METHOD__);
     }
 
     /**
@@ -145,6 +145,6 @@ class DatabasePlatformMock extends AbstractPlatform
      */
     public function getCurrentDatabaseExpression(): string
     {
-        throw Exception::notSupported(__METHOD__);
+        throw new NotImplemented(__METHOD__);
     }
 }

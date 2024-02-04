@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Scienta\DoctrineJsonFunctions\Tests\Query;
 
-use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\ORM\Configuration;
+use Scienta\DoctrineJsonFunctions\DBALCompatibility;
 use Scienta\DoctrineJsonFunctions\Query\AST\Functions\Sqlite as DqlFunctions;
 use Scienta\DoctrineJsonFunctions\Tests\Mocks\ConnectionMock;
 
@@ -17,7 +17,7 @@ abstract class SqliteTestCase extends DbTestCase
 
         /** @var ConnectionMock $conn */
         $conn = $this->entityManager->getConnection();
-        $conn->setDatabasePlatform(new SqlitePlatform());
+        $conn->setDatabasePlatform(new (DBALCompatibility::sqlLitePlatform()));
 
         self::loadDqlFunctions($this->configuration);
     }

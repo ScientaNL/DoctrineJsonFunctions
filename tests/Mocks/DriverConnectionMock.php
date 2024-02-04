@@ -8,9 +8,11 @@ use Doctrine\DBAL\Driver\Connection;
 use Doctrine\DBAL\Driver\Result;
 use Doctrine\DBAL\Driver\Statement;
 use PDO;
+use Scienta\DoctrineJsonFunctions\Tests\Mocks\Exception\NotImplemented;
 
 /**
  * Mock class for DriverConnection.
+ * @psalm-suppress MethodSignatureMismatch
  */
 class DriverConnectionMock implements Connection
 {
@@ -55,7 +57,7 @@ class DriverConnectionMock implements Connection
     /**
      * {@inheritdoc}
      */
-    public function quote($value, $type = PDO::PARAM_STR)
+    public function quote($value, $type = PDO::PARAM_STR): string
     {
         return $value;
     }
@@ -71,24 +73,21 @@ class DriverConnectionMock implements Connection
     /**
      * {@inheritdoc}
      */
-    public function lastInsertId($name = null)
+    public function lastInsertId($name = null): int|string
     {
         return 0;
     }
 
-    public function beginTransaction(): bool
+    public function beginTransaction(): void
     {
-        return true;
     }
 
-    public function commit(): bool
+    public function commit(): void
     {
-        return true;
     }
 
-    public function rollBack(): bool
+    public function rollBack(): void
     {
-        return true;
     }
 
     public function errorCode()
@@ -97,5 +96,15 @@ class DriverConnectionMock implements Connection
 
     public function errorInfo()
     {
+    }
+
+    public function getNativeConnection()
+    {
+        throw new NotImplemented(__METHOD__);
+    }
+
+    public function getServerVersion(): string
+    {
+        throw new NotImplemented(__METHOD__);
     }
 }

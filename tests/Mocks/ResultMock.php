@@ -8,12 +8,12 @@ use Doctrine\DBAL\Driver\Result;
 
 class ResultMock implements Result
 {
-    public function fetchNumeric(): bool
+    public function fetchNumeric(): array|false
     {
         return false;
     }
 
-    public function fetchAssociative(): bool
+    public function fetchAssociative(): array|false
     {
         return false;
     }
