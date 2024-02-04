@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Scienta\DoctrineJsonFunctions\Tests\Query;
 
-use Doctrine\DBAL\Platforms\PostgreSQL94Platform;
+use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\ORM\Configuration;
 use Scienta\DoctrineJsonFunctions\Query\AST\Functions\Postgresql as DqlFunctions;
 use Scienta\DoctrineJsonFunctions\Tests\Mocks\ConnectionMock;
@@ -17,7 +17,7 @@ abstract class PostgresqlTestCase extends DbTestCase
 
         /** @var ConnectionMock $conn */
         $conn = $this->entityManager->getConnection();
-        $conn->setDatabasePlatform(new PostgreSQL94Platform());
+        $conn->setDatabasePlatform(new PostgreSQLPlatform());
 
         self::loadDqlFunctions($this->configuration);
     }

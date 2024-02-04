@@ -11,6 +11,7 @@ use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\Result;
 use Exception;
 use Webmozart\Assert\Assert;
+use Doctrine\DBAL\Platforms\AbstractPlatform;
 
 /**
  * Mock class for Connection.
@@ -69,16 +70,16 @@ class ConnectionMock extends Connection
     {
         $this->_platformMock = new DatabasePlatformMock();
 
+        /**
+         * @psalm-suppress TooManyArguments
+         */
         parent::__construct($params, $driver, $config, $eventManager);
 
         // Override possible assignment of platform to database platform mock
         $this->_platform = $this->_platformMock;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getDatabasePlatform()
+    public function getDatabasePlatform(): AbstractPlatform
     {
         return $this->_platformMock;
     }
@@ -86,7 +87,7 @@ class ConnectionMock extends Connection
     /**
      * {@inheritdoc}
      */
-    public function insert($table, array $data, array $types = [])
+    public function insert($table, array $data, array $types = []): int|string
     {
         $this->_inserts[$table][] = $data;
 
@@ -106,7 +107,7 @@ class ConnectionMock extends Connection
     /**
      * {@inheritdoc}
      */
-    public function lastInsertId($name = null)
+    public function lastInsertId($name = null): int|string
     {
         return $this->_lastInsertId;
     }
@@ -133,7 +134,7 @@ class ConnectionMock extends Connection
     /**
      * {@inheritdoc}
      */
-    public function quote($value, $type = null)
+    public function quote($value, $type = null): string
     {
         if (is_string($value)) {
             return "'" . $value . "'";

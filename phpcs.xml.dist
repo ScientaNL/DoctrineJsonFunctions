@@ -12,7 +12,9 @@
 	<!-- Ignore warnings, show progress of the run and show sniff names -->
 	<arg value="nps"/>
 
-	<!-- Directories to be checked -->
+    <config name="php_version" value="80100"/>
+
+    <!-- Directories to be checked -->
 	<file>src</file>
 	<file>tests</file>
 

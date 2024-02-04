@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Sqlite;
 
 use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\ORM\Query\SqlWalker;
+use Scienta\DoctrineJsonFunctions\DBALCompatibility;
 use Scienta\DoctrineJsonFunctions\Query\AST\Functions\AbstractJsonFunctionNode;
 
 abstract class SqliteJsonFunctionNode extends AbstractJsonFunctionNode
@@ -17,8 +17,8 @@ abstract class SqliteJsonFunctionNode extends AbstractJsonFunctionNode
      */
     protected function validatePlatform(SqlWalker $sqlWalker): void
     {
-        if (!$sqlWalker->getConnection()->getDatabasePlatform() instanceof SqlitePlatform) {
-            throw Exception::notSupported(static::FUNCTION_NAME);
+        if (!$sqlWalker->getConnection()->getDatabasePlatform() instanceof (DBALCompatibility::sqlLitePlatform())) {
+            throw DBALCompatibility::notSupportedPlatformException(static::FUNCTION_NAME);
         }
     }
 }

@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Scienta\DoctrineJsonFunctions\Tests\Query;
 
+use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\Configuration;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping\Driver\AttributeDriver;
 use Scienta\DoctrineJsonFunctions\Tests\DoctrineJsonTestcase;
 use Scienta\DoctrineJsonFunctions\Tests\Mocks;
 use Webmozart\Assert\Assert;
@@ -18,16 +20,13 @@ abstract class DbTestCase extends DoctrineJsonTestcase
     /** @var Configuration */
     protected $configuration;
 
-    /**
-     * @throws \Doctrine\ORM\ORMException
-     */
     public function setUp(): void
     {
         $this->configuration = new Configuration();
         $this->configuration->setProxyDir(__DIR__ . '/Proxies');
         $this->configuration->setProxyNamespace('DoctrineExtensions\Tests\Proxies');
         $this->configuration->setAutoGenerateProxyClasses(true);
-        $this->configuration->setMetadataDriverImpl($this->configuration->newDefaultAnnotationDriver([]));
+        $this->configuration->setMetadataDriverImpl(new AttributeDriver([__DIR__ . '/Entities']));
 
         $conn = [
             'driverClass'  => Mocks\DriverMock::class,
@@ -35,8 +34,9 @@ abstract class DbTestCase extends DoctrineJsonTestcase
             'user'         => 'john',
             'password'     => 'wayne'
         ];
+        ;
 
-        $this->entityManager = EntityManager::create($conn, $this->configuration);
+        $this->entityManager = new EntityManager(DriverManager::getConnection($conn), $this->configuration);
     }
 
     /**

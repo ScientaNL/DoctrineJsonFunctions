@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 
-use Doctrine\DBAL\Exception;
+use Exception;
 use Doctrine\ORM\Query\AST\Node;
-use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
+use Doctrine\ORM\Query\TokenType;
+use Scienta\DoctrineJsonFunctions\DBALCompatibility;
 
 /**
  * "JSON_SEARCH" "(" StringPrimary "," ["one" | "all"] "," StringPrimary {"," NewValue { "," StringPrimary }* } ")"
@@ -38,27 +39,27 @@ class JsonSearch extends MysqlJsonFunctionNode
      */
 	public function parse(Parser $parser): void
 	{
-		$parser->match(Lexer::T_IDENTIFIER);
-		$parser->match(Lexer::T_OPEN_PARENTHESIS);
+		$parser->match(TokenType::T_IDENTIFIER);
+		$parser->match(TokenType::T_OPEN_PARENTHESIS);
 
         $this->parsedArguments[] = $parser->StringPrimary();
 
-		$parser->match(Lexer::T_COMMA);
+		$parser->match(TokenType::T_COMMA);
 
         $this->parsedArguments[] = $this->parsePathMode($parser);
 
-		$parser->match(Lexer::T_COMMA);
+		$parser->match(TokenType::T_COMMA);
 
         $this->parsedArguments[] = $parser->StringPrimary();
 
-        $continueParsing = !$parser->getLexer()->isNextToken(Lexer::T_CLOSE_PARENTHESIS);
+        $continueParsing = !$parser->getLexer()->isNextToken(TokenType::T_CLOSE_PARENTHESIS);
         if ($continueParsing) {
             $this->parseArguments($parser, [self::VALUE_ARG, self::STRING_PRIMARY_ARG], true);
         }
 
         $this->parseOptionalArguments($parser, true);
 
-		$parser->match(Lexer::T_CLOSE_PARENTHESIS);
+		$parser->match(TokenType::T_CLOSE_PARENTHESIS);
 	}
 
 	/**
@@ -80,6 +81,8 @@ class JsonSearch extends MysqlJsonFunctionNode
             return $parser->Literal();
 		}
 
-		throw Exception::notSupported("Mode '$value' is not supported by " . static::FUNCTION_NAME . ".");
+        throw DBALCompatibility::notSupportedPlatformException(
+            "Mode '$value' is not supported by " . static::FUNCTION_NAME . "."
+        );
 	}
 }
