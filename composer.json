@@ -2,7 +2,7 @@
     "name": "scienta/doctrine-json-functions",
     "abandoned": false,
     "type": "library",
-    "description": "A set of extensions to Doctrine 2 that add support for json query functions.",
+    "description": "A set of extensions to Doctrine that add support for json query functions.",
     "keywords": [
         "doctrine",
         "orm",
@@ -23,7 +23,7 @@
         }
     ],
     "require": {
-        "php": "^7.4 || ^8.0",
+        "php": "^8.1",
         "ext-pdo": "*",
         "doctrine/dbal": "^3.0",
         "doctrine/lexer": "^2.0 || ^3.0",
@@ -31,8 +31,8 @@
     },
     "require-dev": {
         "doctrine/annotations": "^1.13",
-        "doctrine/coding-standard": "^8.0 || ^9.0",
-        "phpunit/phpunit": "^8.0 || ^9.0",
+        "doctrine/coding-standard": "^8.0 || ^9.0 || ^10.0 || ^11.0",
+        "phpunit/phpunit": "^8.0 || ^9.0 || ^10.0",
         "psalm/plugin-phpunit": "^0.18",
         "slevomat/coding-standard": "^8.4",
         "vimeo/psalm": "^5.2",
@@ -47,11 +47,6 @@
         "psr-4": {
             "Doctrine\\Tests\\": "tests/Doctrine/Tests",
             "Scienta\\DoctrineJsonFunctions\\Tests\\": "tests/"
-        }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "4.1-dev"
         }
     },
     "suggest": {
