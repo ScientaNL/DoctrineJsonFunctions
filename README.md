@@ -20,8 +20,8 @@ Table of Contents
 - [Installation](#installation)
 - [Testing](#testing)
 - [Functions Registration](#functions-registration)
-  - [Doctrine 2](#vanilla-doctrine-2-orm)
-  - [Symfony 2 & 3](#symfony-2--3-with-doctrine-bundle)
+  - [Doctrine](#doctrine-orm)
+  - [Symfony](#symfony-with-doctrine-bundle)
 - [Usage](#usage)
   - [Using Mysql 5.7+ JSON operators](#using-mysql-57-json-operators)
   - [Using PostgreSQL 9.3+ JSON operators](#using-postgresql-93-json-operators)
@@ -49,7 +49,7 @@ Add the following dependency to your composer.json
 ```json
 {
 	"require": {
-		"scienta/doctrine-json-functions": "~4.3"
+		"scienta/doctrine-json-functions": "~5"
 	}
 }
 ```
@@ -62,11 +62,6 @@ This repository uses phpunit for testing purposes.
 If you just want to run the tests you can use the docker composer image to install and run phpunit.
 There is a docker-compose file with the correct mount but if you want to use just docker you can run this:
 
-### php7
-```bash
-docker run -it -v ${PWD}:/app scienta/php-composer:php7 /bin/bash -c "composer install && ./vendor/bin/phpunit"
-```
-
 ### php8
 ```bash
 docker run -it -v ${PWD}:/app scienta/php-composer:php8 /bin/bash -c "composer install && ./vendor/bin/phpunit"
@@ -76,9 +71,9 @@ docker run -it -v ${PWD}:/app scienta/php-composer:php8 /bin/bash -c "composer i
 Functions Registration
 ----------------------
 
-### Doctrine 2 ORM
+### Doctrine ORM
 
-[Doctrine 2 documentation: "DQL User Defined Functions"](http://docs.doctrine-project.org/en/latest/cookbook/dql-user-defined-functions.html)
+[Doctrine documentation: "DQL User Defined Functions"](http://docs.doctrine-project.org/en/latest/cookbook/dql-user-defined-functions.html)
 
 ```php
 <?php
@@ -93,23 +88,7 @@ $em = EntityManager::create($dbParams, $config);
 $queryBuilder = $em->createQueryBuilder();
 ```
 
-### Symfony 2 & 3 & 4 with Doctrine bundle
-
-[Symfony documentation: "DoctrineBundle Configuration"](https://symfony.com/doc/3.3/reference/configuration/doctrine.html#full-default-configuration)
-
-```yaml
-# app/config/config.yml
-doctrine:
-    orm:
-        entity_managers:
-            some_em: # usually also "default"
-                dql:
-                    string_functions:
-                        JSON_EXTRACT: Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonExtract
-                        JSON_SEARCH: Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonSearch
-```
-
-### Symfony 5 with Doctrine bundle
+### Symfony with Doctrine bundle
 
 [Symfony documentation: "DoctrineBundle Configuration"](https://symfony.com/doc/5.0/reference/configuration/doctrine.html#shortened-configuration-syntax)
 
