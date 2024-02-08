@@ -27,7 +27,7 @@
         "ext-pdo": "*",
         "doctrine/dbal": "^3.0",
         "doctrine/lexer": "^2.0 || ^3.0",
-        "doctrine/orm": "^2.14"
+        "doctrine/orm": "^2.14 || ^3.0"
     },
     "require-dev": {
         "doctrine/annotations": "^1.13",
