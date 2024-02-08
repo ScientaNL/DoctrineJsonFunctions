@@ -1,5 +1,5 @@
 {
-    "name": "scienta/doctrine-json-functions",
+    "name": "hec-franco/doctrine-json-functions",
     "abandoned": false,
     "type": "library",
     "description": "A set of extensions to Doctrine that add support for json query functions.",
