@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 
-use Exception;
 use Doctrine\ORM\Query\AST\Node;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\TokenType;
+use Exception;
 use Scienta\DoctrineJsonFunctions\DBALCompatibility;
 
 /**
@@ -27,28 +27,28 @@ class JsonSearch extends MysqlJsonFunctionNode
     /** @var bool */
     protected $allowOptionalArgumentRepeat = true;
 
-	/**
-	 * @var string
-	 */
-	public $mode;
+    /**
+     * @var string
+     */
+    public $mode;
 
     /**
      * @param Parser $parser
      * @throws Exception
      * @throws \Doctrine\ORM\Query\QueryException
      */
-	public function parse(Parser $parser): void
-	{
-		$parser->match(TokenType::T_IDENTIFIER);
-		$parser->match(TokenType::T_OPEN_PARENTHESIS);
+    public function parse(Parser $parser): void
+    {
+        $parser->match(TokenType::T_IDENTIFIER);
+        $parser->match(TokenType::T_OPEN_PARENTHESIS);
 
         $this->parsedArguments[] = $parser->StringPrimary();
 
-		$parser->match(TokenType::T_COMMA);
+        $parser->match(TokenType::T_COMMA);
 
         $this->parsedArguments[] = $this->parsePathMode($parser);
 
-		$parser->match(TokenType::T_COMMA);
+        $parser->match(TokenType::T_COMMA);
 
         $this->parsedArguments[] = $parser->StringPrimary();
 
@@ -59,30 +59,30 @@ class JsonSearch extends MysqlJsonFunctionNode
 
         $this->parseOptionalArguments($parser, true);
 
-		$parser->match(TokenType::T_CLOSE_PARENTHESIS);
-	}
+        $parser->match(TokenType::T_CLOSE_PARENTHESIS);
+    }
 
-	/**
-	 * @param Parser $parser
-	 * @throws Exception
-	 * @return Node
-	 */
-	protected function parsePathMode(Parser $parser)
-	{
-		$value = $parser->getLexer()->lookahead->value;
+    /**
+     * @param Parser $parser
+     * @return Node
+     * @throws Exception
+     */
+    protected function parsePathMode(Parser $parser)
+    {
+        $value = $parser->getLexer()->lookahead->value;
 
-		if (strcasecmp(self::MODE_ONE, $value) === 0) {
-			$this->mode = self::MODE_ONE;
-			return $parser->Literal();
-		}
-
-		if (strcasecmp(self::MODE_ALL, $value) === 0) {
-			$this->mode = self::MODE_ALL;
+        if (strcasecmp(self::MODE_ONE, $value) === 0) {
+            $this->mode = self::MODE_ONE;
             return $parser->Literal();
-		}
+        }
+
+        if (strcasecmp(self::MODE_ALL, $value) === 0) {
+            $this->mode = self::MODE_ALL;
+            return $parser->Literal();
+        }
 
         throw DBALCompatibility::notSupportedPlatformException(
             "Mode '$value' is not supported by " . static::FUNCTION_NAME . "."
         );
-	}
+    }
 }
