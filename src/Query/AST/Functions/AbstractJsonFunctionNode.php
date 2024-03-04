@@ -12,6 +12,7 @@ use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\QueryException;
 use Doctrine\ORM\Query\SqlWalker;
+use Doctrine\ORM\Query\TokenType;
 
 abstract class AbstractJsonFunctionNode extends FunctionNode
 {
@@ -40,8 +41,8 @@ abstract class AbstractJsonFunctionNode extends FunctionNode
      */
     public function parse(Parser $parser): void
     {
-        $parser->match(Lexer::T_IDENTIFIER);
-        $parser->match(Lexer::T_OPEN_PARENTHESIS);
+        $parser->match(TokenType::T_IDENTIFIER);
+        $parser->match(TokenType::T_OPEN_PARENTHESIS);
 
         $argumentParsed = $this->parseArguments($parser, $this->requiredArgumentTypes);
 
@@ -49,7 +50,7 @@ abstract class AbstractJsonFunctionNode extends FunctionNode
             $this->parseOptionalArguments($parser, $argumentParsed);
         }
 
-        $parser->match(Lexer::T_CLOSE_PARENTHESIS);
+        $parser->match(TokenType::T_CLOSE_PARENTHESIS);
     }
 
     /**
@@ -59,10 +60,10 @@ abstract class AbstractJsonFunctionNode extends FunctionNode
      */
     protected function parseOptionalArguments(Parser $parser, bool $argumentParsed): void
     {
-        $continueParsing = !$parser->getLexer()->isNextToken(Lexer::T_CLOSE_PARENTHESIS);
+        $continueParsing = !$parser->getLexer()->isNextToken(TokenType::T_CLOSE_PARENTHESIS);
         while ($continueParsing) {
             $argumentParsed = $this->parseArguments($parser, $this->optionalArgumentTypes, $argumentParsed);
-            $continueParsing = $this->allowOptionalArgumentRepeat && $parser->getLexer()->isNextToken(Lexer::T_COMMA);
+            $continueParsing = $this->allowOptionalArgumentRepeat && $parser->getLexer()->isNextToken(TokenType::T_COMMA);
         }
     }
 
@@ -77,7 +78,7 @@ abstract class AbstractJsonFunctionNode extends FunctionNode
     {
         foreach ($argumentTypes as $argType) {
             if ($argumentParsed) {
-                $parser->match(Lexer::T_COMMA);
+                $parser->match(TokenType::T_COMMA);
             } else {
                 $argumentParsed = true;
             }
@@ -113,7 +114,7 @@ abstract class AbstractJsonFunctionNode extends FunctionNode
         $lexer = $parser->getLexer();
         $lookaheadType = $lexer->lookahead->type;
 
-        if ($lookaheadType !== Lexer::T_STRING) {
+        if ($lookaheadType !== TokenType::T_STRING) {
             $parser->syntaxError('string');
         }
 
@@ -131,12 +132,12 @@ abstract class AbstractJsonFunctionNode extends FunctionNode
         $lookaheadType = $lexer->lookahead->type;
 
         switch ($lookaheadType) {
-            case Lexer::T_STRING:
+            case TokenType::T_STRING:
                 return $this->matchStringLiteral($parser, $lexer);
-            case Lexer::T_INTEGER:
-            case Lexer::T_FLOAT:
+            case TokenType::T_INTEGER:
+            case TokenType::T_FLOAT:
                 $parser->match(
-                    $lexer->isNextToken(Lexer::T_INTEGER) ? Lexer::T_INTEGER : Lexer::T_FLOAT
+                    $lexer->isNextToken(TokenType::T_INTEGER) ? TokenType::T_INTEGER : TokenType::T_FLOAT
                 );
 
                 return new Literal(Literal::NUMERIC, $lexer->token->value);
@@ -147,7 +148,7 @@ abstract class AbstractJsonFunctionNode extends FunctionNode
 
     private function matchStringLiteral(Parser $parser, Lexer $lexer): Literal
     {
-        $parser->match(Lexer::T_STRING);
+        $parser->match(TokenType::T_STRING);
         return new Literal(Literal::STRING, $lexer->token->value);
     }
 
