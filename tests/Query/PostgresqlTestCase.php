@@ -28,6 +28,7 @@ abstract class PostgresqlTestCase extends DbTestCase
     public static function loadDqlFunctions(Configuration $configuration)
     {
         $configuration->addCustomStringFunction(DqlFunctions\JsonbContains::FUNCTION_NAME, DqlFunctions\JsonbContains::class);
+        $configuration->addCustomStringFunction(DqlFunctions\JsonbInsert::FUNCTION_NAME, DqlFunctions\JsonbInsert::class);
         $configuration->addCustomStringFunction(DqlFunctions\JsonGetText::FUNCTION_NAME, DqlFunctions\JsonGetText::class);
     }
 }
