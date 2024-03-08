@@ -22,9 +22,7 @@ abstract class DbTestCase extends DoctrineJsonTestcase
 
     public function setUp(): void
     {
-        $this->configuration = PHP_VERSION_ID >= 80000
-            ? ORMSetup::createAttributeMetadataConfiguration([], true, __DIR__ . '/Proxies')
-            : ORMSetup::createAnnotationMetadataConfiguration([], true, __DIR__ . '/Proxies');
+        $this->configuration = ORMSetup::createAttributeMetadataConfiguration([], true, __DIR__ . '/Proxies');
 
         $conn = DriverManager::getConnection([
             'driverClass'  => Mocks\DriverMock::class,
