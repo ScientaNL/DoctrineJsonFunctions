@@ -3,13 +3,13 @@
 [![License](https://poser.pugx.org/scienta/doctrine-json-functions/license)](https://packagist.org/packages/scienta/doctrine-json-functions)
 
 # DoctrineJsonFunctions
-A set of extensions to Doctrine 2 that add support for json query functions.
+A set of extensions to Doctrine 2+ that add support for json functions.
 +Functions are available for MySQL, MariaDb and PostgreSQL.
 
 | DB | Functions |
 |:--:|:---------:|
 | MySQL | `JSON_APPEND, JSON_ARRAY, JSON_ARRAYAGG, JSON_ARRAY_APPEND, JSON_ARRAY_INSERT, JSON_CONTAINS, JSON_CONTAINS_PATH, JSON_DEPTH, JSON_EXTRACT, JSON_OVERLAPS, JSON_INSERT, JSON_KEYS, JSON_LENGTH, JSON_MERGE, JSON_MERGE_PRESERVE, JSON_MERGE_PATCH, JSON_OBJECT, JSON_OBJECTAGG, JSON_PRETTY, JSON_QUOTE, JSON_REMOVE, JSON_REPLACE, JSON_SEARCH, JSON_SET, JSON_TYPE, JSON_UNQUOTE, JSON_VALID` |
-| PostgreSQL | `JSON_EXTRACT_PATH, GT, GT_GT, SHARP_GT, SHARP_GT_GT` |
+| PostgreSQL | `@> (JSONB_CONTAINS), ? (JSONB_EXISTS), ?& (JSONB_EXISTS_ALL), ?\| (JSONB_EXISTS_ANY), <@ (JSONB_IS_CONTAINED), JSONB_INSERT, JSON_EXTRACT_PATH, -> (JSON_GET), #> (JSON_GET_PATH), #>> (JSON_GET_PATH_TEXT), ->> (JSON_GET_TEXT)` |
 | MariaDb | `JSON_VALUE, JSON_EXISTS, JSON_QUERY, JSON_COMPACT, JSON_DETAILED, JSON_LOOSE, JSON_EQUALS, JSON_NORMALIZE` |
 | SQLite | `JSON, JSON_ARRAY, JSON_ARRAY_LENGTH, JSON_EXTRACT, JSON_GROUP_ARRAY, JSON_GROUP_OBJECT, JSON_INSERT, JSON_OBJECT, JSON_PATCH, JSON_QUOTE, JSON_REMOVE, JSON_REPLACE, JSON_SET, JSON_TYPE, JSON_VALID` |
 
@@ -99,6 +99,9 @@ doctrine:
                 JSON_SEARCH: Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonSearch
 ```
 
+Note that doctrine is [missing a boolean_functions entry](https://github.com/doctrine/orm/issues/6278).
+You can register boolean functions as `string_functions` and need to compare them with `= true` to avoid DQL parser errors.
+For example, to check for existence of an element in a JSONB array, use `andWhere('JSONB_EXISTS(u.roles, :role) = true)`.
 
 Usage
 -----
@@ -118,6 +121,9 @@ $result = $q->execute(array(
 ```
 
 ### Using PostgreSQL 9.3+ JSON operators
+
+Note that you need to use the function names. This library does not add support for custom operators like `@>`.
+
 ```php
 $q = $queryBuilder
   ->select('c')
@@ -126,6 +132,18 @@ $q = $queryBuilder
 
  $result = $q->execute(array(
     'gender' => 'male',
+ ));
+```
+
+Boolean functions need to be registered as string functions and compared with true because [Doctrine DQL does not know about boolean functions](https://github.com/doctrine/orm/issues/6278).
+```php
+$q = $queryBuilder
+  ->select('c')
+  ->from('Customer', 'c')
+  ->where('JSONB_CONTAINS(c.roles, :role) = true');
+
+ $result = $q->execute(array(
+    'role' => 'ROLE_ADMIN',
  ));
 ```
 
@@ -223,19 +241,30 @@ Note that you can use MySQL Operators with MariaDb database if compatible.
 	- Recursively sorts keys and removes spaces, allowing comparison of json documents for equality.
 
 ### PostgreSQL 9.3+ JSON operators
-Basic support for JSON operators is implemented. This works even with `Doctrine\DBAL` v2.5. [Official documentation of JSON operators](https://www.postgresql.org/docs/9.3/static/functions-json.html).
+Basic support for JSON operators is implemented. This works even with `Doctrine\DBAL` v2.5. [Official documentation of JSON operators](https://www.postgresql.org/docs/9.5/functions-json.html).
 
+* **JSONB_CONTAINS(jsonb, jsonb)**
+	- expands to `jsonb @> jsonb`
+* **JSONB_EXISTS(jsonb, text)**
+	- executed as `JSONB_EXISTS(jsonb, text)`, equivalent to `jsonb ? text`
+* **JSONB_EXISTS_ALL(jsonb, array)**
+	- executed as `JSONB_EXISTS_ALL(jsonb, array)`, equivalent to `jsonb ?& array`
+* **JSONB_EXISTS_ANY(jsonb, array)**
+	- executed as `JSONB_EXISTS_ANY(jsonb, array)`, equivalent to `jsonb ?| array`
+* **JSONB_IS_CONTAINED(jsonb, jsonb)**
+	- expands to `jsonb <@ jsonb`
+* **JSONB_INSERT**
+	- executed as is
+* **JSON_EXTRACT_PATH**
+	- executed as is
 * **JSON_GET(jsondoc, path)**
 	- expands to `jsondoc->path` in case of numeric `path` (use with JSON arrays)
 	- expands to `jsondoc->'path'` in case of non-numeric `path` (use with JSON objects)
-
 * **JSON_GET_TEXT(jsondoc, path)**
 	- expands to `jsondoc->>path` in case of numeric `path` (use with JSON arrays)
 	- expands to `jsondoc->>'path'` in case of non-numeric `path` (use with JSON objects)
-
 * **JSON_GET_PATH(jsondoc, path)**
 	- expands to `jsondoc#>'path'`
-
 * **JSON_GET_PATH_TEXT(jsondoc, path)**
 	- expands to `jsondoc#>>'path'`
 
