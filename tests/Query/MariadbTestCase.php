@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Scienta\DoctrineJsonFunctions\Tests\Query;
 
-use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\ORM\Configuration;
+use Scienta\DoctrineJsonFunctions\DBALCompatibility;
 use Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mariadb as DqlFunctions;
 use Scienta\DoctrineJsonFunctions\Tests\Mocks\ConnectionMock;
 
@@ -17,7 +17,7 @@ abstract class MariadbTestCase extends DbTestCase
 
         /** @var ConnectionMock $conn */
         $conn = $this->entityManager->getConnection();
-        $conn->setDatabasePlatform(new MySQLPlatform());
+        $conn->setDatabasePlatform(new (DBALCompatibility::mariaDBPlatform())());
 
         self::loadDqlFunctions($this->configuration);
     }
