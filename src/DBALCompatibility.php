@@ -35,4 +35,15 @@ final class DBALCompatibility
 
         return 'Doctrine\DBAL\Platforms\SqlitePlatform';
     }
+
+    public static function mariaDBPlatform(): string
+    {
+        if (!class_exists('\Doctrine\DBAL\Platforms\MariaDBPlatform')) {
+            // In DBAL versions prior to 3.3, MariaDB used or extended the MySQL platform
+            return '\Doctrine\DBAL\Platforms\MySQLPlatform';
+        }
+
+        // DBAL 3.3 and onwards
+        return '\Doctrine\DBAL\Platforms\MariaDBPlatform';
+    }
 }

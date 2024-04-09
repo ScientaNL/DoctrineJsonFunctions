@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mariadb;
 
 use Doctrine\DBAL\Exception;
-use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\ORM\Query\SqlWalker;
 use Scienta\DoctrineJsonFunctions\DBALCompatibility;
 use Scienta\DoctrineJsonFunctions\Query\AST\Functions\AbstractJsonFunctionNode;
@@ -18,7 +17,7 @@ abstract class MariadbJsonFunctionNode extends AbstractJsonFunctionNode
      */
     protected function validatePlatform(SqlWalker $sqlWalker): void
     {
-        if (!$sqlWalker->getConnection()->getDatabasePlatform() instanceof MySQLPlatform) {
+        if (!$sqlWalker->getConnection()->getDatabasePlatform() instanceof (DBALCompatibility::mariaDBPlatform())) {
             throw DBALCompatibility::notSupportedPlatformException(static::FUNCTION_NAME);
         }
     }
