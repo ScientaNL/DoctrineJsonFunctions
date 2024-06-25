@@ -272,7 +272,7 @@ Please note that chaining of JSON operators is not supported.
 
 ### SQLite JSON1 Extension operators
 
-Support for all the scalar and aggregare functions as seen in the [JSON1 Extension documentation](https://www.sqlite.org/json1.html).
+Support for all the scalar and aggregate functions as seen in the [JSON1 Extension documentation](https://www.sqlite.org/json1.html).
 
 #### Scalar functions
 
