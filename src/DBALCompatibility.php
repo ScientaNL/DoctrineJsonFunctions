@@ -46,4 +46,15 @@ final class DBALCompatibility
         // DBAL 3.3 and onwards
         return '\Doctrine\DBAL\Platforms\MariaDBPlatform';
     }
+
+    public static function mysqlAndMariaDBSharedPlatform(): string
+    {
+        if (!class_exists('\Doctrine\DBAL\Platforms\AbstractMySQLPlatform')) {
+            // In DBAL versions prior to 3.3, MariaDB used or extended the MySQL platform
+            return '\Doctrine\DBAL\Platforms\MySQLPlatform';
+        }
+
+        // DBAL 3.3 and onwards
+        return '\Doctrine\DBAL\Platforms\AbstractMySQLPlatform';
+    }
 }
