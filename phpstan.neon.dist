@@ -1,0 +1,9 @@
+parameters:
+	level: 0
+	paths:
+		- src
+		- tests
+	editorUrl: 'phpstorm://open?file=%%file%%&line=%%line%%'
+	editorUrlTitle: '%%file%%:%%line%%'
+	treatPhpDocTypesAsCertain: false
+	reportUnmatchedIgnoredErrors: false

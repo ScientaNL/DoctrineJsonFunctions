@@ -75,3 +75,22 @@ jobs:
 
       - name: Run psalm
         run: ./vendor/bin/psalm
+
+  phpstan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add php extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.1"
+          tools: pecl, composer, cs2pr
+          extensions: opcache, pcntl, pdo_mysql, zip
+
+      - name: Install php packages
+        run: composer install
+
+      - name: Run phpstan
+        run: ./vendor/bin/phpstan

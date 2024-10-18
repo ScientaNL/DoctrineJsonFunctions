@@ -31,6 +31,10 @@
     },
     "require-dev": {
         "doctrine/coding-standard": "^9.0 || ^10.0 || ^11.0 || ^12.0",
+        "phpstan/phpstan": "^1.12",
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan-doctrine": "^1.4",
+        "phpstan/phpstan-phpunit": "^1.4",
         "phpunit/phpunit": "^10.1",
         "psalm/plugin-phpunit": "^0.18",
         "slevomat/coding-standard": "~8",
@@ -54,12 +58,14 @@
     },
     "scripts": {
         "codestyle": "phpcs -q --report=checkstyle",
+        "phpstan": "phpstan analyze -v",
         "psalm": "psalm --config=psalm.xml --threads=1 --no-cache"
     },
     "config": {
         "allow-plugins": {
             "composer/package-versions-deprecated": true,
-            "dealerdirect/phpcodesniffer-composer-installer": true
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "phpstan/extension-installer": true
         }
     }
 }
