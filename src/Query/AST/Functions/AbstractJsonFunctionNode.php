@@ -19,7 +19,7 @@ use Doctrine\ORM\Query\TokenType;
  */
 abstract class AbstractJsonFunctionNode extends FunctionNode
 {
-    public const FUNCTION_NAME = null;
+    public const FUNCTION_NAME = '';
 
     protected const ALPHA_NUMERIC = 'alphaNumeric';
     protected const STRING_PRIMARY_ARG = 'stringPrimary';
