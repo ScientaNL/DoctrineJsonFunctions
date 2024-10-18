@@ -9,18 +9,5 @@
     <DuplicateClass>
       <code>DbalPlatformCompatibility</code>
     </DuplicateClass>
-    <UndefinedClass>
-      <code>NotSupported</code>
-      <code>NotSupported</code>
-      <code>NotSupported</code>
-      <code>NotSupported</code>
-      <code>NotSupported</code>
-      <code>NotSupported</code>
-      <code>NotSupported</code>
-      <code>NotSupported</code>
-      <code>NotSupported</code>
-      <code>NotSupported</code>
-      <code>NotSupported</code>
-    </UndefinedClass>
   </file>
 </files>

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Scienta\DoctrineJsonFunctions;
 
 use Doctrine\DBAL\Exception as DBALException;
-use Doctrine\DBAL\Platforms\Exception\NotSupported;
 use Exception;
 
 use function class_exists;
+use function method_exists;
 
 /**
  * @internal
@@ -17,14 +17,19 @@ final class DBALCompatibility
 {
     public static function notSupportedPlatformException(string $method): Exception
     {
+        // phpcs:disable SlevomatCodingStandard.Namespaces.ReferenceUsedNamesOnly.ReferenceViaFullyQualifiedName
         if (class_exists('Doctrine\DBAL\Platforms\Exception\NotSupported')) {
-            return NotSupported::new($method);
+            return \Doctrine\DBAL\Platforms\Exception\NotSupported::new($method);
         }
 
         /**
          * @psalm-suppress UndefinedClass
          */
-        return DBALException::notSupported($method);
+        if (method_exists(DBALException::class, 'notSupported')) {
+            return DBALException::notSupported($method);
+        }
+
+        return new Exception("Method $method is not supported for doctrine platform");
     }
 
     public static function sqlLitePlatform(): string
