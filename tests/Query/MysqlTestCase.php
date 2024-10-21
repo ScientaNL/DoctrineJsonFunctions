@@ -53,5 +53,6 @@ abstract class MysqlTestCase extends DbTestCase
         $configuration->addCustomStringFunction(DqlFunctions\JsonType::FUNCTION_NAME, DqlFunctions\JsonType::class);
         $configuration->addCustomStringFunction(DqlFunctions\JsonUnquote::FUNCTION_NAME, DqlFunctions\JsonUnquote::class);
         $configuration->addCustomStringFunction(DqlFunctions\JsonValid::FUNCTION_NAME, DqlFunctions\JsonValid::class);
+        $configuration->addCustomStringFunction(DqlFunctions\JsonValue::FUNCTION_NAME, DqlFunctions\JsonValue::class);
     }
 }
