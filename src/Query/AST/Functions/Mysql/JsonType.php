@@ -7,7 +7,7 @@ namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 /**
  * "JSON_TYPE" "(" StringPrimary ")"
  */
-class JsonType extends MysqlJsonFunctionNode
+class JsonType extends MysqlAndMariadbJsonFunctionNode
 {
     public const FUNCTION_NAME = 'JSON_TYPE';
 

@@ -9,7 +9,10 @@ use Doctrine\ORM\Query\SqlWalker;
 use Scienta\DoctrineJsonFunctions\DBALCompatibility;
 use Scienta\DoctrineJsonFunctions\Query\AST\Functions\AbstractJsonFunctionNode;
 
-abstract class MysqlJsonFunctionNode extends AbstractJsonFunctionNode
+/**
+ * @internal
+ */
+abstract class MysqlAndMariadbJsonFunctionNode extends AbstractJsonFunctionNode
 {
     /**
      * @param SqlWalker $sqlWalker

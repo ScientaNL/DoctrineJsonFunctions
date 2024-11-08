@@ -13,7 +13,7 @@ use Scienta\DoctrineJsonFunctions\DBALCompatibility;
 /**
  * "JSON_SEARCH" "(" StringPrimary "," ["one" | "all"] "," StringPrimary {"," NewValue { "," StringPrimary }* } ")"
  */
-class JsonSearch extends MysqlJsonFunctionNode
+class JsonSearch extends MysqlAndMariadbJsonFunctionNode
 {
     public const FUNCTION_NAME = 'JSON_SEARCH';
 

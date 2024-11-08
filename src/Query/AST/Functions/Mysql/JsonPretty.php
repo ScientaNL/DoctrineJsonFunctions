@@ -7,7 +7,7 @@ namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 /**
  * "JSON_PRETTY" "(" NewValue ")"
  */
-class JsonPretty extends MysqlJsonFunctionNode
+class JsonPretty extends MysqlAndMariadbJsonFunctionNode
 {
     public const FUNCTION_NAME = 'JSON_PRETTY';
 

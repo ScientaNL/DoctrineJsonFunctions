@@ -7,7 +7,7 @@ namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 /**
  * "JSON_DEPTH" "(" StringPrimary ")"
  */
-class JsonDepth extends MysqlJsonFunctionNode
+class JsonDepth extends MysqlAndMariadbJsonFunctionNode
 {
     public const FUNCTION_NAME = 'JSON_DEPTH';
 

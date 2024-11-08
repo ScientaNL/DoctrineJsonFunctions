@@ -7,7 +7,7 @@ namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 /**
  * "JSON_OVERLAPS" "(" StringPrimary "," StringPrimary ")"
  */
-class JsonOverlaps extends MysqlJsonFunctionNode
+class JsonOverlaps extends MysqlAndMariadbJsonFunctionNode
 {
     public const FUNCTION_NAME = 'JSON_OVERLAPS';
 

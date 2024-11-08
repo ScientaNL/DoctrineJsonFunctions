@@ -9,6 +9,9 @@ use Doctrine\ORM\Query\SqlWalker;
 use Scienta\DoctrineJsonFunctions\DBALCompatibility;
 use Scienta\DoctrineJsonFunctions\Query\AST\Functions\AbstractJsonFunctionNode;
 
+/**
+ * @internal
+ */
 abstract class SqliteJsonFunctionNode extends AbstractJsonFunctionNode
 {
     /**

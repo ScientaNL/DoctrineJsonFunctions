@@ -7,7 +7,7 @@ namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 /**
  * "JSON_CONTAINS" "(" StringPrimary "," StringPrimary {"," StringPrimary } ")"
  */
-class JsonContains extends MysqlJsonFunctionNode
+class JsonContains extends MysqlAndMariadbJsonFunctionNode
 {
     public const FUNCTION_NAME = 'JSON_CONTAINS';
 

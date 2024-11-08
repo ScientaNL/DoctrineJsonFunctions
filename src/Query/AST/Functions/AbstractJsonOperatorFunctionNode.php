@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions;
 
+/**
+ * @internal
+ */
 abstract class AbstractJsonOperatorFunctionNode extends AbstractJsonFunctionNode
 {
     /** @var string[] */

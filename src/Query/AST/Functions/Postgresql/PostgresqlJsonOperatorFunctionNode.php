@@ -10,6 +10,9 @@ use Doctrine\ORM\Query\SqlWalker;
 use Scienta\DoctrineJsonFunctions\DBALCompatibility;
 use Scienta\DoctrineJsonFunctions\Query\AST\Functions\AbstractJsonOperatorFunctionNode;
 
+/**
+ * @internal
+ */
 abstract class PostgresqlJsonOperatorFunctionNode extends AbstractJsonOperatorFunctionNode
 {
     public const OPERATOR = null;

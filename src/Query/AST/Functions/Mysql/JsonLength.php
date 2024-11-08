@@ -7,7 +7,7 @@ namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 /**
  * "JSON_LENGTH" "(" StringPrimary {"," StringPrimary } ")"
  */
-class JsonLength extends MysqlJsonFunctionNode
+class JsonLength extends MysqlAndMariadbJsonFunctionNode
 {
     public const FUNCTION_NAME = 'JSON_LENGTH';
 
