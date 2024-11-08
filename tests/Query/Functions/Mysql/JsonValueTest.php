@@ -11,6 +11,14 @@ class JsonValueTest extends MysqlTestCase
     public function testJsonValueForData()
     {
         $this->assertDqlProducesSql(
+            "SELECT JSON_VALUE(j.jsonData, '$.a') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\JsonData j",
+            "SELECT JSON_VALUE(j0_.jsonData, '$.a') AS sclr_0 FROM JsonData j0_"
+        );
+    }
+
+    public function testJsonValueReturningUnsigned()
+    {
+        $this->assertDqlProducesSql(
             "SELECT JSON_VALUE(j.jsonData, '$.a', UNSIGNED) FROM Scienta\DoctrineJsonFunctions\Tests\Entities\JsonData j",
             "SELECT JSON_VALUE(j0_.jsonData, '$.a' RETURNING UNSIGNED) AS sclr_0 FROM JsonData j0_"
         );
