@@ -7,7 +7,7 @@ namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 /**
  * "JSON_MERGE_PATCH" "(" StringPrimary "," StringPrimary { "," StringPrimary }* ")"
  */
-class JsonMergePatch extends MysqlJsonFunctionNode
+class JsonMergePatch extends MysqlAndMariadbJsonFunctionNode
 {
     public const FUNCTION_NAME = 'JSON_MERGE_PATCH';
 

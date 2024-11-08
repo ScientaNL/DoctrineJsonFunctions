@@ -14,6 +14,9 @@ use Doctrine\ORM\Query\QueryException;
 use Doctrine\ORM\Query\SqlWalker;
 use Doctrine\ORM\Query\TokenType;
 
+/**
+ * @internal
+ */
 abstract class AbstractJsonFunctionNode extends FunctionNode
 {
     public const FUNCTION_NAME = null;

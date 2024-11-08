@@ -7,7 +7,7 @@ namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 /**
  * "JSON_ARRAY" "(" { NewValue }* ")"
  */
-class JsonArray extends MysqlJsonFunctionNode
+class JsonArray extends MysqlAndMariadbJsonFunctionNode
 {
 	public const FUNCTION_NAME = 'JSON_ARRAY';
 

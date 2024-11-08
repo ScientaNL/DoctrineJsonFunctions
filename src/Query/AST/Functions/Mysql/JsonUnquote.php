@@ -7,7 +7,7 @@ namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 /**
  * "JSON_UNQUOTE" "(" StringPrimary ")"
  */
-class JsonUnquote extends MysqlJsonFunctionNode
+class JsonUnquote extends MysqlAndMariadbJsonFunctionNode
 {
     public const FUNCTION_NAME = 'JSON_UNQUOTE';
 

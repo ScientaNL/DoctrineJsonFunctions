@@ -7,7 +7,7 @@ namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 /**
  * "JSON_KEYS" "(" StringPrimary {"," StringPrimary } ")"
  */
-class JsonKeys extends MysqlJsonFunctionNode
+class JsonKeys extends MysqlAndMariadbJsonFunctionNode
 {
     public const FUNCTION_NAME = 'JSON_KEYS';
 

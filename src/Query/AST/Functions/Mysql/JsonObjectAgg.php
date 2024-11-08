@@ -7,7 +7,7 @@ namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 /**
  * "JSON_OBJECTAGG" "(" StringPrimary "," NewValue ")"
  */
-class JsonObjectAgg extends MysqlJsonFunctionNode
+class JsonObjectAgg extends MysqlAndMariadbJsonFunctionNode
 {
     public const FUNCTION_NAME = 'JSON_OBJECTAGG';
 

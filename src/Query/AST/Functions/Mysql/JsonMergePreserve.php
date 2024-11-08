@@ -7,7 +7,7 @@ namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 /**
  * "JSON_MERGE_PRESERVE" "(" StringPrimary "," StringPrimary { "," StringPrimary }* ")"
  */
-class JsonMergePreserve extends MysqlJsonFunctionNode
+class JsonMergePreserve extends MysqlAndMariadbJsonFunctionNode
 {
     public const FUNCTION_NAME = 'JSON_MERGE_PRESERVE';
 

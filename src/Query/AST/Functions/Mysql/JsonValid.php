@@ -7,7 +7,7 @@ namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 /**
  * "JSON_VALID" "(" StringPrimary ")"
  */
-class JsonValid extends MysqlJsonFunctionNode
+class JsonValid extends MysqlAndMariadbJsonFunctionNode
 {
     public const FUNCTION_NAME = 'JSON_VALID';
 
