@@ -32,6 +32,9 @@ final class DBALCompatibility
         return new Exception("Method $method is not supported for doctrine platform");
     }
 
+    /**
+     * @psalm-return class-string
+     */
     public static function sqlLitePlatform(): string
     {
         if (class_exists('Doctrine\DBAL\Platforms\SQLitePlatform')) {
@@ -41,6 +44,9 @@ final class DBALCompatibility
         return 'Doctrine\DBAL\Platforms\SqlitePlatform';
     }
 
+    /**
+     * @psalm-return class-string
+     */
     public static function mariaDBPlatform(): string
     {
         if (!class_exists('\Doctrine\DBAL\Platforms\MariaDBPlatform')) {
@@ -52,6 +58,17 @@ final class DBALCompatibility
         return '\Doctrine\DBAL\Platforms\MariaDBPlatform';
     }
 
+    /**
+     * @psalm-return class-string
+     */
+    public static function mysqlDBPlatform(): string
+    {
+        return '\Doctrine\DBAL\Platforms\MySQLPlatform';
+    }
+
+    /**
+     * @psalm-return class-string
+     */
     public static function mysqlAndMariaDBSharedPlatform(): string
     {
         if (!class_exists('\Doctrine\DBAL\Platforms\AbstractMySQLPlatform')) {
