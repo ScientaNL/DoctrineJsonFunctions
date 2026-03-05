@@ -9,6 +9,7 @@ use Doctrine\ORM\Query\AST\Node;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\SqlWalker;
 use Doctrine\ORM\Query\TokenType;
+use Override;
 
 use function implode;
 use function sprintf;
@@ -27,6 +28,7 @@ class JsonValue extends MysqlJsonFunctionNode
 
     private string | int | null $returningType = null;
 
+    #[Override]
     public function parse(Parser $parser): void
     {
         $parser->match(TokenType::T_IDENTIFIER);
@@ -72,6 +74,7 @@ class JsonValue extends MysqlJsonFunctionNode
      * @throws Exception
      * @throws \Doctrine\ORM\Query\AST\ASTException
      */
+    #[Override]
     public function getSql(SqlWalker $sqlWalker): string
     {
         $this->validatePlatform($sqlWalker);

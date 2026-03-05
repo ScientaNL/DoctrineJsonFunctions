@@ -6,14 +6,17 @@ namespace Scienta\DoctrineJsonFunctions\Tests\Integration;
 
 use Doctrine\ORM\Configuration;
 use Scienta\DoctrineJsonFunctions\Query\AST\Functions\Postgresql as PgFunctions;
+use Override;
 
 abstract class PostgresqlIntegrationTestCase extends IntegrationTestCase
 {
+    #[Override]
     protected static function getConnectionUrl(): ?string
     {
-        return $_ENV['POSTGRES_URL'] ?? getenv('POSTGRES_URL') ?: null;
+        return ($_ENV['POSTGRES_URL'] ?? getenv('POSTGRES_URL')) ?: null;
     }
 
+    #[Override]
     protected function setUp(): void
     {
         parent::setUp();
@@ -34,6 +37,7 @@ abstract class PostgresqlIntegrationTestCase extends IntegrationTestCase
         );
     }
 
+    #[Override]
     protected static function loadDqlFunctions(Configuration $config): void
     {
         // Register all 11 PostgreSQL functions (the unit-test PostgresqlTestCase only

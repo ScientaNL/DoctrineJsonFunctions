@@ -11,6 +11,7 @@ use Doctrine\ORM\ORMSetup;
 use Scienta\DoctrineJsonFunctions\Tests\DoctrineJsonTestcase;
 use Scienta\DoctrineJsonFunctions\Tests\Mocks;
 use Webmozart\Assert\Assert;
+use Override;
 
 abstract class DbTestCase extends DoctrineJsonTestcase
 {
@@ -20,9 +21,14 @@ abstract class DbTestCase extends DoctrineJsonTestcase
     /** @var Configuration */
     protected $configuration;
 
+    #[Override]
     public function setUp(): void
     {
         $this->configuration = ORMSetup::createAttributeMetadataConfiguration([], true, __DIR__ . '/Proxies');
+
+        if (PHP_VERSION_ID >= 80400) {
+            $this->configuration->enableNativeLazyObjects(true);
+        }
 
         $conn = DriverManager::getConnection([
             'driverClass'  => Mocks\DriverMock::class,

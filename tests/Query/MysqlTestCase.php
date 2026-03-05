@@ -8,9 +8,11 @@ use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\ORM\Configuration;
 use Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql as DqlFunctions;
 use Scienta\DoctrineJsonFunctions\Tests\Mocks\ConnectionMock;
+use Override;
 
 abstract class MysqlTestCase extends DbTestCase
 {
+    #[Override]
     public function setUp(): void
     {
         parent::setUp();

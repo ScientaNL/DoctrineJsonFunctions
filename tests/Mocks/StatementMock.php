@@ -6,12 +6,14 @@ namespace Scienta\DoctrineJsonFunctions\Tests\Mocks;
 
 use Doctrine\DBAL\Driver\Result;
 use Doctrine\DBAL\Driver\Statement;
+use Override;
 
 class StatementMock implements Statement
 {
     /**
      * {@inheritdoc}
      */
+    #[Override]
     public function bindValue($param, $value, $type = null): void
     {
     }
@@ -27,6 +29,7 @@ class StatementMock implements Statement
     /**
      * {@inheritdoc}
      */
+    #[Override]
     public function execute($params = null): Result
     {
         return new ResultMock();

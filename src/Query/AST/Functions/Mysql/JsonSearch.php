@@ -9,6 +9,7 @@ use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\TokenType;
 use Exception;
 use Scienta\DoctrineJsonFunctions\DBALCompatibility;
+use Override;
 
 /**
  * "JSON_SEARCH" "(" StringPrimary "," ["one" | "all"] "," StringPrimary {"," NewValue { "," StringPrimary }* } ")"
@@ -29,6 +30,7 @@ class JsonSearch extends MysqlAndMariadbJsonFunctionNode
 
     /**
      * @var string
+     * @psalm-suppress PossiblyUnusedProperty
      */
     public $mode;
 
@@ -37,6 +39,7 @@ class JsonSearch extends MysqlAndMariadbJsonFunctionNode
      * @throws Exception
      * @throws \Doctrine\ORM\Query\QueryException
      */
+    #[Override]
     public function parse(Parser $parser): void
     {
         $parser->match(TokenType::T_IDENTIFIER);

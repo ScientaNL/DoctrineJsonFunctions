@@ -7,14 +7,17 @@ namespace Scienta\DoctrineJsonFunctions\Tests\Integration;
 use Doctrine\ORM\Configuration;
 use Scienta\DoctrineJsonFunctions\Tests\Query\MariadbTestCase;
 use Scienta\DoctrineJsonFunctions\Tests\Query\MysqlTestCase;
+use Override;
 
 abstract class MariadbIntegrationTestCase extends IntegrationTestCase
 {
+    #[Override]
     protected static function getConnectionUrl(): ?string
     {
-        return $_ENV['MARIADB_URL'] ?? getenv('MARIADB_URL') ?: null;
+        return ($_ENV['MARIADB_URL'] ?? getenv('MARIADB_URL')) ?: null;
     }
 
+    #[Override]
     protected static function loadDqlFunctions(Configuration $config): void
     {
         // Register shared MySQL+MariaDB functions first, then MariaDB-specific ones.

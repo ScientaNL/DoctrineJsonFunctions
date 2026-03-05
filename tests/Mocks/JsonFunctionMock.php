@@ -6,6 +6,7 @@ namespace Scienta\DoctrineJsonFunctions\Tests\Mocks;
 
 use Doctrine\ORM\Query\SqlWalker;
 use Scienta\DoctrineJsonFunctions\Query\AST\Functions\AbstractJsonFunctionNode;
+use Override;
 
 class JsonFunctionMock extends AbstractJsonFunctionNode
 {
@@ -32,6 +33,7 @@ class JsonFunctionMock extends AbstractJsonFunctionNode
         parent::__construct($name);
     }
 
+    #[Override]
     protected function validatePlatform(SqlWalker $sqlWalker): void
     {
         //do nothing
