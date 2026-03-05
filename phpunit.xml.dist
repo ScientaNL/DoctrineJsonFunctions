@@ -5,10 +5,24 @@
     colors="true"
     bootstrap="vendor/autoload.php"
     cacheDirectory=".phpunit.cache"
+    failOnEmptyTestSuite="false"
 >
   <testsuites>
-    <testsuite name="DoctrineJsonFunctions Test Suite">
+    <testsuite name="unit">
       <directory>./tests/</directory>
+      <exclude>./tests/Integration</exclude>
+    </testsuite>
+    <testsuite name="integration-mysql">
+      <directory>./tests/Integration/Functions/Mysql</directory>
+    </testsuite>
+    <testsuite name="integration-mariadb">
+      <directory>./tests/Integration/Functions/Mariadb</directory>
+    </testsuite>
+    <testsuite name="integration-postgresql">
+      <directory>./tests/Integration/Functions/Postgresql</directory>
+    </testsuite>
+    <testsuite name="integration-sqlite">
+      <directory>./tests/Integration/Functions/Sqlite</directory>
     </testsuite>
   </testsuites>
 </phpunit>

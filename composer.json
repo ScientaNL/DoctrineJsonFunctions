@@ -59,7 +59,13 @@
     "scripts": {
         "codestyle": "phpcs -q --report=checkstyle",
         "phpstan": "phpstan analyze -v",
-        "psalm": "psalm --config=psalm.xml --threads=1 --no-cache"
+        "psalm": "psalm --config=psalm.xml --threads=1 --no-cache",
+        "test:unit": "./vendor/bin/phpunit --testsuite unit",
+        "test:integration": "./vendor/bin/phpunit --testsuite 'integration-mysql,integration-mariadb,integration-postgresql,integration-sqlite'",
+        "test:integration:mysql": "./vendor/bin/phpunit --testsuite integration-mysql",
+        "test:integration:mariadb": "./vendor/bin/phpunit --testsuite integration-mariadb",
+        "test:integration:postgres": "./vendor/bin/phpunit --testsuite integration-postgresql",
+        "test:integration:sqlite": "./vendor/bin/phpunit --testsuite integration-sqlite"
     },
     "config": {
         "allow-plugins": {
