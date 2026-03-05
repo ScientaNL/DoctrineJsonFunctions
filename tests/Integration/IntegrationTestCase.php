@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\ORMSetup;
 use Doctrine\ORM\Tools\SchemaTool;
 use PHPUnit\Framework\TestCase;
+use Override;
 
 abstract class IntegrationTestCase extends TestCase
 {
@@ -24,6 +25,7 @@ abstract class IntegrationTestCase extends TestCase
 
     abstract protected static function loadDqlFunctions(Configuration $config): void;
 
+    #[Override]
     protected function setUp(): void
     {
         $url = static::getConnectionUrl();
@@ -35,6 +37,11 @@ abstract class IntegrationTestCase extends TestCase
             [__DIR__ . '/../Entities'],
             true
         );
+
+        if (PHP_VERSION_ID >= 80400) {
+            $config->enableNativeLazyObjects(true);
+        }
+
         static::loadDqlFunctions($config);
 
         $dsnParser = new DsnParser([
@@ -59,6 +66,7 @@ abstract class IntegrationTestCase extends TestCase
         $this->entityManager->getConnection()->insert('Blank', ['id' => 'seed']);
     }
 
+    #[Override]
     protected function tearDown(): void
     {
         if ($this->entityManager === null) {

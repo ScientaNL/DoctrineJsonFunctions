@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions;
 
+use Override;
+
 /**
  * @internal
  */
@@ -18,6 +20,7 @@ abstract class AbstractJsonOperatorFunctionNode extends AbstractJsonFunctionNode
      * @param string[] $arguments
      * @return string
      */
+    #[Override]
     protected function getSqlForArgs(array $arguments): string
     {
         [$leftArg, $rightArg] = $arguments;

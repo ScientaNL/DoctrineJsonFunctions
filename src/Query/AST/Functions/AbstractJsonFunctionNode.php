@@ -13,6 +13,7 @@ use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\QueryException;
 use Doctrine\ORM\Query\SqlWalker;
 use Doctrine\ORM\Query\TokenType;
+use Override;
 
 /**
  * @internal
@@ -42,6 +43,7 @@ abstract class AbstractJsonFunctionNode extends FunctionNode
      * @param Parser $parser
      * @throws \Doctrine\ORM\Query\QueryException
      */
+    #[Override]
     public function parse(Parser $parser): void
     {
         $parser->match(TokenType::T_IDENTIFIER);
@@ -161,6 +163,7 @@ abstract class AbstractJsonFunctionNode extends FunctionNode
      * @throws Exception
      * @throws \Doctrine\ORM\Query\AST\ASTException
      */
+    #[Override]
     public function getSql(SqlWalker $sqlWalker): string
     {
         $this->validatePlatform($sqlWalker);

@@ -8,9 +8,11 @@ use Doctrine\ORM\Configuration;
 use Scienta\DoctrineJsonFunctions\DBALCompatibility;
 use Scienta\DoctrineJsonFunctions\Query\AST\Functions\Sqlite as DqlFunctions;
 use Scienta\DoctrineJsonFunctions\Tests\Mocks\ConnectionMock;
+use Override;
 
 abstract class SqliteTestCase extends DbTestCase
 {
+    #[Override]
     public function setUp(): void
     {
         parent::setUp();

@@ -8,9 +8,11 @@ use Doctrine\ORM\Configuration;
 use Scienta\DoctrineJsonFunctions\DBALCompatibility;
 use Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mariadb as DqlFunctions;
 use Scienta\DoctrineJsonFunctions\Tests\Mocks\ConnectionMock;
+use Override;
 
 abstract class MariadbTestCase extends DbTestCase
 {
+    #[Override]
     public function setUp(): void
     {
         parent::setUp();

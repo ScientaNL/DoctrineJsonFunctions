@@ -7,9 +7,11 @@ namespace Scienta\DoctrineJsonFunctions\Tests\Query\Functions;
 use Scienta\DoctrineJsonFunctions\Tests\Mocks\JsonFunctionMock;
 use Scienta\DoctrineJsonFunctions\Tests\Query\DbTestCase;
 use Doctrine\ORM\Query\QueryException;
+use Override;
 
 class JsonFunctionStructureTest extends DbTestCase
 {
+    #[Override]
     public function setUp(): void
     {
         parent::setUp();

@@ -7,6 +7,7 @@ namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 use Doctrine\DBAL\Exception;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\TokenType;
+use Override;
 
 /**
  * "JSON_CONTAINS_PATH" "(" StringPrimary "," ["one" | "all"] {"," StringPrimary }* ")"
@@ -20,6 +21,7 @@ class JsonContainsPath extends JsonSearch
      * @throws Exception
      * @throws \Doctrine\ORM\Query\QueryException
      */
+    #[Override]
     public function parse(Parser $parser): void
     {
         $parser->match(TokenType::T_IDENTIFIER);

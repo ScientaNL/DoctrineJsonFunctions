@@ -11,6 +11,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Scienta\DoctrineJsonFunctions\Tests\Mocks\Exception\NotImplemented;
+use Override;
 
 /**
  * Mock class for Driver.
@@ -32,6 +33,7 @@ class DriverMock implements Driver
     /**
      * {@inheritdoc}
      */
+    #[Override]
     public function connect(array $params, $username = null, $password = null, array $driverOptions = array()): Driver\Connection
     {
         return new DriverConnectionMock();
@@ -95,6 +97,7 @@ class DriverMock implements Driver
     /**
      * @throws Exception
      */
+    #[Override]
     public function getExceptionConverter(): ExceptionConverter
     {
         throw new NotImplemented(__METHOD__);

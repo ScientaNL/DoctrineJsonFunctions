@@ -7,7 +7,6 @@
 	xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
 	allowNamedArgumentCalls="false"
 	findUnusedBaselineEntry="true"
-    errorBaseline="psalm-baseline.xml"
 >
 	<projectFiles>
 		<directory name="src"/>
@@ -20,4 +19,27 @@
 	<plugins>
 		<pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>
 	</plugins>
+    <issueHandlers>
+        <UnusedClass>
+            <errorLevel type="suppress">
+                <directory name="tests"/>
+            </errorLevel>
+        </UnusedClass>
+        <PossiblyUnusedMethod>
+            <errorLevel type="suppress">
+                <directory name="tests"/>
+            </errorLevel>
+        </PossiblyUnusedMethod>
+        <PossiblyUnusedParam>
+            <errorLevel type="suppress">
+                <directory name="tests"/>
+            </errorLevel>
+        </PossiblyUnusedParam>
+        <DuplicateClass>
+            <errorLevel type="suppress">
+                <file name="tests/Mocks/DbalDriverCompatibility.php"/>
+                <file name="tests/Mocks/DbalPlatformCompatibility.php"/>
+            </errorLevel>
+        </DuplicateClass>
+    </issueHandlers>
 </psalm>

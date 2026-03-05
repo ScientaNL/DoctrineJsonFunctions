@@ -7,6 +7,7 @@ namespace Scienta\DoctrineJsonFunctions\Tests\Mocks;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Scienta\DoctrineJsonFunctions\Tests\Mocks\Exception\NotImplemented;
+use Override;
 
 /**
  * Mock class for DatabasePlatform.
@@ -25,6 +26,7 @@ class DatabasePlatformMock extends AbstractPlatform
      */
     private $_prefersIdentityColumns = true;
 
+    #[Override]
     public function supportsIdentityColumns(): bool
     {
         return true;
@@ -38,6 +40,7 @@ class DatabasePlatformMock extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
+    #[Override]
     public function getSequenceNextValSQL($sequence): string
     {
         return $this->_sequenceNextValSql;
@@ -46,6 +49,7 @@ class DatabasePlatformMock extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
+    #[Override]
     public function getBooleanTypeDeclarationSQL(array $column): string
     {
         return 'TINYINT(1)';
@@ -54,6 +58,7 @@ class DatabasePlatformMock extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
+    #[Override]
     public function getIntegerTypeDeclarationSQL(array $column): string
     {
         return 'INT' . $this->_getCommonIntegerTypeDeclarationSQL($column);
@@ -62,6 +67,7 @@ class DatabasePlatformMock extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
+    #[Override]
     public function getBigIntTypeDeclarationSQL(array $column): string
     {
         return 'BIGINT' . $this->_getCommonIntegerTypeDeclarationSQL($column);
@@ -70,6 +76,7 @@ class DatabasePlatformMock extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
+    #[Override]
     public function getSmallIntTypeDeclarationSQL(array $column): string
     {
         return 'SMALLINT' . $this->_getCommonIntegerTypeDeclarationSQL($column);
@@ -78,6 +85,7 @@ class DatabasePlatformMock extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
+    #[Override]
     protected function _getCommonIntegerTypeDeclarationSQL(array $column): string
     {
         return '';
@@ -94,6 +102,7 @@ class DatabasePlatformMock extends AbstractPlatform
     /**
      * {@inheritdoc}
      */
+    #[Override]
     public function getClobTypeDeclarationSQL(array $column): string
     {
         return 'LONGTEXT';
@@ -126,6 +135,7 @@ class DatabasePlatformMock extends AbstractPlatform
         return 'mock';
     }
 
+    #[Override]
     protected function initializeDoctrineTypeMappings(): void
     {
     }
@@ -135,6 +145,7 @@ class DatabasePlatformMock extends AbstractPlatform
      * @return string
      * @throws Exception
      */
+    #[Override]
     public function getBlobTypeDeclarationSQL(array $column): string
     {
         throw new NotImplemented(__METHOD__);
@@ -143,6 +154,7 @@ class DatabasePlatformMock extends AbstractPlatform
     /**
      * @throws Exception
      */
+    #[Override]
     public function getCurrentDatabaseExpression(): string
     {
         throw new NotImplemented(__METHOD__);

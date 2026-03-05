@@ -9,6 +9,7 @@ use Doctrine\DBAL\Driver\Result;
 use Doctrine\DBAL\Driver\Statement;
 use PDO;
 use Scienta\DoctrineJsonFunctions\Tests\Mocks\Exception\NotImplemented;
+use Override;
 
 /**
  * Mock class for DriverConnection.
@@ -40,6 +41,7 @@ class DriverConnectionMock implements Connection
     /**
      * {@inheritdoc}
      */
+    #[Override]
     public function prepare($sql): Statement
     {
         return $this->statementMock ?: new StatementMock();
@@ -49,6 +51,7 @@ class DriverConnectionMock implements Connection
      * {@inheritdoc}
      * @param string $sql
      */
+    #[Override]
     public function query(string $sql): Result
     {
         return new ResultMock();
@@ -57,6 +60,7 @@ class DriverConnectionMock implements Connection
     /**
      * {@inheritdoc}
      */
+    #[Override]
     public function quote($value, $type = PDO::PARAM_STR): string
     {
         return $value;
@@ -65,6 +69,7 @@ class DriverConnectionMock implements Connection
     /**
      * {@inheritdoc}
      */
+    #[Override]
     public function exec($sql): int
     {
         return 1;
@@ -73,19 +78,23 @@ class DriverConnectionMock implements Connection
     /**
      * {@inheritdoc}
      */
+    #[Override]
     public function lastInsertId($name = null): int|string
     {
         return 0;
     }
 
+    #[Override]
     public function beginTransaction(): void
     {
     }
 
+    #[Override]
     public function commit(): void
     {
     }
 
+    #[Override]
     public function rollBack(): void
     {
     }
@@ -98,11 +107,13 @@ class DriverConnectionMock implements Connection
     {
     }
 
+    #[Override]
     public function getNativeConnection()
     {
         throw new NotImplemented(__METHOD__);
     }
 
+    #[Override]
     public function getServerVersion(): string
     {
         throw new NotImplemented(__METHOD__);

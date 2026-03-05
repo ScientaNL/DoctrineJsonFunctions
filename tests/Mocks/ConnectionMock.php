@@ -12,6 +12,7 @@ use Doctrine\DBAL\Result;
 use Exception;
 use Webmozart\Assert\Assert;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Override;
 
 /**
  * Mock class for Connection.
@@ -55,6 +56,7 @@ class ConnectionMock extends Connection
 
     /**
      * @var DatabasePlatformMock
+     * @psalm-suppress UnusedProperty
      */
     private $_platform;
 
@@ -79,6 +81,7 @@ class ConnectionMock extends Connection
         $this->_platform = $this->_platformMock;
     }
 
+    #[Override]
     public function getDatabasePlatform(): AbstractPlatform
     {
         return $this->_platformMock;
@@ -87,6 +90,7 @@ class ConnectionMock extends Connection
     /**
      * {@inheritdoc}
      */
+    #[Override]
     public function insert($table, array $data, array $types = []): int|string
     {
         $this->_inserts[$table][] = $data;
@@ -107,6 +111,7 @@ class ConnectionMock extends Connection
     /**
      * {@inheritdoc}
      */
+    #[Override]
     public function lastInsertId($name = null): int|string
     {
         return $this->_lastInsertId;
@@ -134,6 +139,7 @@ class ConnectionMock extends Connection
     /**
      * {@inheritdoc}
      */
+    #[Override]
     public function quote($value, $type = null): string
     {
         if (is_string($value)) {

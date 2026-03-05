@@ -6,9 +6,11 @@ namespace Scienta\DoctrineJsonFunctions\Tests\Query\Functions;
 
 use Scienta\DoctrineJsonFunctions\Tests\Mocks\JsonFunctionMock;
 use Scienta\DoctrineJsonFunctions\Tests\Query\DbTestCase;
+use Override;
 
 class JsonFunctionArgumentParsingTest extends DbTestCase
 {
+    #[Override]
     public function setUp(): void
     {
         parent::setUp();

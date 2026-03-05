@@ -9,6 +9,7 @@ use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\ORM\Query\SqlWalker;
 use Scienta\DoctrineJsonFunctions\DBALCompatibility;
 use Scienta\DoctrineJsonFunctions\Query\AST\Functions\AbstractJsonOperatorFunctionNode;
+use Override;
 
 /**
  * @internal
@@ -21,6 +22,7 @@ abstract class PostgresqlJsonOperatorFunctionNode extends AbstractJsonOperatorFu
      * @param SqlWalker $sqlWalker
      * @throws Exception
      */
+    #[Override]
     protected function validatePlatform(SqlWalker $sqlWalker): void
     {
         if (!$sqlWalker->getConnection()->getDatabasePlatform() instanceof PostgreSQLPlatform) {
@@ -31,6 +33,7 @@ abstract class PostgresqlJsonOperatorFunctionNode extends AbstractJsonOperatorFu
     /**
      * @return string
      */
+    #[Override]
     public function getOperator(): string
     {
         return static::OPERATOR;

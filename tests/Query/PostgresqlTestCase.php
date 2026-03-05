@@ -8,9 +8,11 @@ use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Doctrine\ORM\Configuration;
 use Scienta\DoctrineJsonFunctions\Query\AST\Functions\Postgresql as DqlFunctions;
 use Scienta\DoctrineJsonFunctions\Tests\Mocks\ConnectionMock;
+use Override;
 
 abstract class PostgresqlTestCase extends DbTestCase
 {
+    #[Override]
     public function setUp(): void
     {
         parent::setUp();
