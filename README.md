@@ -3,91 +3,137 @@
 [![License](https://poser.pugx.org/scienta/doctrine-json-functions/license)](https://packagist.org/packages/scienta/doctrine-json-functions)
 
 # DoctrineJsonFunctions
-A set of extensions to Doctrine 2+ that add support for json functions.
-+Functions are available for MySQL, MariaDb and PostgreSQL.
 
-| DB | Functions |
-|:--:|:---------:|
-| MySQL | `JSON_APPEND, JSON_ARRAY, JSON_ARRAYAGG, JSON_ARRAY_APPEND, JSON_ARRAY_INSERT, JSON_CONTAINS, JSON_CONTAINS_PATH, JSON_DEPTH, JSON_EXTRACT, JSON_OVERLAPS, JSON_INSERT, JSON_KEYS, JSON_LENGTH, JSON_MERGE, JSON_MERGE_PRESERVE, JSON_MERGE_PATCH, JSON_OBJECT, JSON_OBJECTAGG, JSON_PRETTY, JSON_QUOTE, JSON_REMOVE, JSON_REPLACE, JSON_SEARCH, JSON_SET, JSON_TYPE, JSON_UNQUOTE, JSON_VALID` |
-| PostgreSQL | `@> (JSONB_CONTAINS), ? (JSONB_EXISTS), ?& (JSONB_EXISTS_ALL), ?\| (JSONB_EXISTS_ANY), <@ (JSONB_IS_CONTAINED), JSONB_INSERT, JSON_EXTRACT_PATH, -> (JSON_GET), #> (JSON_GET_PATH), #>> (JSON_GET_PATH_TEXT), ->> (JSON_GET_TEXT)` |
-| MariaDb | `JSON_VALUE, JSON_EXISTS, JSON_QUERY, JSON_COMPACT, JSON_DETAILED, JSON_LOOSE, JSON_EQUALS, JSON_NORMALIZE` |
-| SQLite | `JSON, JSON_ARRAY, JSON_ARRAY_LENGTH, JSON_EXTRACT, JSON_GROUP_ARRAY, JSON_GROUP_OBJECT, JSON_INSERT, JSON_OBJECT, JSON_PATCH, JSON_QUOTE, JSON_REMOVE, JSON_REPLACE, JSON_SET, JSON_TYPE, JSON_VALID` |
+A set of extensions to Doctrine ORM that add support for JSON functions in DQL (Doctrine Query Language). Supports MySQL, MariaDB, PostgreSQL, and SQLite.
 
-Table of Contents
------------------
+## Overview
 
-- [Changelog per release](#changelog)
+Doctrine ORM does not natively support database-specific JSON functions in DQL. This library bridges that gap by registering custom DQL function nodes for each supported platform. Each function validates at SQL generation time that the correct database platform is in use, so you get an early error if a function is used against the wrong database.
+
+### Supported Platforms and Functions
+
+| Database | Functions |
+|----------|-----------|
+| MySQL 5.7+ / MariaDB | `JSON_ARRAY`, `JSON_ARRAY_APPEND`, `JSON_ARRAY_INSERT`, `JSON_ARRAYAGG`, `JSON_CONTAINS`, `JSON_CONTAINS_PATH`, `JSON_DEPTH`, `JSON_EXTRACT`, `JSON_INSERT`, `JSON_KEYS`, `JSON_LENGTH`, `JSON_MERGE`, `JSON_MERGE_PATCH`, `JSON_MERGE_PRESERVE`, `JSON_OBJECT`, `JSON_OBJECTAGG`, `JSON_OVERLAPS`, `JSON_PRETTY`, `JSON_QUOTE`, `JSON_REMOVE`, `JSON_REPLACE`, `JSON_SEARCH`, `JSON_SET`, `JSON_TYPE`, `JSON_UNQUOTE`, `JSON_VALID` |
+| MySQL 8.0.21+ only | `JSON_VALUE` |
+| MariaDB only | `JSON_COMPACT`, `JSON_DETAILED`, `JSON_EQUALS`, `JSON_EXISTS`, `JSON_LOOSE`, `JSON_NORMALIZE`, `JSON_QUERY`, `JSON_VALUE` |
+| PostgreSQL 9.3+ | `JSONB_CONTAINS`, `JSONB_EXISTS`, `JSONB_EXISTS_ALL`, `JSONB_EXISTS_ANY`, `JSONB_INSERT`, `JSONB_IS_CONTAINED`, `JSON_EXTRACT_PATH`, `JSON_GET`, `JSON_GET_PATH`, `JSON_GET_PATH_TEXT`, `JSON_GET_TEXT` |
+| SQLite (json1 ext.) | `JSON`, `JSON_ARRAY`, `JSON_ARRAY_LENGTH`, `JSON_EXTRACT`, `JSON_GROUP_ARRAY`, `JSON_GROUP_OBJECT`, `JSON_INSERT`, `JSON_OBJECT`, `JSON_PATCH`, `JSON_QUOTE`, `JSON_REMOVE`, `JSON_REPLACE`, `JSON_SET`, `JSON_TYPE`, `JSON_VALID` |
+
+## Table of Contents
+
+- [Requirements](#requirements)
 - [Installation](#installation)
 - [Testing](#testing)
-- [Functions Registration](#functions-registration)
-  - [Doctrine](#doctrine-orm)
-  - [Symfony](#symfony-with-doctrine-bundle)
+- [Registration](#registration)
+  - [Doctrine ORM](#doctrine-orm)
+  - [Symfony with DoctrineBundle](#symfony-with-doctrinebundle)
 - [Usage](#usage)
-  - [Using Mysql 5.7+ JSON operators](#using-mysql-57-json-operators)
-  - [Using PostgreSQL 9.3+ JSON operators](#using-postgresql-93-json-operators)
-  - [Using SQLite JSON operators](#using-sqlite-json-operators)
-- [DQL Functions](#dql-functions)
-    - [Mysql 5.7+ JSON operators](#mysql-57-json-operators)
-    - [PostgreSQL 9.3+ JSON operators](#postgresql-93-json-operators)
-    - [SQLite json1 extension operators](#sqlite-json1-extension-operators)
-- [Extendability and Database Support](#extendability-and-database-support)
-  - [Architecture](#architecture)
-  - [Adding new platform](#adding-a-new-platform)
-  - [Adding new function](#adding-a-new-function)
+  - [MySQL / MariaDB](#mysql--mariadb)
+  - [PostgreSQL](#postgresql)
+  - [SQLite](#sqlite)
+- [DQL Function Reference](#dql-function-reference)
+  - [MySQL 5.7+ and MariaDB (shared)](#mysql-57-and-mariadb-shared)
+  - [MySQL 8.0.21+ only](#mysql-8021-only)
+  - [MariaDB only](#mariadb-only)
+  - [PostgreSQL 9.3+](#postgresql-93)
+  - [SQLite json1 extension](#sqlite-json1-extension)
+- [Architecture](#architecture)
+- [Extending the Library](#extending-the-library)
+  - [Adding a new function](#adding-a-new-function)
+  - [Adding a new platform](#adding-a-new-platform)
+- [Changelog](#changelog)
+- [See Also](#see-also)
 
 
-Changelog
-------------
-Changes per release are documented with each github release.
-You can find an overview here: https://github.com/ScientaNL/DoctrineJsonFunctions/releases
+## Requirements
+
+- PHP 8.1+
+- `doctrine/orm`: `^2.19` or `^3`
+- `doctrine/dbal`: `^3.2` or `^4`
+- `doctrine/lexer`: `^2.0` or `^3.0`
 
 
-Installation
-------------
-The recommended way to install DoctrineJsonFunctions is through [Composer](https://getcomposer.org/).
+## Installation
 
-Run the following command to install the package:
+Install via Composer:
 
-    composer require scienta/doctrine-json-functions
-
-Alternatively, you can download the [source code as a file](https://github.com/ScientaNL/DoctrineJsonFunctions/releases) and extract it.
-
-
-Testing
-------------
-This repository uses phpunit for testing purposes.
-If you just want to run the tests you can use the docker composer image to install and run phpunit.
-There is a docker-compose file with the correct mount but if you want to use just docker you can run this:
-
-### php8
 ```bash
-docker run -it -v ${PWD}:/app scienta/php-composer:php8 /bin/bash -c "composer install && ./vendor/bin/phpunit"
+composer require scienta/doctrine-json-functions
 ```
 
+## Testing
 
-Functions Registration
-----------------------
+This repository uses PHPUnit. There are two test suites:
+
+- **Unit tests** — mock the Doctrine infrastructure, no real database needed
+- **Integration tests** — run DQL queries against real MySQL, MariaDB, PostgreSQL, and SQLite databases
+
+### Unit tests
+
+```bash
+composer install
+composer test:unit
+```
+
+Or with Docker Compose (PHP 8.4):
+
+```bash
+docker compose up -d --build --wait
+docker compose exec php composer test:unit
+```
+
+### Integration tests
+
+Start the database containers, then run the tests inside the PHP container:
+
+```bash
+docker compose up -d --build --wait
+docker compose exec php composer test:integration
+```
+
+Run a single platform:
+
+```bash
+docker compose exec php composer test:integration:mysql
+docker compose exec php composer test:integration:mariadb
+docker compose exec php composer test:integration:postgres
+docker compose exec php composer test:integration:sqlite
+```
+
+**Running locally without Docker:** copy `.env.dist` to `.env`, fill in your connection URLs, then:
+
+```bash
+export $(grep -v '^#' .env | xargs)
+composer test:integration
+```
+
+SQLite always runs in-memory and needs no configuration.
+
+## Registration
+
+All functions must be registered as **custom string functions** in the Doctrine configuration before they can be used in DQL. Each function class exposes a `FUNCTION_NAME` constant that matches the DQL keyword you use in queries.
+
+> **Note on boolean functions:** Doctrine DQL does not have a native boolean function type ([upstream issue](https://github.com/doctrine/orm/issues/6278)). Register boolean-returning functions (e.g., `JSONB_CONTAINS`, `JSON_CONTAINS`) as `string_functions` and compare them explicitly with `= true` or `= 1` in your DQL to avoid parser errors.
 
 ### Doctrine ORM
-
-[Doctrine documentation: "DQL User Defined Functions"](http://docs.doctrine-project.org/en/latest/cookbook/dql-user-defined-functions.html)
 
 ```php
 <?php
 
-use Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql as DqlFunctions;
+use Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql as MysqlFunctions;
 
 $config = new \Doctrine\ORM\Configuration();
-$config->addCustomStringFunction(DqlFunctions\JsonExtract::FUNCTION_NAME, DqlFunctions\JsonExtract::class);
-$config->addCustomStringFunction(DqlFunctions\JsonSearch::FUNCTION_NAME, DqlFunctions\JsonSearch::class);
+
+// Register the functions you need (example: MySQL)
+$config->addCustomStringFunction(MysqlFunctions\JsonExtract::FUNCTION_NAME, MysqlFunctions\JsonExtract::class);
+$config->addCustomStringFunction(MysqlFunctions\JsonContains::FUNCTION_NAME, MysqlFunctions\JsonContains::class);
+$config->addCustomStringFunction(MysqlFunctions\JsonUnquote::FUNCTION_NAME, MysqlFunctions\JsonUnquote::class);
 
 $em = EntityManager::create($dbParams, $config);
-$queryBuilder = $em->createQueryBuilder();
 ```
 
-### Symfony with Doctrine bundle
-
-[Symfony documentation: "DoctrineBundle Configuration"](https://symfony.com/doc/5.0/reference/configuration/doctrine.html#shortened-configuration-syntax)
+### Symfony with DoctrineBundle
 
 ```yaml
 # config/packages/doctrine.yaml
@@ -95,244 +141,346 @@ doctrine:
     orm:
         dql:
             string_functions:
-                JSON_EXTRACT: Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonExtract
-                JSON_SEARCH: Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonSearch
+                # MySQL / MariaDB shared
+                JSON_EXTRACT:        Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonExtract
+                JSON_CONTAINS:       Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonContains
+                JSON_UNQUOTE:        Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonUnquote
+                JSON_SEARCH:         Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonSearch
+                # PostgreSQL
+                JSONB_CONTAINS:      Scienta\DoctrineJsonFunctions\Query\AST\Functions\Postgresql\JsonbContains
+                JSONB_EXISTS:        Scienta\DoctrineJsonFunctions\Query\AST\Functions\Postgresql\JsonbExists
+                JSON_GET:            Scienta\DoctrineJsonFunctions\Query\AST\Functions\Postgresql\JsonGet
+                JSON_GET_TEXT:       Scienta\DoctrineJsonFunctions\Query\AST\Functions\Postgresql\JsonGetText
 ```
 
-Note that doctrine is [missing a boolean_functions entry](https://github.com/doctrine/orm/issues/6278).
-You can register boolean functions as `string_functions` and need to compare them with `= true` to avoid DQL parser errors.
-For example, to check for existence of an element in a JSONB array, use `andWhere('JSONB_EXISTS(u.roles, :role) = true)`.
 
-Usage
------
+## Usage
 
-Mind the comparison when creating the expression and escape the parameters to be valid JSON.
+Use the registered DQL function names directly in your DQL queries or query builders. JSON path expressions must use single-quoted strings in DQL (not double-quoted).
 
-### Using Mysql 5.7+ JSON operators
-```php
-$q = $queryBuilder
-  ->select('c')
-  ->from('Customer', 'c')
-  ->where("JSON_CONTAINS(c.attributes, :certificates, '$.certificates') = 1");
-
-$result = $q->execute(array(
-  'certificates' => '"BIO"',
-));
-```
-
-### Using PostgreSQL 9.3+ JSON operators
-
-Note that you need to use the function names. This library does not add support for custom operators like `@>`.
+### MySQL / MariaDB
 
 ```php
-$q = $queryBuilder
-  ->select('c')
-  ->from('Customer', 'c')
-  ->where("JSON_GET_TEXT(c.attributes, 'gender') = :gender");
+// Extract a value from a JSON column
+$results = $em->createQuery(
+    "SELECT c FROM App\Entity\Customer c
+     WHERE JSON_UNQUOTE(JSON_EXTRACT(c.attributes, '$.country')) = :country"
+)->setParameter('country', 'NL')->getResult();
 
- $result = $q->execute(array(
-    'gender' => 'male',
- ));
+// Check if a JSON array contains a value
+$results = $queryBuilder
+    ->select('c')
+    ->from('App\Entity\Customer', 'c')
+    ->where("JSON_CONTAINS(c.roles, :role) = 1")
+    ->setParameter('role', '"admin"')
+    ->getQuery()->getResult();
+
+// Use JSON_SEARCH to find a path
+$q = $queryBuilder
+    ->select('c')
+    ->from('App\Entity\Customer', 'c')
+    ->where("JSON_SEARCH(c.attributes, 'one', :cert, null, '$.certificates') IS NOT NULL")
+    ->setParameter('cert', 'BIO');
 ```
 
-Boolean functions need to be registered as string functions and compared with true because [Doctrine DQL does not know about boolean functions](https://github.com/doctrine/orm/issues/6278).
+### PostgreSQL
+
+PostgreSQL operators (`->`, `->>`, `@>`, `?`, etc.) are exposed as named DQL functions because Doctrine DQL does not support custom operators.
+
 ```php
-$q = $queryBuilder
-  ->select('c')
-  ->from('Customer', 'c')
-  ->where('JSONB_CONTAINS(c.roles, :role) = true');
+// Get a JSON object field as text
+$results = $queryBuilder
+    ->select('c')
+    ->from('App\Entity\Customer', 'c')
+    ->where("JSON_GET_TEXT(c.attributes, 'country') = :country")
+    ->setParameter('country', 'NL')
+    ->getQuery()->getResult();
 
- $result = $q->execute(array(
-    'role' => 'ROLE_ADMIN',
- ));
+// Check JSONB containment (boolean — must compare with = true)
+$results = $queryBuilder
+    ->select('c')
+    ->from('App\Entity\Customer', 'c')
+    ->andWhere('JSONB_CONTAINS(c.roles, :role) = true')
+    ->setParameter('role', '"ROLE_ADMIN"')
+    ->getQuery()->getResult();
+
+// Check if a key exists in a JSONB column
+$results = $queryBuilder
+    ->select('c')
+    ->from('App\Entity\Customer', 'c')
+    ->andWhere('JSONB_EXISTS(c.data, :key) = true')
+    ->setParameter('key', 'active')
+    ->getQuery()->getResult();
 ```
 
-### Using SQLite JSON operators
+> PostgreSQL operator chaining (e.g., `col->'a'->'b'`) is not supported. Use `JSON_GET_PATH` (works on both `json` and `jsonb`) or `JSON_EXTRACT_PATH` (`json` columns only) instead.
+
+### SQLite
+
 ```php
-$q = $queryBuilder
-  ->select('c')
-  ->from('Customer', 'c')
-  ->where("JSON_EXTRACT(c.attributes, '$.gender') = :gender");
-
- $result = $q->execute();
+// Extract a field from a JSON column
+$results = $queryBuilder
+    ->select('c')
+    ->from('App\Entity\Customer', 'c')
+    ->where("JSON_EXTRACT(c.attributes, '$.country') = :country")
+    ->setParameter('country', 'NL')
+    ->getQuery()->getResult();
 ```
 
-DQL Functions
--------------
 
-The library provides this set of DQL functions.
+## DQL Function Reference
 
-### Mysql 5.7+ JSON operators
-* [JSON_ARRAY_APPEND(json_doc, path, val[, path, val] ...)](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-array-append)
-	- Appends values to the end of the indicated arrays within a JSON document and returns the result.
-* [JSON_ARRAYAGG(value)](https://dev.mysql.com/doc/refman/5.7/en/aggregate-functions.html#function_json-arrayagg)
-	- Aggregates a result set as a single JSON array whose elements consist of the rows.
-* [JSON_ARRAY_INSERT(json_doc, path, val[, path, val] ...)](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-array-insert)
-	- Updates a JSON document, inserting into an array within the document and returning the modified document.
-* [JSON_ARRAY([val[, val] ...])](https://dev.mysql.com/doc/refman/5.7/en/json-creation-functions.html#function_json-array)
-	- Evaluates a (possibly empty) list of values and returns a JSON array containing those values.
-* [JSON_CONTAINS_PATH(json_doc, one_or_all, path[, path] ...)](https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-contains-path)
-	- Returns 0 or 1 to indicate whether a JSON document contains data at a given path or paths.
-* [JSON_CONTAINS(json_doc, val[, path])](https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-contains)
-	- Returns 0 or 1 to indicate whether a specific value is contained in a target JSON document, or, if a path argument is given, at a specific path within the target document.
-* [JSON_DEPTH(json_doc)](https://dev.mysql.com/doc/refman/5.7/en/json-attribute-functions.html#function_json-depth)
-	- Returns the maximum depth of a JSON document.
-* [JSON_EXTRACT(json_doc, path[, path] ...)](https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-extract)
-	- Returns data from a JSON document, selected from the parts of the document matched by the path arguments.
-* [JSON_OVERLAPS(json_doc1, json_doc2)](https://dev.mysql.com/doc/refman/8.0/en/json-search-functions.html#function_json-overlaps)
-	- Compares two JSON documents. Returns true (1) if the two document have any key-value pairs or array elements in common. If both arguments are scalars, the function performs a simple equality test.
-* [JSON_INSERT(json_doc, path, val[, path, val] ...)](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-insert)
-	- Inserts data into a JSON document and returns the result.
-* [JSON_KEYS(json_doc[, path])](https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-keys)
-	- Returns the keys from the top-level value of a JSON object as a JSON array, or, if a path argument is given, the top-level keys from the selected path.
-* [JSON_LENGTH(json_doc[, path])](https://dev.mysql.com/doc/refman/5.7/en/json-attribute-functions.html#function_json-length)
-	- Returns the length of JSON document, or, if a path argument is given, the length of the value within the document identified by the path.
-* [JSON_MERGE(json_doc, json_doc[, json_doc] ...)](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-merge)
-	- Merges two or more JSON documents and returns the merged result.
-* [JSON_MERGE_PRESERVE(json_doc, json_doc[, json_doc] ...)](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-merge_preserve)
-	- Merges two or more JSON documents and returns the merged result. Returns NULL if any argument is NULL. An error occurs if any argument is not a valid JSON document.
-* [JSON_MERGE_PATCH(json_doc, json_doc[, json_doc] ...)](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-merge-patch)
-    - Performs an RFC 7396 compliant merge of two or more JSON documents and returns the merged result.
-* [JSON_OBJECT([key, val[, key, val] ...])](https://dev.mysql.com/doc/refman/5.7/en/json-creation-functions.html#function_json-object)
-	- Evaluates a (possibly empty) list of key/value pairs and returns a JSON object containing those pairs.
-* [JSON_OBJECTAGG(key, val)](https://dev.mysql.com/doc/refman/5.7/en/json-creation-functions.html#function_json-object)
-	- Takes two column names or expressions as arguments, the first of these being used as a key and the second as a value, and returns a JSON object containing key-value pairs.
-* [JSON_PRETTY(json_val)](https://dev.mysql.com/doc/refman/5.7/en/json-utility-functions.html#function_json-pretty)
-	- Provides pretty-printing of JSON values similar to that implemented in PHP and by other languages and database systems
-* [JSON_QUOTE(json_val)](https://dev.mysql.com/doc/refman/5.7/en/json-creation-functions.html#function_json-quote)
-	- Quotes a string as a JSON value by wrapping it with double quote characters and escaping interior quote and other characters, then returning the result as a utf8mb4 string.
-* [JSON_REMOVE(json_doc, path[, path] ...)](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-remove)
-	- Removes data from a JSON document and returns the result.
-* [JSON_REPLACE(json_doc, path, val[, path, val] ...)](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-replace)
-	- Replaces existing values in a JSON document and returns the result.
-* [JSON_SEARCH(json_doc, one_or_all, search_str[, escape_char[, path] ...])](https://dev.mysql.com/doc/refman/5.7/en/json-search-functions.html#function_json-search)
-	- Returns the path to the given string within a JSON document.
-* [JSON_SET(json_doc, path, val[, path, val] ...)](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-set)
-	- Inserts or updates data in a JSON document and returns the result.
-* [JSON_TYPE(json_val)](https://dev.mysql.com/doc/refman/5.7/en/json-attribute-functions.html#function_json-type)
-	- Returns a utf8mb4 string indicating the type of a JSON value.
-* [JSON_UNQUOTE(val)](https://dev.mysql.com/doc/refman/5.7/en/json-modification-functions.html#function_json-unquote)
-	- Unquotes JSON value and returns the result as a utf8mb4 string.
-* [JSON_VALID(val)](https://dev.mysql.com/doc/refman/5.7/en/json-attribute-functions.html#function_json-valid)
-	- Returns 0 or 1 to indicate whether a value is a valid JSON document.
+### MySQL 5.7+ and MariaDB (shared)
 
-Note that you can use MySQL Operators with MariaDb database if compatible.
+All functions in the `Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql` namespace unless noted. Functions marked as shared also work on MariaDB (they are registered under the MySQL namespace but validate against `AbstractMySQLPlatform` / `MariaDBPlatform`).
 
-### MariaDb 10.2.3 JSON operators
-* [JSON_VALUE(json_doc, path)](https://mariadb.com/kb/en/json_value/)
-	- Returns the scalar specified by the path. Returns NULL if there is no match.
-* [JSON_EXISTS(json_doc, path)](https://mariadb.com/kb/en/json_exists/)
-    - Determines whether a specified JSON value exists in the given data. Returns 1 if found, 0 if not, or NULL if any of the inputs were NULL.
-* [JSON_QUERY(json_doc, path)](https://mariadb.com/kb/en/json_query/)
-	- Given a JSON document, returns an object or array specified by the path. Returns NULL if not given a valid JSON document, or if there is no match.
+| DQL Function | Class | Signature | Description |
+|---|---|---|---|
+| `JSON_ARRAY` | `JsonArray` | `JSON_ARRAY([val, ...])` | Creates a JSON array from arguments |
+| `JSON_ARRAY_APPEND` | `JsonArrayAppend` | `JSON_ARRAY_APPEND(doc, path, val[, ...])` | Appends values to JSON arrays |
+| `JSON_ARRAY_INSERT` | `JsonArrayInsert` | `JSON_ARRAY_INSERT(doc, path, val[, ...])` | Inserts into a JSON array |
+| `JSON_ARRAYAGG` | `JsonArrayAgg` | `JSON_ARRAYAGG(value)` | Aggregate: builds a JSON array from rows |
+| `JSON_CONTAINS` | `JsonContains` | `JSON_CONTAINS(doc, val[, path])` | Returns 1 if doc contains val |
+| `JSON_CONTAINS_PATH` | `JsonContainsPath` | `JSON_CONTAINS_PATH(doc, one_or_all, path[, ...])` | Returns 1 if path(s) exist |
+| `JSON_DEPTH` | `JsonDepth` | `JSON_DEPTH(doc)` | Returns maximum depth of document |
+| `JSON_EXTRACT` | `JsonExtract` | `JSON_EXTRACT(doc, path[, ...])` | Extracts data from a JSON document |
+| `JSON_INSERT` | `JsonInsert` | `JSON_INSERT(doc, path, val[, ...])` | Inserts data into a JSON document |
+| `JSON_KEYS` | `JsonKeys` | `JSON_KEYS(doc[, path])` | Returns top-level keys as a JSON array |
+| `JSON_LENGTH` | `JsonLength` | `JSON_LENGTH(doc[, path])` | Returns the length of a JSON document or value |
+| `JSON_MERGE` | `JsonMerge` | `JSON_MERGE(doc, doc[, ...])` | Merges JSON documents (deprecated alias) |
+| `JSON_MERGE_PATCH` | `JsonMergePatch` | `JSON_MERGE_PATCH(doc, doc[, ...])` | RFC 7396 merge patch |
+| `JSON_MERGE_PRESERVE` | `JsonMergePreserve` | `JSON_MERGE_PRESERVE(doc, doc[, ...])` | Merges preserving duplicate keys |
+| `JSON_OBJECT` | `JsonObject` | `JSON_OBJECT([key, val, ...])` | Creates a JSON object |
+| `JSON_OBJECTAGG` | `JsonObjectAgg` | `JSON_OBJECTAGG(key, val)` | Aggregate: builds a JSON object from rows |
+| `JSON_OVERLAPS` | `JsonOverlaps` | `JSON_OVERLAPS(doc1, doc2)` | Returns 1 if documents share key-value pairs or array elements |
+| `JSON_PRETTY` | `JsonPretty` | `JSON_PRETTY(val)` | Returns pretty-printed JSON |
+| `JSON_QUOTE` | `JsonQuote` | `JSON_QUOTE(val)` | Quotes a string as a JSON value |
+| `JSON_REMOVE` | `JsonRemove` | `JSON_REMOVE(doc, path[, ...])` | Removes data from a JSON document |
+| `JSON_REPLACE` | `JsonReplace` | `JSON_REPLACE(doc, path, val[, ...])` | Replaces existing values |
+| `JSON_SEARCH` | `JsonSearch` | `JSON_SEARCH(doc, one\|all, str[, escape[, path...]])` | Returns path to a string in a document |
+| `JSON_SET` | `JsonSet` | `JSON_SET(doc, path, val[, ...])` | Inserts or updates values |
+| `JSON_TYPE` | `JsonType` | `JSON_TYPE(val)` | Returns the JSON type string |
+| `JSON_UNQUOTE` | `JsonUnquote` | `JSON_UNQUOTE(val)` | Unquotes a JSON value |
+| `JSON_VALID` | `JsonValid` | `JSON_VALID(val)` | Returns 1 if value is valid JSON |
 
-### MariaDb 10.2.4 JSON operators
-* [JSON_COMPACT(json_doc)](https://mariadb.com/kb/en/json_compact/)
-	- Removes all unnecessary spaces so the json document is as short as possible.
-* [JSON_DETAILED(json_doc[, tab_size])](https://mariadb.com/kb/en/json_detailed/)
-	- Represents JSON in the most understandable way emphasizing nested structures.
-* [JSON_LOOSE(json_doc)](https://mariadb.com/kb/en/json_loose/)
-	- Adds spaces to a JSON document to make it look more readable.
+> MySQL functions that also apply to MariaDB use `MysqlAndMariadbJsonFunctionNode` as their base, which validates against `AbstractMySQLPlatform` (DBAL 3.3+) or `MySQLPlatform` (older DBAL).
 
-### MariaDb 10.7.0 JSON operators
-* [JSON_EQUALS(json_doc, json_doc)](https://mariadb.com/kb/en/json_equals/)
-	- Checks if there is equality between two json objects. Returns 1 if it there is, 0 if not, or NULL if any of the arguments are null.
-* [JSON_NORMALIZE(json_doc)](https://mariadb.com/kb/en/json_normalize/)
-	- Recursively sorts keys and removes spaces, allowing comparison of json documents for equality.
+### MySQL 8.0.21+ only
 
-### PostgreSQL 9.3+ JSON operators
-Basic support for JSON operators is implemented. This works even with `Doctrine\DBAL` v2.5. [Official documentation of JSON operators](https://www.postgresql.org/docs/9.5/functions-json.html).
+| DQL Function | Class | Signature | Description |
+|---|---|---|---|
+| `JSON_VALUE` | `JsonValue` | `JSON_VALUE(doc, path[, RETURNING type])` | Extracts a scalar value; supports `RETURNING DECIMAL(n,m)`, `RETURNING CHAR`, etc. |
 
-* **JSONB_CONTAINS(jsonb, jsonb)**
-	- expands to `jsonb @> jsonb`
-* **JSONB_EXISTS(jsonb, text)**
-	- executed as `JSONB_EXISTS(jsonb, text)`, equivalent to `jsonb ? text`
-* **JSONB_EXISTS_ALL(jsonb, array)**
-	- executed as `JSONB_EXISTS_ALL(jsonb, array)`, equivalent to `jsonb ?& array`
-* **JSONB_EXISTS_ANY(jsonb, array)**
-	- executed as `JSONB_EXISTS_ANY(jsonb, array)`, equivalent to `jsonb ?| array`
-* **JSONB_IS_CONTAINED(jsonb, jsonb)**
-	- expands to `jsonb <@ jsonb`
-* **JSONB_INSERT**
-	- executed as is
-* **JSON_EXTRACT_PATH**
-	- executed as is
-* **JSON_GET(jsondoc, path)**
-	- expands to `jsondoc->path` in case of numeric `path` (use with JSON arrays)
-	- expands to `jsondoc->'path'` in case of non-numeric `path` (use with JSON objects)
-* **JSON_GET_TEXT(jsondoc, path)**
-	- expands to `jsondoc->>path` in case of numeric `path` (use with JSON arrays)
-	- expands to `jsondoc->>'path'` in case of non-numeric `path` (use with JSON objects)
-* **JSON_GET_PATH(jsondoc, path)**
-	- expands to `jsondoc#>'path'`
-* **JSON_GET_PATH_TEXT(jsondoc, path)**
-	- expands to `jsondoc#>>'path'`
+This function uses `MysqlJsonFunctionNode` and only works on MySQL (not MariaDB).
 
-Please note that chaining of JSON operators is not supported.
+### MariaDB only
 
-### SQLite JSON1 Extension operators
+Namespace: `Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mariadb`
 
-Support for all the scalar and aggregate functions as seen in the [JSON1 Extension documentation](https://www.sqlite.org/json1.html).
+| DQL Function | Class | Available Since | Description |
+|---|---|---|---|
+| `JSON_VALUE` | `JsonValue` | MariaDB 10.2.3 | Extracts a scalar value at a path |
+| `JSON_EXISTS` | `JsonExists` | MariaDB 10.2.3 | Returns 1 if path exists in document |
+| `JSON_QUERY` | `JsonQuery` | MariaDB 10.2.3 | Returns an object or array at a path |
+| `JSON_COMPACT` | `JsonCompact` | MariaDB 10.2.4 | Removes unnecessary whitespace from JSON |
+| `JSON_DETAILED` | `JsonDetailed` | MariaDB 10.2.4 | Returns human-readable formatted JSON |
+| `JSON_LOOSE` | `JsonLoose` | MariaDB 10.2.4 | Adds spaces for readability |
+| `JSON_EQUALS` | `JsonEquals` | MariaDB 10.7.0 | Returns 1 if two JSON documents are equal |
+| `JSON_NORMALIZE` | `JsonNormalize` | MariaDB 10.7.0 | Sorts keys and removes spaces for comparison |
+
+> MySQL operators like `JSON_EXTRACT` are also available on MariaDB — register them from the `Mysql` namespace.
+
+### PostgreSQL 9.3+
+
+Namespace: `Scienta\DoctrineJsonFunctions\Query\AST\Functions\Postgresql`
+
+PostgreSQL JSON operators are wrapped as named functions. SQL output uses the native operators.
+
+| DQL Function | Class | SQL Equivalent | Description |
+|---|---|---|---|
+| `JSONB_CONTAINS` | `JsonbContains` | `jsonb @> jsonb` | Returns true if left contains right |
+| `JSONB_EXISTS` | `JsonbExists` | native `jsonb_exists(jsonb, text)` | Returns true if key exists in JSONB |
+| `JSONB_EXISTS_ALL` | `JsonbExistsAll` | native `jsonb_exists_all(jsonb, text[])` | Returns true if all keys exist |
+| `JSONB_EXISTS_ANY` | `JsonbExistsAny` | native `jsonb_exists_any(jsonb, text[])` | Returns true if any key exists |
+| `JSONB_INSERT` | `JsonbInsert` | native `jsonb_insert(...)` | Inserts a value into a JSONB document |
+| `JSONB_IS_CONTAINED` | `JsonbIsContained` | `jsonb <@ jsonb` | Returns true if left is contained by right |
+| `JSON_EXTRACT_PATH` | `JsonExtractPath` | native `json_extract_path(...)` | Extracts a JSON sub-object at a path (`json` columns only, not `jsonb`) |
+| `JSON_GET` | `JsonGet` | `json -> key` (numeric: `->` int, text: `->` 'key') | Returns a JSON field/element |
+| `JSON_GET_TEXT` | `JsonGetText` | `json ->> key` | Returns a JSON field/element as text |
+| `JSON_GET_PATH` | `JsonGetPath` | `json #> '{path}'` | Extracts a sub-object at path array |
+| `JSON_GET_PATH_TEXT` | `JsonGetPathText` | `json #>> '{path}'` | Extracts a sub-object at path array as text |
+
+**Boolean functions** (`JSONB_CONTAINS`, `JSONB_EXISTS`, `JSONB_EXISTS_ALL`, `JSONB_EXISTS_ANY`, `JSONB_IS_CONTAINED`) must be compared with `= true` due to the Doctrine DQL boolean function limitation:
+
+```php
+->andWhere('JSONB_CONTAINS(e.data, :val) = true')
+```
+
+### SQLite json1 extension
+
+Namespace: `Scienta\DoctrineJsonFunctions\Query\AST\Functions\Sqlite`
+
+SQLite must have the [json1 extension](https://www.sqlite.org/json1.html) enabled (it is compiled in by default since SQLite 3.38.0).
 
 #### Scalar functions
 
-* JSON(json)
-    - Verifies that its argument is a valid JSON string and returns a minified version of that JSON string.
-* JSON_ARRAY([val[, val] ...])
-    - Accepts zero or more arguments and returns a well-formed JSON array that is composed from those arguments.
-* JSON_ARRAY_LENGTH(json[, path])
-    - Returns the number of elements in the JSON array `json`, or 0 if `json` is some kind of JSON value other than an array.
-* JSON_EXTRACT(json, path[, path ], ...)
-    - Extracts and returns one or more values from the well-formed JSON.
-* JSON_INSERT(json[, path, value],...)
-    - Given zero or more sets of paths and values, it inserts (without overwriting) each value at its corresponding path of the `json`.
-* JSON_OBJECT(label, value[, label, value], ...)
-    - Accepts zero or more pairs of arguments and returns a well-formed JSON object that is composed from those arguments.
-* JSON_PATCH(target, patch)
-    - Applies a `patch` to `target`.
-* JSON_QUOTE(value)
-    - Converts the SQL `value` (a number or a string) into its corresponding JSON representation.
-* JSON_REMOVE(json[, path], ...)
-    - Removes the values at each given `path`.
-* JSON_REPLACE(json[, path, value],...)
-    - Given zero or more sets of paths and values, it overwrites each value at its corresponding path of the `json`.
-* JSON_SET(json[, path, value],...)
-    - Given zero or more sets of paths and values, it inserts or overwrites each value at its corresponding path of the `json`.
-* JSON_TYPE(json[, path])
-    - Returns the type of the outermost element of `json` or of the value at `path`.
-* JSON_VALID(json)
-    - Returns 1 if the argument `json` is well-formed JSON or 0 otherwise.
+| DQL Function | Class | Signature | Description |
+|---|---|---|---|
+| `JSON` | `Json` | `JSON(json)` | Validates and minifies a JSON string |
+| `JSON_ARRAY` | `JsonArray` | `JSON_ARRAY([val, ...])` | Creates a JSON array |
+| `JSON_ARRAY_LENGTH` | `JsonArrayLength` | `JSON_ARRAY_LENGTH(json[, path])` | Returns the number of elements in an array |
+| `JSON_EXTRACT` | `JsonExtract` | `JSON_EXTRACT(json, path[, ...])` | Extracts one or more values |
+| `JSON_INSERT` | `JsonInsert` | `JSON_INSERT(json[, path, value, ...])` | Inserts values without overwriting |
+| `JSON_OBJECT` | `JsonObject` | `JSON_OBJECT(label, value[, ...])` | Creates a JSON object |
+| `JSON_PATCH` | `JsonPatch` | `JSON_PATCH(target, patch)` | Applies an RFC 7396 merge patch |
+| `JSON_QUOTE` | `JsonQuote` | `JSON_QUOTE(value)` | Converts a SQL value to its JSON representation |
+| `JSON_REMOVE` | `JsonRemove` | `JSON_REMOVE(json[, path, ...])` | Removes values at given paths |
+| `JSON_REPLACE` | `JsonReplace` | `JSON_REPLACE(json[, path, value, ...])` | Overwrites values at given paths |
+| `JSON_SET` | `JsonSet` | `JSON_SET(json[, path, value, ...])` | Inserts or overwrites values |
+| `JSON_TYPE` | `JsonType` | `JSON_TYPE(json[, path])` | Returns the type of a JSON value |
+| `JSON_VALID` | `JsonValid` | `JSON_VALID(json)` | Returns 1 if argument is valid JSON |
 
 #### Aggregate functions
 
-* JSON_GROUP_ARRAY(value)
-    - Returns a JSON array comprised of all `value` in the aggregation
-* JSON_GROUP_OBJECT(name, value)
-    - Returns a JSON object comprised of all `name/value` pairs in the aggregation.
+| DQL Function | Class | Signature | Description |
+|---|---|---|---|
+| `JSON_GROUP_ARRAY` | `JsonGroupArray` | `JSON_GROUP_ARRAY(value)` | Aggregates all values into a JSON array |
+| `JSON_GROUP_OBJECT` | `JsonGroupObject` | `JSON_GROUP_OBJECT(name, value)` | Aggregates name/value pairs into a JSON object |
 
-Extendability and Database Support
-----------------------------------
 
-### Architecture
+## Architecture
 
-Platform function classes naming rule is:
+### Class Hierarchy
+
+The library uses a layered inheritance model to separate argument parsing (generic) from platform validation (platform-specific):
 
 ```
-Scienta\DoctrineJsonFunctions\Query\AST\Functions\$platformName\$functionName
+Doctrine\ORM\Query\AST\Functions\FunctionNode
+└── AbstractJsonFunctionNode               # argument parsing, SQL generation
+    ├── AbstractJsonOperatorFunctionNode   # for functions that map to SQL operators (e.g., @>, ->)
+    ├── Mysql\MysqlJsonFunctionNode        # validates MySQLPlatform only
+    ├── Mysql\MysqlAndMariadbJsonFunctionNode  # validates AbstractMySQLPlatform (MySQL + MariaDB)
+    ├── Mariadb\MariadbJsonFunctionNode    # validates MariaDBPlatform only
+    ├── Postgresql\PostgresqlJsonFunctionNode   # validates PostgreSQLPlatform
+    ├── Postgresql\PostgresqlJsonOperatorFunctionNode  # PostgreSQL operator-style functions
+    └── Sqlite\SqliteJsonFunctionNode      # validates SQLitePlatform
+```
+
+Each concrete function class only needs to declare:
+- `FUNCTION_NAME` constant — the DQL keyword
+- `$requiredArgumentTypes` — argument types that must be present
+- `$optionalArgumentTypes` — argument types that may optionally be present
+- `$allowOptionalArgumentRepeat` — whether optional args can repeat (variadic)
+
+### Argument Types
+
+| Constant | Parser Method | Accepts |
+|---|---|---|
+| `STRING_PRIMARY_ARG` | `StringPrimary()` | column path, parameter, subquery, string literal |
+| `STRING_ARG` | literal match | single-quoted string literal only |
+| `ALPHA_NUMERIC` | literal match | string, integer, or float literal |
+| `VALUE_ARG` | `NewValue()` | a new value (used in insert/update functions) |
+
+### Naming Convention
+
+```
+Scienta\DoctrineJsonFunctions\Query\AST\Functions\{Platform}\{FunctionName}
+```
+
+Examples:
+- `Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonExtract`
+- `Scienta\DoctrineJsonFunctions\Query\AST\Functions\Postgresql\JsonbContains`
+- `Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mariadb\JsonCompact`
+
+### DBAL Version Compatibility
+
+`DBALCompatibility` is an internal helper that resolves class names that changed between DBAL 3 and DBAL 4:
+
+| Platform | DBAL < 3.3 | DBAL 3.3+ / 4 |
+|---|---|---|
+| MariaDB | `MySQLPlatform` | `MariaDBPlatform` |
+| MySQL+MariaDB shared | `MySQLPlatform` | `AbstractMySQLPlatform` |
+| SQLite | `SqlitePlatform` | `SQLitePlatform` |
+
+
+## Extending the Library
+
+### Adding a new function
+
+1. Create a class in the appropriate platform namespace extending the platform's base node class.
+2. Declare `FUNCTION_NAME`, `$requiredArgumentTypes`, `$optionalArgumentTypes`, and `$allowOptionalArgumentRepeat`.
+3. Override `parse()` and/or `getSqlForArgs()` only if the function has non-standard argument syntax.
+
+**Example — a simple single-argument MySQL function:**
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
+
+class JsonMyNewFunction extends MysqlAndMariadbJsonFunctionNode
+{
+    public const FUNCTION_NAME = 'JSON_MY_NEW_FUNCTION';
+
+    protected $requiredArgumentTypes = [self::STRING_PRIMARY_ARG];
+}
+```
+
+Register it:
+```php
+$config->addCustomStringFunction(JsonMyNewFunction::FUNCTION_NAME, JsonMyNewFunction::class);
+```
+
+Use it in DQL:
+```dql
+SELECT JSON_MY_NEW_FUNCTION(e.jsonColumn) FROM App\Entity\MyEntity e
 ```
 
 ### Adding a new platform
 
-To add support of new platform you just need to create new folder `Scienta\DoctrineJsonFunctions\Query\AST\Functions\$platformName`
-and implement required function there according to naming rules
+1. Create a new namespace folder: `src/Query/AST/Functions/{PlatformName}/`
+2. Create a base node class that extends `AbstractJsonFunctionNode` and implements `validatePlatform()` to check the correct `DatabasePlatform` instance.
+3. Add platform detection to `DBALCompatibility` if needed (e.g., when the class name differs between DBAL versions).
+4. Implement individual function classes extending your new base.
 
-### Adding a new function
+**Example base node:**
 
-If you want to add new function to this library feel free to fork it and create pull request with your implementation.
-Please, remember to update documentation with your new functions.
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\MyNewDb;
+
+use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Platforms\MyNewDbPlatform;
+use Doctrine\ORM\Query\SqlWalker;
+use Scienta\DoctrineJsonFunctions\Query\AST\Functions\AbstractJsonFunctionNode;
+
+abstract class MyNewDbJsonFunctionNode extends AbstractJsonFunctionNode
+{
+    protected function validatePlatform(SqlWalker $sqlWalker): void
+    {
+        if (!$sqlWalker->getConnection()->getDatabasePlatform() instanceof MyNewDbPlatform) {
+            throw new Exception("Platform not supported");
+        }
+    }
+}
+```
 
 
-See also
---------
+## Changelog
 
-[dunglas/doctrine-json-odm](https://github.com/dunglas/doctrine-json-odm): Serialize / deserialize plain old PHP objects into JSON columns.
+Changes per release are documented in [GitHub releases](https://github.com/ScientaNL/DoctrineJsonFunctions/releases).
+
+
+## See Also
+
+- [dunglas/doctrine-json-odm](https://github.com/dunglas/doctrine-json-odm) — serialize/deserialize plain PHP objects as JSON columns using Doctrine ORM
+- [Doctrine DQL User Defined Functions](http://docs.doctrine-project.org/en/latest/cookbook/dql-user-defined-functions.html)
+- [MySQL JSON function reference](https://dev.mysql.com/doc/refman/8.0/en/json-functions.html)
+- [PostgreSQL JSON function reference](https://www.postgresql.org/docs/current/functions-json.html)
+- [MariaDB JSON function reference](https://mariadb.com/kb/en/json-functions/)
+- [SQLite json1 extension reference](https://www.sqlite.org/json1.html)

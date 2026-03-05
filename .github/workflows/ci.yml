@@ -36,7 +36,71 @@ jobs:
           dependency-versions: "${{ matrix.dependencies }}"
 
       - name: Run phpunit
-        run: ./vendor/bin/phpunit
+        run: composer test:unit
+
+  integration:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: doctrine_json_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd "mysqladmin ping -h 127.0.0.1 -u root -proot"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      mariadb:
+        image: mariadb:11
+        env:
+          MARIADB_ROOT_PASSWORD: root
+          MARIADB_DATABASE: doctrine_json_test
+        ports:
+          - 3307:3306
+        options: >-
+          --health-cmd "healthcheck.sh --connect --innodb_initialized"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: doctrine_json_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      MYSQL_URL: "mysql://root:root@127.0.0.1:3306/doctrine_json_test"
+      MARIADB_URL: "mysql://root:root@127.0.0.1:3307/doctrine_json_test"
+      POSTGRES_URL: "pgsql://postgres:postgres@127.0.0.1:5432/doctrine_json_test"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add php extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          tools: pecl, composer
+          extensions: opcache, pdo_mysql, pdo_pgsql, pdo_sqlite, zip
+
+      - name: "Install dependencies with Composer"
+        uses: "ramsey/composer-install@v2"
+        with:
+          dependency-versions: "highest"
+
+      - name: Run integration tests
+        run: composer test:integration
 
   phpcs:
     runs-on: ubuntu-latest

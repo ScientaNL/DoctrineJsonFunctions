@@ -4,3 +4,5 @@
 .phpunit.result.cache
 .phpunit.cache
 .phpcs-cache
+.plan
+.env
