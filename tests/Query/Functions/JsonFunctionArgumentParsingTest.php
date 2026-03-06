@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Scienta\DoctrineJsonFunctions\Tests\Query\Functions;
 
+use Doctrine\ORM\Query\QueryException;
+use Override;
+use Scienta\DoctrineJsonFunctions\Tests\Mocks\JsonFunctionInvalidArgTypeMock;
 use Scienta\DoctrineJsonFunctions\Tests\Mocks\JsonFunctionMock;
 use Scienta\DoctrineJsonFunctions\Tests\Query\DbTestCase;
-use Override;
 
 class JsonFunctionArgumentParsingTest extends DbTestCase
 {
@@ -18,6 +20,10 @@ class JsonFunctionArgumentParsingTest extends DbTestCase
         $this->configuration->addCustomStringFunction(
             JsonFunctionMock::FUNCTION_NAME,
             JsonFunctionMock::class
+        );
+        $this->configuration->addCustomStringFunction(
+            JsonFunctionInvalidArgTypeMock::FUNCTION_NAME,
+            JsonFunctionInvalidArgTypeMock::class
         );
     }
 
@@ -106,6 +112,14 @@ class JsonFunctionArgumentParsingTest extends DbTestCase
         $this->assertDqlProducesSql(
             "SELECT j.id FROM Scienta\DoctrineJsonFunctions\Tests\Entities\JsonData j WHERE JSON_MOCK(j.jsonCol, '$.papers[*].quality') = 1",
             "SELECT j0_.id AS id_0 FROM JsonData j0_ WHERE JSON_MOCK(j0_.jsonCol, '$.papers[*].quality') = 1"
+        );
+    }
+
+    public function testUnknownArgumentTypeThrowsSemanticError(): void
+    {
+        $this->expectException(QueryException::class);
+        $this->produceSql(
+            "SELECT JSON_MOCK_INVALID('foo') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b"
         );
     }
 }
