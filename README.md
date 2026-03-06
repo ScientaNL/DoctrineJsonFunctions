@@ -1,6 +1,7 @@
 [![Latest Stable Version](https://poser.pugx.org/scienta/doctrine-json-functions/v/stable?format=flat)](https://packagist.org/packages/scienta/doctrine-json-functions)
 [![Total Downloads](https://poser.pugx.org/scienta/doctrine-json-functions/downloads?format=flat)](https://packagist.org/packages/scienta/doctrine-json-functions)
 [![License](https://poser.pugx.org/scienta/doctrine-json-functions/license)](https://packagist.org/packages/scienta/doctrine-json-functions)
+[![Coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/ScientaNL/DoctrineJsonFunctions/badges/coverage.json)](https://github.com/ScientaNL/DoctrineJsonFunctions/actions/workflows/coverage.yml)
 
 # DoctrineJsonFunctions
 
@@ -82,6 +83,17 @@ Or with Docker Compose (PHP 8.4):
 docker compose up -d --build --wait
 docker compose exec php composer test:unit
 ```
+
+### Code coverage
+
+The Docker image includes the PCOV extension. Run the unit tests with Clover coverage output:
+
+```bash
+docker compose up -d --build --wait
+docker compose run --rm php bash -c "composer install && composer test:coverage"
+```
+
+This writes `coverage.xml` to the project root. Coverage is also reported automatically on every PR and push to `main` via the [Coverage workflow](https://github.com/ScientaNL/DoctrineJsonFunctions/actions/workflows/coverage.yml).
 
 ### Integration tests
 

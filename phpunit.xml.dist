@@ -6,6 +6,15 @@
     bootstrap="vendor/autoload.php"
     cacheDirectory=".phpunit.cache"
 >
+  <source>
+    <include>
+      <directory>./src</directory>
+    </include>
+    <exclude>
+      <file>./src/DBALCompatibility.php</file>
+    </exclude>
+  </source>
+
   <testsuites>
     <testsuite name="unit">
       <directory>./tests/</directory>

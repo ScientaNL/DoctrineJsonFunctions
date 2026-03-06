@@ -3,6 +3,7 @@
 /vendor
 .phpunit.result.cache
 .phpunit.cache
+coverage.xml
 .phpcs-cache
 .plan
 .env
