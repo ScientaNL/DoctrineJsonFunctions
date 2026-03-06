@@ -19,4 +19,16 @@ class JsonDetailedTest extends MariadbIntegrationTestCase
         $decoded = json_decode((string) $result, true);
         $this->assertEquals(1, $decoded['a']);
     }
+
+    public function testPrettyPrintsJsonWithTabSize(): void
+    {
+        $result = $this->entityManager->createQuery(
+            "SELECT JSON_DETAILED('{\"a\":1}', 4) AS val
+             FROM Scienta\\DoctrineJsonFunctions\\Tests\\Entities\\Blank b"
+        )->getSingleScalarResult();
+
+        $this->assertStringContainsString('    ', (string) $result);
+        $decoded = json_decode((string) $result, true);
+        $this->assertEquals(1, $decoded['a']);
+    }
 }
