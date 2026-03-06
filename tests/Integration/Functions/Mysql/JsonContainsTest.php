@@ -27,4 +27,17 @@ class JsonContainsTest extends MysqlIntegrationTestCase
 
         $this->assertEquals(0, (int) $result);
     }
+
+    public function testFilterByJsonContains(): void
+    {
+        $this->insertJsonData([], ['tags' => ['php', 'doctrine']]);
+        $this->insertJsonData([], ['tags' => ['java', 'spring']]);
+
+        $result = $this->entityManager->createQuery(
+            "SELECT j.id FROM Scienta\\DoctrineJsonFunctions\\Tests\\Entities\\JsonData j
+             WHERE JSON_CONTAINS(j.jsonData, '\"php\"', '$.tags') = 1"
+        )->getResult();
+
+        $this->assertCount(1, $result);
+    }
 }

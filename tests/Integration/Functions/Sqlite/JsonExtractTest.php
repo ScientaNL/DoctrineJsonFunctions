@@ -43,4 +43,17 @@ class JsonExtractTest extends SqliteIntegrationTestCase
 
         $this->assertNull($result);
     }
+
+    public function testFilterByExtractedValue(): void
+    {
+        $this->insertJsonData([], ['score' => 42]);
+        $this->insertJsonData([], ['score' => 99]);
+
+        $result = $this->entityManager->createQuery(
+            "SELECT j.id FROM Scienta\\DoctrineJsonFunctions\\Tests\\Entities\\JsonData j
+             WHERE JSON_EXTRACT(j.jsonData, '$.score') = 42"
+        )->getResult();
+
+        $this->assertCount(1, $result);
+    }
 }

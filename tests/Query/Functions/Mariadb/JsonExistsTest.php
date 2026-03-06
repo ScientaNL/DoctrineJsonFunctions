@@ -15,4 +15,12 @@ class JsonExistsTest extends MariadbTestCase
             "SELECT JSON_EXISTS('{\"key1\":\"xxxx\", \"key2\":[1, 2, 3]}', '$.key2[10]') AS sclr_0 FROM Blank b0_"
         );
     }
+
+    public function testWhere(): void
+    {
+        $this->assertDqlProducesSql(
+            "SELECT j.id FROM Scienta\DoctrineJsonFunctions\Tests\Entities\JsonData j WHERE JSON_EXISTS(j.jsonData, '$.name') = 1",
+            "SELECT j0_.id AS id_0 FROM JsonData j0_ WHERE JSON_EXISTS(j0_.jsonData, '$.name') = 1"
+        );
+    }
 }

@@ -47,4 +47,17 @@ class JsonValueTest extends MysqlIntegrationTestCase
 
         $this->assertEquals('49.95', (string) $result);
     }
+
+    public function testFilterByJsonValue(): void
+    {
+        $this->insertJsonData([], ['name' => 'Alice']);
+        $this->insertJsonData([], ['name' => 'Bob']);
+
+        $result = $this->entityManager->createQuery(
+            "SELECT j.id FROM Scienta\\DoctrineJsonFunctions\\Tests\\Entities\\JsonData j
+             WHERE JSON_VALUE(j.jsonData, '$.name') = 'Alice'"
+        )->getResult();
+
+        $this->assertCount(1, $result);
+    }
 }

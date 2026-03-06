@@ -23,4 +23,12 @@ class JsonPrettyTest extends MysqlTestCase
             "SELECT JSON_PRETTY(CONCAT('[', '1,2,45,3', ']')) AS sclr_0 FROM Blank b0_"
         );
     }
+
+    public function testWhere(): void
+    {
+        $this->assertDqlProducesSql(
+            "SELECT j.id FROM Scienta\DoctrineJsonFunctions\Tests\Entities\JsonData j WHERE JSON_PRETTY(j.jsonData) IS NOT NULL",
+            "SELECT j0_.id AS id_0 FROM JsonData j0_ WHERE JSON_PRETTY(j0_.jsonData) IS NOT NULL"
+        );
+    }
 }

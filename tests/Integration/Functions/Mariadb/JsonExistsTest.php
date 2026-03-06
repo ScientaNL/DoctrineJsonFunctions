@@ -27,4 +27,17 @@ class JsonExistsTest extends MariadbIntegrationTestCase
 
         $this->assertEquals(0, (int) $result);
     }
+
+    public function testFilterByJsonExists(): void
+    {
+        $this->insertJsonData([], ['name' => 'Alice']);
+        $this->insertJsonData([], ['score' => 10]);
+
+        $result = $this->entityManager->createQuery(
+            "SELECT j.id FROM Scienta\\DoctrineJsonFunctions\\Tests\\Entities\\JsonData j
+             WHERE JSON_EXISTS(j.jsonData, '$.name') = 1"
+        )->getResult();
+
+        $this->assertCount(1, $result);
+    }
 }

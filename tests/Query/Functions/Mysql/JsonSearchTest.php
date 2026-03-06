@@ -53,4 +53,12 @@ class JsonSearchTest extends MysqlTestCase
             "SELECT JSON_SEARCH('[\"abc\", [{\"k\": \"10\"}, \"def\"], {\"x\":\"abc\"}, {\"y\":\"bcd\"}]', 'all', '%b%', '') AS sclr_0 FROM Blank b0_"
         );
     }
+
+    public function testWhere(): void
+    {
+        $this->assertDqlProducesSql(
+            "SELECT j.id FROM Scienta\DoctrineJsonFunctions\Tests\Entities\JsonData j WHERE JSON_SEARCH(j.jsonData, 'one', 'Alice') IS NOT NULL",
+            "SELECT j0_.id AS id_0 FROM JsonData j0_ WHERE JSON_SEARCH(j0_.jsonData, 'one', 'Alice') IS NOT NULL"
+        );
+    }
 }
