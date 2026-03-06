@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql;
 
 use Doctrine\DBAL\Exception;
-use Doctrine\ORM\Query\AST\Node;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\SqlWalker;
 use Doctrine\ORM\Query\TokenType;
@@ -23,7 +22,7 @@ class JsonValue extends MysqlJsonFunctionNode
 {
     public const FUNCTION_NAME = 'JSON_VALUE';
 
-    /** @var list<Node> */
+    /** @var list<\Doctrine\ORM\Query\AST\Node> */
     private array $jsonArguments = [];
 
     private string | int | null $returningType = null;
@@ -82,11 +81,7 @@ class JsonValue extends MysqlJsonFunctionNode
         /** @var list<string> $jsonStringArguments */
         $jsonStringArguments = [];
         foreach ($this->jsonArguments as $jsonArgument) {
-            if ($jsonArgument === null) {
-                $jsonStringArguments[] = 'NULL';
-            } else {
-                $jsonStringArguments[] = $jsonArgument->dispatch($sqlWalker);
-            }
+            $jsonStringArguments[] = $jsonArgument->dispatch($sqlWalker);
         }
 
 		if ($this->returningType === null) {

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Scienta\DoctrineJsonFunctions\Tests\Query\Functions\Mysql;
 
 use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\Query\QueryException;
 use Scienta\DoctrineJsonFunctions\Tests\Query\MysqlTestCase;
 
 class JsonObjectTest extends MysqlTestCase
@@ -53,6 +54,14 @@ class JsonObjectTest extends MysqlTestCase
         $this->assertDqlProducesSql(
             "SELECT JSON_OBJECT('sum', 30 + 20) from Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b",
             "SELECT JSON_OBJECT('sum', 30 + 20) AS sclr_0 FROM Blank b0_"
+        );
+    }
+
+    public function testJsonObjectNonStringKeyThrowsSyntaxError(): void
+    {
+        $this->expectException(QueryException::class);
+        $this->produceSql(
+            "SELECT JSON_OBJECT(42, 'value') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\Blank b"
         );
     }
 }
