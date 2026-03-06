@@ -9,7 +9,10 @@ RUN apt-get update && apt-get install -y \
         pdo_mysql \
         pdo_pgsql \
         zip \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && pecl install pcov \
+    && docker-php-ext-enable pcov \
+    && rm -rf /tmp/pear
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
