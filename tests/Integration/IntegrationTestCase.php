@@ -25,6 +25,12 @@ abstract class IntegrationTestCase extends TestCase
 
     abstract protected static function loadDqlFunctions(Configuration $config): void;
 
+    /** @return array<string, mixed> */
+    protected static function getExtraConnectionParams(): array
+    {
+        return [];
+    }
+
     #[Override]
     protected function setUp(): void
     {
@@ -53,8 +59,11 @@ abstract class IntegrationTestCase extends TestCase
             'pgsql'      => 'pdo_pgsql',
             'sqlite'     => 'pdo_sqlite',
             'sqlite3'    => 'pdo_sqlite',
+            'sqlsrv'     => 'pdo_sqlsrv',
         ]);
-        $conn = DriverManager::getConnection($dsnParser->parse($url));
+        $connParams = array_merge($dsnParser->parse($url), static::getExtraConnectionParams());
+        /** @psalm-suppress InvalidArgument */
+        $conn = DriverManager::getConnection($connParams);
         $this->entityManager = new EntityManager($conn, $config);
 
         $schemaTool = new SchemaTool($this->entityManager);

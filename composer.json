@@ -65,12 +65,13 @@
         "psalm": "psalm --config=psalm.xml",
         "test:unit": "./vendor/bin/phpunit --testsuite unit",
         "test:coverage": "./vendor/bin/phpunit --testsuite unit --coverage-clover coverage.xml",
-        "test:coverage:integration": "./vendor/bin/phpunit --testsuite integration-mysql,integration-mariadb,integration-postgresql,integration-sqlite --coverage-clover coverage-integration.xml",
-        "test:integration": "./vendor/bin/phpunit --testsuite integration-mysql,integration-mariadb,integration-postgresql,integration-sqlite",
+        "test:coverage:integration": "./vendor/bin/phpunit --testsuite integration-mysql,integration-mariadb,integration-postgresql,integration-sqlite,integration-mssql --coverage-clover coverage-integration.xml",
+        "test:integration": "./vendor/bin/phpunit --testsuite integration-mysql,integration-mariadb,integration-postgresql,integration-sqlite,integration-mssql",
         "test:integration:mysql": "./vendor/bin/phpunit --testsuite integration-mysql",
         "test:integration:mariadb": "./vendor/bin/phpunit --testsuite integration-mariadb",
         "test:integration:postgres": "./vendor/bin/phpunit --testsuite integration-postgresql",
-        "test:integration:sqlite": "./vendor/bin/phpunit --testsuite integration-sqlite"
+        "test:integration:sqlite": "./vendor/bin/phpunit --testsuite integration-sqlite",
+        "test:integration:mssql": "./vendor/bin/phpunit --testsuite integration-mssql"
     },
     "config": {
         "allow-plugins": {

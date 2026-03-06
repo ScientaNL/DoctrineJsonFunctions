@@ -8,6 +8,7 @@ use Doctrine\DBAL\Platforms\MySQLPlatform;
 use Doctrine\DBAL\Platforms\PostgreSQLPlatform;
 use Exception;
 use Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mariadb\JsonValue as MariadbJsonValue;
+use Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mssql\JsonValue as MssqlJsonValue;
 use Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonDepth;
 use Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mysql\JsonObject;
 use Scienta\DoctrineJsonFunctions\Query\AST\Functions\Postgresql\JsonbContains;
@@ -95,6 +96,19 @@ class JsonFunctionPlatformValidationTest extends DbTestCase
         $this->expectException(Exception::class);
         $this->produceSql(
             "SELECT JSON_EXTRACT(j.jsonData, '$.a') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\JsonData j"
+        );
+    }
+
+    public function testMssqlFunctionThrowsOnWrongPlatform(): void
+    {
+        /** @var ConnectionMock $conn */
+        $conn = $this->entityManager->getConnection();
+        $conn->setDatabasePlatform(new MySQLPlatform());
+        $this->configuration->addCustomStringFunction(MssqlJsonValue::FUNCTION_NAME, MssqlJsonValue::class);
+
+        $this->expectException(Exception::class);
+        $this->produceSql(
+            "SELECT JSON_VALUE(j.jsonData, '$.a') FROM Scienta\DoctrineJsonFunctions\Tests\Entities\JsonData j"
         );
     }
 }
