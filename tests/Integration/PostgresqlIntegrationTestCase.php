@@ -16,25 +16,27 @@ abstract class PostgresqlIntegrationTestCase extends IntegrationTestCase
         return ($_ENV['POSTGRES_URL'] ?? getenv('POSTGRES_URL')) ?: null;
     }
 
+    /** @return string[] */
     #[Override]
-    protected function setUp(): void
+    protected static function getEntityPaths(): array
     {
-        parent::setUp();
+        return [
+            __DIR__ . '/../Entities',
+            __DIR__ . '/../PostgresqlEntities',
+        ];
+    }
 
-        if ($this->entityManager === null) {
-            return;
-        }
+    #[Override]
+    protected function insertJsonData(mixed $jsonCol, mixed $jsonData): void
+    {
+        $encoded = json_encode($jsonCol);
+        $encodedData = json_encode($jsonData);
 
-        // Doctrine maps JSON columns to `json` type; alter to `jsonb` so all
-        // JSONB operators (@>, <@, ?, ?&, ?|) work in integration tests.
-        // Doctrine creates unquoted table/column names → PostgreSQL stores them as lowercase.
-        $conn = $this->entityManager->getConnection();
-        $conn->executeStatement(
-            'ALTER TABLE jsondata ALTER COLUMN jsoncol TYPE jsonb USING jsoncol::jsonb'
-        );
-        $conn->executeStatement(
-            'ALTER TABLE jsondata ALTER COLUMN jsondata TYPE jsonb USING jsondata::jsonb'
-        );
+        $this->entityManager->getConnection()->insert('JsonbData', [
+            'id'       => uniqid('', true),
+            'jsonCol'  => $encoded !== false ? $encoded : '{}',
+            'jsonData' => $encodedData !== false ? $encodedData : '{}',
+        ]);
     }
 
     #[Override]

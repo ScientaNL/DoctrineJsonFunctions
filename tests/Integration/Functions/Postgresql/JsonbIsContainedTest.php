@@ -15,7 +15,7 @@ class JsonbIsContainedTest extends PostgresqlIntegrationTestCase
 
         $result = $this->entityManager->createQuery(
             "SELECT JSONB_IS_CONTAINED(j.jsonData, j.jsonCol) AS val
-             FROM Scienta\\DoctrineJsonFunctions\\Tests\\Entities\\JsonData j"
+             FROM Scienta\\DoctrineJsonFunctions\\Tests\\PostgresqlEntities\\JsonbData j"
         )->getSingleScalarResult();
 
         $this->assertTrue($result);

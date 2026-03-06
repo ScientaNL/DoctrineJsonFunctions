@@ -14,7 +14,7 @@ class JsonGetPathTextTest extends PostgresqlIntegrationTestCase
 
         $result = $this->entityManager->createQuery(
             "SELECT JSON_GET_PATH_TEXT(j.jsonData, '{a,b}') AS val
-             FROM Scienta\\DoctrineJsonFunctions\\Tests\\Entities\\JsonData j"
+             FROM Scienta\\DoctrineJsonFunctions\\Tests\\PostgresqlEntities\\JsonbData j"
         )->getSingleScalarResult();
 
         $this->assertEquals('hello', $result);

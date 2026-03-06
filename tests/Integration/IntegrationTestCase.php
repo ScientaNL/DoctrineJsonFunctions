@@ -31,6 +31,12 @@ abstract class IntegrationTestCase extends TestCase
         return [];
     }
 
+    /** @return string[] */
+    protected static function getEntityPaths(): array
+    {
+        return [__DIR__ . '/../Entities'];
+    }
+
     #[Override]
     protected function setUp(): void
     {
@@ -40,7 +46,7 @@ abstract class IntegrationTestCase extends TestCase
         }
 
         $config = ORMSetup::createAttributeMetadataConfiguration(
-            [__DIR__ . '/../Entities'],
+            static::getEntityPaths(),
             true
         );
 

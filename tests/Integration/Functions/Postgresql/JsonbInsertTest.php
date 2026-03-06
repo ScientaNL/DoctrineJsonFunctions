@@ -14,7 +14,7 @@ class JsonbInsertTest extends PostgresqlIntegrationTestCase
 
         $result = $this->entityManager->createQuery(
             "SELECT JSONB_INSERT(j.jsonCol, '{a,0}', '99') AS val
-             FROM Scienta\\DoctrineJsonFunctions\\Tests\\Entities\\JsonData j"
+             FROM Scienta\\DoctrineJsonFunctions\\Tests\\PostgresqlEntities\\JsonbData j"
         )->getSingleScalarResult();
 
         $decoded = json_decode((string) $result, true);
