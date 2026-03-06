@@ -27,4 +27,24 @@ class JsonValueTest extends MysqlIntegrationTestCase
 
         $this->assertNull($result);
     }
+
+    public function testReturningSimpleType(): void
+    {
+        $result = $this->entityManager->createQuery(
+            "SELECT JSON_VALUE('{\"a\":\"hello\"}', '$.a', CHAR) AS val
+             FROM Scienta\\DoctrineJsonFunctions\\Tests\\Entities\\Blank b"
+        )->getSingleScalarResult();
+
+        $this->assertEquals('hello', $result);
+    }
+
+    public function testReturningTypeWithParameters(): void
+    {
+        $result = $this->entityManager->createQuery(
+            "SELECT JSON_VALUE('{\"price\":\"49.95\"}', '$.price', DECIMAL(10,2)) AS val
+             FROM Scienta\\DoctrineJsonFunctions\\Tests\\Entities\\Blank b"
+        )->getSingleScalarResult();
+
+        $this->assertEquals('49.95', (string) $result);
+    }
 }
