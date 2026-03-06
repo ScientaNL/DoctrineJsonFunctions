@@ -1,0 +1,117 @@
+name: 'Report Coverage'
+description: 'Parse a Clover XML file, fetch the baseline, upload the artifact, and fail on regression'
+
+inputs:
+  xml-file:
+    description: 'Clover XML coverage file to parse (e.g. coverage.xml)'
+    required: true
+  badge-file:
+    description: 'Filename on the badges branch to fetch the baseline from (e.g. coverage.txt)'
+    required: true
+  artifact-name:
+    description: 'Artifact name (also used as the local staging directory)'
+    required: true
+  pct-filename:
+    description: 'Filename for the percentage value inside the artifact (e.g. pct.txt)'
+    required: true
+  label:
+    description: 'Suite label used in log messages (e.g. "Coverage" or "Integration coverage")'
+    required: true
+  include-pr-metadata:
+    description: 'Write pr-number.txt and base-ref.txt into the artifact'
+    required: false
+    default: 'false'
+
+outputs:
+  pct:
+    description: 'Coverage percentage (e.g. "97.7")'
+    value: ${{ steps.parse.outputs.pct }}
+  color:
+    description: 'Badge color for shields.io'
+    value: ${{ steps.parse.outputs.color }}
+
+runs:
+  using: composite
+  steps:
+    - name: Parse coverage percentage
+      id: parse
+      shell: bash
+      run: |
+        pct=$(COVERAGE_XML="${{ inputs.xml-file }}" php << 'PHPSCRIPT'
+        <?php
+        $xmlFile = getenv('COVERAGE_XML');
+        if (!file_exists($xmlFile)) {
+            fprintf(STDERR, "%s not found — did PHPUnit exit early?\n", $xmlFile);
+            exit(1);
+        }
+        $xml = simplexml_load_file($xmlFile);
+        if ($xml === false) {
+            fprintf(STDERR, "%s could not be parsed\n", $xmlFile);
+            exit(1);
+        }
+        $m       = $xml->project->metrics;
+        $total   = (int)$m['statements'];
+        $covered = (int)$m['coveredstatements'];
+        echo $total > 0 ? number_format($covered / $total * 100, 1) : '0.0';
+        PHPSCRIPT
+        )
+        color=$(PCT="$pct" php << 'PHPSCRIPT'
+        <?php
+        $p = (float)getenv('PCT');
+        echo $p >= 90 ? 'brightgreen' : ($p >= 80 ? 'green' : ($p >= 60 ? 'yellow' : 'red'));
+        PHPSCRIPT
+        )
+        echo "pct=$pct"     >> "$GITHUB_OUTPUT"
+        echo "color=$color" >> "$GITHUB_OUTPUT"
+
+    - name: Fetch baseline from badges branch
+      id: baseline
+      shell: bash
+      run: |
+        url="https://raw.githubusercontent.com/${{ github.repository }}/badges/${{ inputs.badge-file }}"
+        val=$(curl -sf "$url" || true)
+        if [ -n "$val" ]; then
+          echo "pct=$val"   >> "$GITHUB_OUTPUT"
+          echo "found=true" >> "$GITHUB_OUTPUT"
+        else
+          echo "pct=0"       >> "$GITHUB_OUTPUT"
+          echo "found=false" >> "$GITHUB_OUTPUT"
+        fi
+
+    - name: Save coverage data for combine job
+      if: github.event_name == 'pull_request'
+      shell: bash
+      run: |
+        mkdir -p "${{ inputs.artifact-name }}"
+        echo "${{ steps.parse.outputs.pct }}" > "${{ inputs.artifact-name }}/${{ inputs.pct-filename }}"
+        if [ "${{ inputs.include-pr-metadata }}" = "true" ]; then
+          echo "${{ github.event.pull_request.number }}" > "${{ inputs.artifact-name }}/pr-number.txt"
+          echo "${{ github.base_ref }}"                  > "${{ inputs.artifact-name }}/base-ref.txt"
+        fi
+
+    - name: Upload coverage data artifact
+      if: github.event_name == 'pull_request'
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: ${{ inputs.artifact-name }}/
+        retention-days: 1
+
+    - name: Fail if coverage decreased
+      if: github.event_name == 'pull_request' && steps.baseline.outputs.found == 'true'
+      shell: bash
+      run: |
+        CURRENT="${{ steps.parse.outputs.pct }}" \
+        BASELINE="${{ steps.baseline.outputs.pct }}" \
+        LABEL="${{ inputs.label }}" \
+        php << 'PHPSCRIPT'
+        <?php
+        $current  = (float)getenv('CURRENT');
+        $baseline = (float)getenv('BASELINE');
+        $label    = getenv('LABEL');
+        if ($current < $baseline - 1.0) {
+            fprintf(STDERR, "%s decreased from %.1f%% to %.1f%%\n", $label, $baseline, $current);
+            exit(1);
+        }
+        printf("%s: %.1f%% (baseline: %.1f%%)\n", $label, $current, $baseline);
+        PHPSCRIPT

@@ -6,11 +6,11 @@ on:
   pull_request:
 
 jobs:
-  report:
+  report-unit:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: read  # no write access needed for tests or artifact upload
+      contents: read
 
     outputs:
       pct:   ${{ steps.cov.outputs.pct }}
@@ -34,76 +34,130 @@ jobs:
       - name: Generate coverage report
         run: composer test:coverage
 
-      - name: Parse coverage percentage
+      - name: Report coverage
         id: cov
-        run: |
-          pct=$(php -r "
-            if (!file_exists('coverage.xml')) {
-              fprintf(STDERR, \"coverage.xml not found — did PHPUnit exit early?\n\");
-              exit(1);
-            }
-            \$xml = simplexml_load_file('coverage.xml');
-            if (\$xml === false) {
-              fprintf(STDERR, \"coverage.xml could not be parsed\n\");
-              exit(1);
-            }
-            \$m       = \$xml->project->metrics;
-            \$total   = (int)\$m['statements'];
-            \$covered = (int)\$m['coveredstatements'];
-            echo \$total > 0 ? number_format(\$covered / \$total * 100, 1) : '0.0';
-          ")
-          color=$(php -r "
-            \$p = (float)'$pct';
-            echo \$p >= 90 ? 'brightgreen' : (\$p >= 80 ? 'green' : (\$p >= 60 ? 'yellow' : 'red'));
-          ")
-          echo "pct=$pct"     >> "$GITHUB_OUTPUT"
-          echo "color=$color" >> "$GITHUB_OUTPUT"
+        uses: ./.github/actions/report-coverage
+        with:
+          xml-file: coverage.xml
+          badge-file: coverage.txt
+          artifact-name: coverage-data-unit
+          pct-filename: pct.txt
+          label: Coverage
+          include-pr-metadata: 'true'
 
-      - name: Fetch baseline from badges branch
-        id: baseline
-        run: |
-          url="https://raw.githubusercontent.com/${{ github.repository }}/badges/coverage.txt"
-          val=$(curl -sf "$url" || true)
-          if [ -n "$val" ]; then
-            echo "pct=$val"   >> "$GITHUB_OUTPUT"
-            echo "found=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "pct=0"       >> "$GITHUB_OUTPUT"
-            echo "found=false" >> "$GITHUB_OUTPUT"
-          fi
+  report-integration:
+    runs-on: ubuntu-latest
 
-      - name: Save coverage data for comment workflow
-        if: github.event_name == 'pull_request'
-        run: |
-          mkdir coverage-data
-          echo "${{ steps.cov.outputs.pct }}"                    > coverage-data/pct.txt
-          echo "${{ github.event.pull_request.number }}"         > coverage-data/pr-number.txt
-          echo "${{ github.base_ref }}"                          > coverage-data/base-ref.txt
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: doctrine_json_test
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd "mysqladmin ping -h 127.0.0.1 -u root -proot"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      mariadb:
+        image: mariadb:11
+        env:
+          MARIADB_ROOT_PASSWORD: root
+          MARIADB_DATABASE: doctrine_json_test
+        ports:
+          - 3307:3306
+        options: >-
+          --health-cmd "healthcheck.sh --connect --innodb_initialized"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: doctrine_json_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
-      - name: Upload coverage data artifact
-        if: github.event_name == 'pull_request'
+    env:
+      MYSQL_URL: "mysql://root:root@127.0.0.1:3306/doctrine_json_test"
+      MARIADB_URL: "mysql://root:root@127.0.0.1:3307/doctrine_json_test"
+      POSTGRES_URL: "pgsql://postgres:postgres@127.0.0.1:5432/doctrine_json_test"
+
+    permissions:
+      contents: read
+
+    outputs:
+      pct:   ${{ steps.cov.outputs.pct }}
+      color: ${{ steps.cov.outputs.color }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add php extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          tools: pecl, composer
+          extensions: opcache, pdo_mysql, pdo_pgsql, pdo_sqlite, zip, pcov
+
+      - name: Install dependencies
+        uses: ramsey/composer-install@v2
+        with:
+          dependency-versions: "highest"
+
+      - name: Generate integration coverage report
+        run: composer test:coverage:integration
+
+      - name: Report coverage
+        id: cov
+        uses: ./.github/actions/report-coverage
+        with:
+          xml-file: coverage-integration.xml
+          badge-file: coverage-integration.txt
+          artifact-name: coverage-data-integration
+          pct-filename: pct-integration.txt
+          label: Integration coverage
+
+  combine:
+    runs-on: ubuntu-latest
+    needs: [report-unit, report-integration]
+    if: always() && github.event_name == 'pull_request'
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Download unit coverage data
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-data-unit
+          path: coverage-data/
+
+      - name: Download integration coverage data
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-data-integration
+          path: coverage-data/
+
+      - name: Upload combined coverage data artifact
         uses: actions/upload-artifact@v4
         with:
           name: coverage-data
           path: coverage-data/
           retention-days: 1
 
-      - name: Fail if coverage decreased
-        if: github.event_name == 'pull_request' && steps.baseline.outputs.found == 'true'
-        run: |
-          php -r "
-            \$current  = (float)'${{ steps.cov.outputs.pct }}';
-            \$baseline = (float)'${{ steps.baseline.outputs.pct }}';
-            if (\$current < \$baseline - 1.0) {
-              fprintf(STDERR, \"Coverage decreased from %.1f%% to %.1f%%\n\", \$baseline, \$current);
-              exit(1);
-            }
-            printf(\"Coverage: %.1f%% (baseline: %.1f%%)\n\", \$current, \$baseline);
-          "
-
   badges:
     runs-on: ubuntu-latest
-    needs: report
+    needs: [report-unit, report-integration]
     if: github.event_name == 'push' && github.ref == 'refs/heads/master'
 
     permissions:
@@ -114,12 +168,18 @@ jobs:
 
       - name: Update badges branch
         run: |
-          pct="${{ needs.report.outputs.pct }}"
-          color="${{ needs.report.outputs.color }}"
+          pct="${{ needs.report-unit.outputs.pct }}"
+          color="${{ needs.report-unit.outputs.color }}"
+          pct_int="${{ needs.report-integration.outputs.pct }}"
+          color_int="${{ needs.report-integration.outputs.color }}"
 
           printf '{"schemaVersion":1,"label":"coverage","message":"%s%%","color":"%s"}' \
             "$pct" "$color" > /tmp/coverage.json
           echo "$pct" > /tmp/coverage.txt
+
+          printf '{"schemaVersion":1,"label":"integration coverage","message":"%s%%","color":"%s"}' \
+            "$pct_int" "$color_int" > /tmp/coverage-integration.json
+          echo "$pct_int" > /tmp/coverage-integration.txt
 
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -132,10 +192,12 @@ jobs:
             git rm -rf . --quiet
           fi
 
-          cp /tmp/coverage.json ./coverage.json
-          cp /tmp/coverage.txt  ./coverage.txt
-          git add coverage.json coverage.txt
-          git diff --staged --quiet || git commit -m "Update coverage to ${pct}%"
+          cp /tmp/coverage.json              ./coverage.json
+          cp /tmp/coverage.txt               ./coverage.txt
+          cp /tmp/coverage-integration.json  ./coverage-integration.json
+          cp /tmp/coverage-integration.txt   ./coverage-integration.txt
+          git add coverage.json coverage.txt coverage-integration.json coverage-integration.txt
+          git diff --staged --quiet || git commit -m "Update coverage to unit:${pct}% integration:${pct_int}%"
           git push origin badges
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

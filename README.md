@@ -1,7 +1,8 @@
 [![Latest Stable Version](https://poser.pugx.org/scienta/doctrine-json-functions/v/stable?format=flat)](https://packagist.org/packages/scienta/doctrine-json-functions)
 [![Total Downloads](https://poser.pugx.org/scienta/doctrine-json-functions/downloads?format=flat)](https://packagist.org/packages/scienta/doctrine-json-functions)
 [![License](https://poser.pugx.org/scienta/doctrine-json-functions/license)](https://packagist.org/packages/scienta/doctrine-json-functions)
-[![Coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/ScientaNL/DoctrineJsonFunctions/badges/coverage.json)](https://github.com/ScientaNL/DoctrineJsonFunctions/actions/workflows/coverage.yml)
+[![Unittest Coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/ScientaNL/DoctrineJsonFunctions/badges/coverage.json)](https://github.com/ScientaNL/DoctrineJsonFunctions/actions/workflows/coverage.yml)
+[![Integrationtest Coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/ScientaNL/DoctrineJsonFunctions/badges/coverage-integration.json)](https://github.com/ScientaNL/DoctrineJsonFunctions/actions/workflows/coverage.yml)
 
 # DoctrineJsonFunctions
 
@@ -93,7 +94,18 @@ docker compose up -d --build --wait
 docker compose run --rm php bash -c "composer install && composer test:coverage"
 ```
 
-This writes `coverage.xml` to the project root. Coverage is also reported automatically on every PR and push to `main` via the [Coverage workflow](https://github.com/ScientaNL/DoctrineJsonFunctions/actions/workflows/coverage.yml).
+This writes `coverage.xml` to the project root. Coverage is also reported automatically on every PR and push to `master` via the [Coverage workflow](https://github.com/ScientaNL/DoctrineJsonFunctions/actions/workflows/coverage.yml).
+
+### Integration test coverage
+
+PCOV is available inside the container. Start the database services first, then run:
+
+```bash
+docker compose up -d --build --wait
+docker compose exec php bash -c "composer install && composer test:coverage:integration"
+```
+
+This writes `coverage-integration.xml` to the project root. Integration coverage is also reported automatically on every PR alongside unit coverage.
 
 ### Integration tests
 
