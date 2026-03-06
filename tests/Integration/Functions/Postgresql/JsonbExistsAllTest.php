@@ -14,7 +14,7 @@ class JsonbExistsAllTest extends PostgresqlIntegrationTestCase
 
         $result = $this->entityManager->createQuery(
             "SELECT JSONB_EXISTS_ALL(j.jsonCol, '{a,b}') AS val
-             FROM Scienta\\DoctrineJsonFunctions\\Tests\\Entities\\JsonData j"
+             FROM Scienta\\DoctrineJsonFunctions\\Tests\\PostgresqlEntities\\JsonbData j"
         )->getSingleScalarResult();
 
         $this->assertTrue($result);
@@ -26,7 +26,7 @@ class JsonbExistsAllTest extends PostgresqlIntegrationTestCase
 
         $result = $this->entityManager->createQuery(
             "SELECT JSONB_EXISTS_ALL(j.jsonCol, '{a,b}') AS val
-             FROM Scienta\\DoctrineJsonFunctions\\Tests\\Entities\\JsonData j"
+             FROM Scienta\\DoctrineJsonFunctions\\Tests\\PostgresqlEntities\\JsonbData j"
         )->getSingleScalarResult();
 
         $this->assertFalse($result);

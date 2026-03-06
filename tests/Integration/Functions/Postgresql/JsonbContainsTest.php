@@ -15,7 +15,7 @@ class JsonbContainsTest extends PostgresqlIntegrationTestCase
 
         $result = $this->entityManager->createQuery(
             "SELECT JSONB_CONTAINS(j.jsonCol, j.jsonData) AS val
-             FROM Scienta\\DoctrineJsonFunctions\\Tests\\Entities\\JsonData j"
+             FROM Scienta\\DoctrineJsonFunctions\\Tests\\PostgresqlEntities\\JsonbData j"
         )->getSingleScalarResult();
 
         $this->assertTrue($result);
@@ -28,7 +28,7 @@ class JsonbContainsTest extends PostgresqlIntegrationTestCase
 
         $result = $this->entityManager->createQuery(
             "SELECT JSONB_CONTAINS(j.jsonCol, j.jsonData) AS val
-             FROM Scienta\\DoctrineJsonFunctions\\Tests\\Entities\\JsonData j"
+             FROM Scienta\\DoctrineJsonFunctions\\Tests\\PostgresqlEntities\\JsonbData j"
         )->getSingleScalarResult();
 
         $this->assertFalse($result);
@@ -42,7 +42,7 @@ class JsonbContainsTest extends PostgresqlIntegrationTestCase
         $this->insertJsonData(['a' => 1], ['b' => 2]);
 
         $result = $this->entityManager->createQuery(
-            "SELECT j.id FROM Scienta\\DoctrineJsonFunctions\\Tests\\Entities\\JsonData j
+            "SELECT j.id FROM Scienta\\DoctrineJsonFunctions\\Tests\\PostgresqlEntities\\JsonbData j
              WHERE JSONB_CONTAINS(j.jsonCol, j.jsonData) = true"
         )->getResult();
 
@@ -61,7 +61,7 @@ class JsonbContainsTest extends PostgresqlIntegrationTestCase
         $this->insertJsonData(['ROLE_USER'], []);
 
         $result = $this->entityManager->createQuery(
-            "SELECT j.id FROM Scienta\\DoctrineJsonFunctions\\Tests\\Entities\\JsonData j
+            "SELECT j.id FROM Scienta\\DoctrineJsonFunctions\\Tests\\PostgresqlEntities\\JsonbData j
              WHERE JSONB_CONTAINS(j.jsonCol, :roles) = true"
         )->setParameter('roles', '["ROLE_ADMIN"]')
          ->getResult();

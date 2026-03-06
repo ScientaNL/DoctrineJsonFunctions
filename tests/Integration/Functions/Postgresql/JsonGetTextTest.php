@@ -14,7 +14,7 @@ class JsonGetTextTest extends PostgresqlIntegrationTestCase
 
         $result = $this->entityManager->createQuery(
             "SELECT JSON_GET_TEXT(j.jsonData, 'name') AS val
-             FROM Scienta\\DoctrineJsonFunctions\\Tests\\Entities\\JsonData j"
+             FROM Scienta\\DoctrineJsonFunctions\\Tests\\PostgresqlEntities\\JsonbData j"
         )->getSingleScalarResult();
 
         $this->assertEquals('Alice', $result);
@@ -26,7 +26,7 @@ class JsonGetTextTest extends PostgresqlIntegrationTestCase
         $this->insertJsonData([], ['name' => 'Bob']);
 
         $result = $this->entityManager->createQuery(
-            "SELECT j.id FROM Scienta\\DoctrineJsonFunctions\\Tests\\Entities\\JsonData j
+            "SELECT j.id FROM Scienta\\DoctrineJsonFunctions\\Tests\\PostgresqlEntities\\JsonbData j
              WHERE JSON_GET_TEXT(j.jsonData, 'name') = 'Alice'"
         )->getResult();
 
