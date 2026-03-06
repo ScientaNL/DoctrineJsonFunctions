@@ -19,4 +19,17 @@ class JsonGetTextTest extends PostgresqlIntegrationTestCase
 
         $this->assertEquals('Alice', $result);
     }
+
+    public function testFilterByGetText(): void
+    {
+        $this->insertJsonData([], ['name' => 'Alice']);
+        $this->insertJsonData([], ['name' => 'Bob']);
+
+        $result = $this->entityManager->createQuery(
+            "SELECT j.id FROM Scienta\\DoctrineJsonFunctions\\Tests\\Entities\\JsonData j
+             WHERE JSON_GET_TEXT(j.jsonData, 'name') = 'Alice'"
+        )->getResult();
+
+        $this->assertCount(1, $result);
+    }
 }

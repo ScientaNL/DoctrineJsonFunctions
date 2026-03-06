@@ -15,4 +15,12 @@ class JsonbInsertTest extends PostgresqlTestCase
             "SELECT jsonb_insert(j0_.jsonCol, '{0}', j0_.jsonData) AS sclr_0 FROM JsonData j0_"
         );
     }
+
+    public function testWhere(): void
+    {
+        $this->assertDqlProducesSql(
+            "SELECT d.id FROM Scienta\DoctrineJsonFunctions\Tests\Entities\JsonData d WHERE JSONB_INSERT(d.jsonData, '{0}', d.jsonCol) IS NOT NULL",
+            "SELECT j0_.id AS id_0 FROM JsonData j0_ WHERE jsonb_insert(j0_.jsonData, '{0}', j0_.jsonCol) IS NOT NULL"
+        );
+    }
 }

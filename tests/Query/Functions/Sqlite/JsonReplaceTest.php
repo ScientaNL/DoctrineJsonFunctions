@@ -42,4 +42,12 @@ class JsonReplaceTest extends SqliteTestCase
             "QueryException"
         );
     }
+
+    public function testWhere(): void
+    {
+        $this->assertDqlProducesSql(
+            "SELECT j.id FROM Scienta\DoctrineJsonFunctions\Tests\Entities\JsonData j WHERE JSON_REPLACE(j.jsonData, '$.name', 'Bob') IS NOT NULL",
+            "SELECT j0_.id AS id_0 FROM JsonData j0_ WHERE JSON_REPLACE(j0_.jsonData, '$.name', 'Bob') IS NOT NULL"
+        );
+    }
 }

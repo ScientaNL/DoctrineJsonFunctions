@@ -39,4 +39,12 @@ class JsonValueTest extends MysqlTestCase
             "SELECT JSON_VALUE(j0_.jsonData, '$.something' RETURNING CHAR(255)) AS sclr_0 FROM JsonData j0_"
         );
     }
+
+    public function testWhere(): void
+    {
+        $this->assertDqlProducesSql(
+            "SELECT j.id FROM Scienta\DoctrineJsonFunctions\Tests\Entities\JsonData j WHERE JSON_VALUE(j.jsonData, '$.name') = 'Alice'",
+            "SELECT j0_.id AS id_0 FROM JsonData j0_ WHERE JSON_VALUE(j0_.jsonData, '$.name') = 'Alice'"
+        );
+    }
 }

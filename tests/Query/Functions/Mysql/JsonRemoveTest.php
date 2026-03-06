@@ -23,4 +23,12 @@ class JsonRemoveTest extends MysqlTestCase
             "SELECT JSON_REMOVE('[\"a\", [\"b\", \"c\"], \"d\"]', '$[1]', '$[0]') AS sclr_0 FROM Blank b0_"
         );
     }
+
+    public function testWhere(): void
+    {
+        $this->assertDqlProducesSql(
+            "SELECT j.id FROM Scienta\DoctrineJsonFunctions\Tests\Entities\JsonData j WHERE JSON_REMOVE(j.jsonData, '$.name') IS NOT NULL",
+            "SELECT j0_.id AS id_0 FROM JsonData j0_ WHERE JSON_REMOVE(j0_.jsonData, '$.name') IS NOT NULL"
+        );
+    }
 }

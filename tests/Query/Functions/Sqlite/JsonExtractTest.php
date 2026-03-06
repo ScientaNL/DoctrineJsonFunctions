@@ -34,4 +34,12 @@ class JsonExtractTest extends SqliteTestCase
             "QueryException"
         );
     }
+
+    public function testWhere(): void
+    {
+        $this->assertDqlProducesSql(
+            "SELECT j.id FROM Scienta\DoctrineJsonFunctions\Tests\Entities\JsonData j WHERE JSON_EXTRACT(j.jsonData, '$.score') = 42",
+            "SELECT j0_.id AS id_0 FROM JsonData j0_ WHERE JSON_EXTRACT(j0_.jsonData, '$.score') = 42"
+        );
+    }
 }

@@ -39,4 +39,17 @@ class JsonValueTest extends MssqlIntegrationTestCase
 
         $this->assertEquals('9.5', (string) $result);
     }
+
+    public function testFilterByJsonValue(): void
+    {
+        $this->insertJsonData([], ['score' => 42]);
+        $this->insertJsonData([], ['score' => 99]);
+
+        $result = $this->entityManager->createQuery(
+            "SELECT j.id FROM Scienta\\DoctrineJsonFunctions\\Tests\\Entities\\JsonData j
+             WHERE JSON_VALUE(j.jsonData, '$.score') = '42'"
+        )->getResult();
+
+        $this->assertCount(1, $result);
+    }
 }

@@ -27,4 +27,17 @@ class JsonValidTest extends MysqlIntegrationTestCase
 
         $this->assertEquals(0, (int) $result);
     }
+
+    public function testFilterByJsonValid(): void
+    {
+        $this->insertJsonData([], ['x' => 1]);
+        $this->insertJsonData([], ['y' => 2]);
+
+        $result = $this->entityManager->createQuery(
+            "SELECT j.id FROM Scienta\\DoctrineJsonFunctions\\Tests\\Entities\\JsonData j
+             WHERE JSON_VALID(j.jsonData) = 1"
+        )->getResult();
+
+        $this->assertCount(2, $result);
+    }
 }

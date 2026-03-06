@@ -42,4 +42,12 @@ class JsonSetTest extends SqliteTestCase
             "QueryException"
         );
     }
+
+    public function testWhere(): void
+    {
+        $this->assertDqlProducesSql(
+            "SELECT j.id FROM Scienta\DoctrineJsonFunctions\Tests\Entities\JsonData j WHERE JSON_SET(j.jsonData, '$.score', 0) IS NOT NULL",
+            "SELECT j0_.id AS id_0 FROM JsonData j0_ WHERE JSON_SET(j0_.jsonData, '$.score', 0) IS NOT NULL"
+        );
+    }
 }
