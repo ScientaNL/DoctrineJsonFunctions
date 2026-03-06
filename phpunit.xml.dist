@@ -32,5 +32,8 @@
     <testsuite name="integration-sqlite">
       <directory>./tests/Integration/Functions/Sqlite</directory>
     </testsuite>
+    <testsuite name="integration-mssql">
+      <directory>./tests/Integration/Functions/Mssql</directory>
+    </testsuite>
   </testsuites>
 </phpunit>

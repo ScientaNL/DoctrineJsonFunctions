@@ -79,4 +79,12 @@ final class DBALCompatibility
         // DBAL 3.3 and onwards
         return '\Doctrine\DBAL\Platforms\AbstractMySQLPlatform';
     }
+
+    /**
+     * @psalm-return class-string
+     */
+    public static function mssqlDBPlatform(): string
+    {
+        return '\Doctrine\DBAL\Platforms\SQLServerPlatform';
+    }
 }

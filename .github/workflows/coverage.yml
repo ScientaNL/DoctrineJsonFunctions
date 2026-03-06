@@ -69,7 +69,7 @@ jobs:
         ports:
           - 3307:3306
         options: >-
-          --health-cmd "healthcheck.sh --connect --innodb_initialized"
+          --health-cmd "mariadb-admin ping -h 127.0.0.1 -u root -proot"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -85,11 +85,26 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+      mssql:
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        env:
+          ACCEPT_EULA: "Y"
+          MSSQL_SA_PASSWORD: "YourStrong!Passw0rd"
+          MSSQL_PID: "Developer"
+        ports:
+          - 1433:1433
+        options: >-
+          --health-cmd "/opt/mssql-tools18/bin/sqlcmd -S 127.0.0.1 -U SA -P 'YourStrong!Passw0rd' -No -Q 'SELECT 1'"
+          --health-interval 10s
+          --health-timeout 10s
+          --health-retries 15
+          --health-start-period 30s
 
     env:
       MYSQL_URL: "mysql://root:root@127.0.0.1:3306/doctrine_json_test"
       MARIADB_URL: "mysql://root:root@127.0.0.1:3307/doctrine_json_test"
       POSTGRES_URL: "pgsql://postgres:postgres@127.0.0.1:5432/doctrine_json_test"
+      MSSQL_URL: "sqlsrv://SA:YourStrong!Passw0rd@127.0.0.1:1433"
 
     permissions:
       contents: read
@@ -101,12 +116,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install Microsoft ODBC Driver for SQL Server
+        run: |
+          sudo apt-get update
+          ACCEPT_EULA=Y sudo apt-get install -y msodbcsql18 unixodbc-dev
+
       - name: Add php extensions
         uses: shivammathur/setup-php@v2
         with:
           php-version: "8.4"
           tools: pecl, composer
-          extensions: opcache, pdo_mysql, pdo_pgsql, pdo_sqlite, zip, pcov
+          extensions: opcache, pdo_mysql, pdo_pgsql, pdo_sqlite, pdo_sqlsrv, zip, pcov
 
       - name: Install dependencies
         uses: ramsey/composer-install@v2

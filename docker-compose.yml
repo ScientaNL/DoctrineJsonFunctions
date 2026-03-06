@@ -14,10 +14,13 @@ services:
         condition: service_healthy
       postgres:
         condition: service_healthy
+      mssql:
+        condition: service_healthy
     environment:
       MYSQL_URL: "mysql://root:root@mysql:3306/doctrine_json_test"
       MARIADB_URL: "mysql://root:root@mariadb:3306/doctrine_json_test"
       POSTGRES_URL: "pgsql://postgres:postgres@postgres:5432/doctrine_json_test"
+      MSSQL_URL: "sqlsrv://SA:YourStrong!Passw0rd@mssql:1433"
     command: tail -f /dev/null
 
   mysql:
@@ -61,3 +64,19 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: doctrine-json-mssql
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "YourStrong!Passw0rd"
+      MSSQL_PID: "Developer"
+    ports:
+      - "1433:1433"
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S 127.0.0.1 -U SA -P 'YourStrong!Passw0rd' -No -Q 'SELECT 1' || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 15
+      start_period: 30s

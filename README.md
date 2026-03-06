@@ -6,7 +6,7 @@
 
 # DoctrineJsonFunctions
 
-A set of extensions to Doctrine ORM that add support for JSON functions in DQL (Doctrine Query Language). Supports MySQL, MariaDB, PostgreSQL, and SQLite.
+A set of extensions to Doctrine ORM that add support for JSON functions in DQL (Doctrine Query Language). Supports MySQL, MariaDB, PostgreSQL, SQLite, and SQL Server.
 
 ## Overview
 
@@ -21,6 +21,7 @@ Doctrine ORM does not natively support database-specific JSON functions in DQL. 
 | MariaDB only | `JSON_COMPACT`, `JSON_DETAILED`, `JSON_EQUALS`, `JSON_EXISTS`, `JSON_LOOSE`, `JSON_NORMALIZE`, `JSON_QUERY`, `JSON_VALUE` |
 | PostgreSQL 9.3+ | `JSONB_CONTAINS`, `JSONB_EXISTS`, `JSONB_EXISTS_ALL`, `JSONB_EXISTS_ANY`, `JSONB_INSERT`, `JSONB_IS_CONTAINED`, `JSON_EXTRACT_PATH`, `JSON_GET`, `JSON_GET_PATH`, `JSON_GET_PATH_TEXT`, `JSON_GET_TEXT` |
 | SQLite (json1 ext.) | `JSON`, `JSON_ARRAY`, `JSON_ARRAY_LENGTH`, `JSON_EXTRACT`, `JSON_GROUP_ARRAY`, `JSON_GROUP_OBJECT`, `JSON_INSERT`, `JSON_OBJECT`, `JSON_PATCH`, `JSON_QUOTE`, `JSON_REMOVE`, `JSON_REPLACE`, `JSON_SET`, `JSON_TYPE`, `JSON_VALID` |
+| SQL Server 2016+ | `JSON_VALUE` |
 
 ## Table of Contents
 
@@ -34,12 +35,14 @@ Doctrine ORM does not natively support database-specific JSON functions in DQL. 
   - [MySQL / MariaDB](#mysql--mariadb)
   - [PostgreSQL](#postgresql)
   - [SQLite](#sqlite)
+  - [SQL Server](#sql-server)
 - [DQL Function Reference](#dql-function-reference)
   - [MySQL 5.7+ and MariaDB (shared)](#mysql-57-and-mariadb-shared)
   - [MySQL 8.0.21+ only](#mysql-8021-only)
   - [MariaDB only](#mariadb-only)
   - [PostgreSQL 9.3+](#postgresql-93)
   - [SQLite json1 extension](#sqlite-json1-extension)
+  - [SQL Server 2016+](#sql-server-2016)
 - [Architecture](#architecture)
 - [Extending the Library](#extending-the-library)
   - [Adding a new function](#adding-a-new-function)
@@ -123,6 +126,7 @@ docker compose exec php composer test:integration:mysql
 docker compose exec php composer test:integration:mariadb
 docker compose exec php composer test:integration:postgres
 docker compose exec php composer test:integration:sqlite
+docker compose exec php composer test:integration:mssql
 ```
 
 **Running locally without Docker:** copy `.env.dist` to `.env`, fill in your connection URLs, then:
@@ -175,6 +179,8 @@ doctrine:
                 JSONB_EXISTS:        Scienta\DoctrineJsonFunctions\Query\AST\Functions\Postgresql\JsonbExists
                 JSON_GET:            Scienta\DoctrineJsonFunctions\Query\AST\Functions\Postgresql\JsonGet
                 JSON_GET_TEXT:       Scienta\DoctrineJsonFunctions\Query\AST\Functions\Postgresql\JsonGetText
+                # SQL Server
+                JSON_VALUE:          Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mssql\JsonValue
 ```
 
 
@@ -250,6 +256,21 @@ $results = $queryBuilder
     ->setParameter('country', 'NL')
     ->getQuery()->getResult();
 ```
+
+### SQL Server
+
+```php
+// Extract a scalar value from a JSON column
+$results = $queryBuilder
+    ->select('c')
+    ->from('App\Entity\Customer', 'c')
+    ->where("JSON_VALUE(c.attributes, '$.country') = :country")
+    ->setParameter('country', 'NL')
+    ->getQuery()->getResult();
+```
+
+> To apply type conversion, use `CAST` outside the function:
+> `CAST(JSON_VALUE(c.attributes, '$.score') AS DECIMAL(4,2))`
 
 
 ## DQL Function Reference
@@ -371,6 +392,16 @@ SQLite must have the [json1 extension](https://www.sqlite.org/json1.html) enable
 | `JSON_GROUP_ARRAY` | `JsonGroupArray` | `JSON_GROUP_ARRAY(value)` | Aggregates all values into a JSON array |
 | `JSON_GROUP_OBJECT` | `JsonGroupObject` | `JSON_GROUP_OBJECT(name, value)` | Aggregates name/value pairs into a JSON object |
 
+### SQL Server 2016+
+
+Namespace: `Scienta\DoctrineJsonFunctions\Query\AST\Functions\Mssql`
+
+| DQL Function | Class | Signature | Description |
+|---|---|---|---|
+| `JSON_VALUE` | `JsonValue` | `JSON_VALUE(doc, path)` | Extracts a scalar value from a JSON string at the given path |
+
+> SQL Server does not support inline type conversion inside `JSON_VALUE`. Use `CAST(JSON_VALUE(...) AS type)` in your DQL for type conversion.
+
 
 ## Architecture
 
@@ -387,7 +418,8 @@ Doctrine\ORM\Query\AST\Functions\FunctionNode
     ├── Mariadb\MariadbJsonFunctionNode    # validates MariaDBPlatform only
     ├── Postgresql\PostgresqlJsonFunctionNode   # validates PostgreSQLPlatform
     ├── Postgresql\PostgresqlJsonOperatorFunctionNode  # PostgreSQL operator-style functions
-    └── Sqlite\SqliteJsonFunctionNode      # validates SQLitePlatform
+    ├── Sqlite\SqliteJsonFunctionNode      # validates SQLitePlatform
+    └── Mssql\MssqlJsonFunctionNode        # validates SQLServerPlatform
 ```
 
 Each concrete function class only needs to declare:
