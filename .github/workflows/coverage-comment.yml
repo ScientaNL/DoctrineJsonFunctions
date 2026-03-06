@@ -9,13 +9,16 @@ jobs:
   comment:
     runs-on: ubuntu-latest
 
-    # Only run when triggered by a pull_request event and the coverage workflow succeeded
-    if: github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success'
+    # Run when triggered by a pull_request event, regardless of success or failure
+    # (failure can mean integration tests failed but unit data is still available)
+    if: github.event.workflow_run.event == 'pull_request' && (github.event.workflow_run.conclusion == 'success' || github.event.workflow_run.conclusion == 'failure')
 
     permissions:
       pull-requests: write  # post PR comments
 
     steps:
+      - uses: actions/checkout@v4
+
       - name: Download coverage data artifact
         uses: actions/download-artifact@v4
         with:
@@ -27,55 +30,5 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const fs       = require('fs');
-            const current  = parseFloat(fs.readFileSync('pct.txt',      'utf8').trim());
-            const prNumber = parseInt(  fs.readFileSync('pr-number.txt', 'utf8').trim(), 10);
-            const baseRef  =            fs.readFileSync('base-ref.txt',  'utf8').trim();
-
-            const url = `https://raw.githubusercontent.com/${context.repo.owner}/${context.repo.repo}/badges/coverage.txt`;
-            let baseline      = 0;
-            let baselineFound = false;
-            try {
-              const resp = await fetch(url);
-              if (resp.ok) {
-                baseline      = parseFloat(await resp.text());
-                baselineFound = true;
-              }
-            } catch (_) {}
-
-            const delta    = current - baseline;
-            const sign     = delta >= 0 ? '+' : '';
-            const deltaStr = baselineFound ? `${sign}${delta.toFixed(1)}%` : 'n/a (no baseline yet)';
-            const ok       = !baselineFound || current >= baseline - 1.0;
-
-            const body = [
-              '<!-- coverage-report -->',
-              '## Coverage Report',
-              '',
-              '| | |',
-              '|---|---|',
-              `| Coverage | **${current}%** |`,
-              `| Change vs \`${baseRef}\` | ${deltaStr} ${ok ? '✅' : '❌'} |`,
-              '',
-              ok ? '' : `> ⚠️ Coverage dropped from ${baseline}% to ${current}%. Please add tests for the changed code.`,
-            ].join('\n').trimEnd();
-
-            const marker = '<!-- coverage-report -->';
-            const { data: comments } = await github.rest.issues.listComments({
-              ...context.repo,
-              issue_number: prNumber,
-            });
-            const existing = comments.find(c => c.body.startsWith(marker));
-            if (existing) {
-              await github.rest.issues.updateComment({
-                ...context.repo,
-                comment_id: existing.id,
-                body,
-              });
-            } else {
-              await github.rest.issues.createComment({
-                ...context.repo,
-                issue_number: prNumber,
-                body,
-              });
-            }
+            const fn = require('./.github/scripts/coverage-comment.js');
+            await fn({ github, context, require });

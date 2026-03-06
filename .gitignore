@@ -4,6 +4,7 @@
 .phpunit.result.cache
 .phpunit.cache
 coverage.xml
+coverage-integration.xml
 .phpcs-cache
 .plan
 .env

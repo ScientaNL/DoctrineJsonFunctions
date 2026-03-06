@@ -65,6 +65,7 @@
         "psalm": "psalm --config=psalm.xml",
         "test:unit": "./vendor/bin/phpunit --testsuite unit",
         "test:coverage": "./vendor/bin/phpunit --testsuite unit --coverage-clover coverage.xml",
+        "test:coverage:integration": "./vendor/bin/phpunit --testsuite integration-mysql,integration-mariadb,integration-postgresql,integration-sqlite --coverage-clover coverage-integration.xml",
         "test:integration": "./vendor/bin/phpunit --testsuite integration-mysql,integration-mariadb,integration-postgresql,integration-sqlite",
         "test:integration:mysql": "./vendor/bin/phpunit --testsuite integration-mysql",
         "test:integration:mariadb": "./vendor/bin/phpunit --testsuite integration-mariadb",
