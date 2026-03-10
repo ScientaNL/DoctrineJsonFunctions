@@ -27,7 +27,8 @@
         "ext-pdo": "*",
         "doctrine/dbal": "^3.2 || ^4",
         "doctrine/lexer": "^2.0 || ^3.0",
-        "doctrine/orm": "^2.19 || ^3"
+        "doctrine/orm": "^2.19 || ^3",
+        "symfony/polyfill-php83": "^1.27"
     },
     "require-dev": {
         "doctrine/coding-standard": "^9.0 || ^10.0 || ^11.0 || ^12.0 || ^13.0",
@@ -46,8 +47,7 @@
     "autoload": {
         "psr-4": {
             "Scienta\\DoctrineJsonFunctions\\": "src/"
-        },
-        "files": ["polyfill/override.php"]
+        }
     },
     "autoload-dev": {
         "psr-4": {
