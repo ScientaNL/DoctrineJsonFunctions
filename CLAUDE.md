@@ -95,7 +95,7 @@ There are two registers, human-facing and a terser Claude-facing one. That skill
 | Any code | [code-quality.md](.claude/rules/code-quality.md): suppression policy, self-review checklist, comment routing |
 | `tests/` | [testing.md](.claude/rules/testing.md): behaviour over implementation, breaking the branch to prove the test |
 
-Skills: [php-type-errors](.claude/skills/php-type-errors/SKILL.md) when PHPStan or Psalm reports a type error, [bugfix](.claude/skills/bugfix/SKILL.md) when fixing reported behaviour, [review-standards](.claude/skills/review-standards/SKILL.md) when reviewing a diff, [writing](.claude/skills/writing/SKILL.md) for human-facing text. Commands: `/fix-phpstan`, `/psalm`, `/clean-code`.
+Skills: [php-type-errors](.claude/skills/php-type-errors/SKILL.md) when PHPStan or Psalm reports a type error, [bugfix](.claude/skills/bugfix/SKILL.md) when fixing reported behaviour, [review-standards](.claude/skills/review-standards/SKILL.md) when reviewing a diff, [writing](.claude/skills/writing/SKILL.md) for human-facing text. Commands: `/fix-phpstan`, `/psalm`, `/clean-code` for the code itself; `/pr` to commit and open a prefilled PR form, `/green` to rebase a PR and fix its red checks, `/resolve` to work through its review threads.
 
 ## Agent skills
 
