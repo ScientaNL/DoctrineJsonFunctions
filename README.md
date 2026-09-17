@@ -19,7 +19,7 @@ Doctrine ORM does not natively support database-specific JSON functions in DQL. 
 | MySQL 5.7+ / MariaDB | `JSON_ARRAY`, `JSON_ARRAY_APPEND`, `JSON_ARRAY_INSERT`, `JSON_ARRAYAGG`, `JSON_CONTAINS`, `JSON_CONTAINS_PATH`, `JSON_DEPTH`, `JSON_EXTRACT`, `JSON_INSERT`, `JSON_KEYS`, `JSON_LENGTH`, `JSON_MERGE`, `JSON_MERGE_PATCH`, `JSON_MERGE_PRESERVE`, `JSON_OBJECT`, `JSON_OBJECTAGG`, `JSON_OVERLAPS`, `JSON_PRETTY`, `JSON_QUOTE`, `JSON_REMOVE`, `JSON_REPLACE`, `JSON_SEARCH`, `JSON_SET`, `JSON_TYPE`, `JSON_UNQUOTE`, `JSON_VALID` |
 | MySQL 8.0.21+ only | `JSON_VALUE` |
 | MariaDB only | `JSON_COMPACT`, `JSON_DETAILED`, `JSON_EQUALS`, `JSON_EXISTS`, `JSON_LOOSE`, `JSON_NORMALIZE`, `JSON_QUERY`, `JSON_VALUE` |
-| PostgreSQL 9.3+ | `JSONB_CONTAINS`, `JSONB_EXISTS`, `JSONB_EXISTS_ALL`, `JSONB_EXISTS_ANY`, `JSONB_INSERT`, `JSONB_IS_CONTAINED`, `JSON_EXTRACT_PATH`, `JSON_GET`, `JSON_GET_PATH`, `JSON_GET_PATH_TEXT`, `JSON_GET_TEXT` |
+| PostgreSQL 9.3+ | `JSONB_CONTAINS`, `JSONB_EXISTS`, `JSONB_EXISTS_ALL`, `JSONB_EXISTS_ANY`, `JSONB_INSERT`, `JSONB_IS_CONTAINED`, `JSONB_SET`, `JSON_EXTRACT_PATH`, `JSON_GET`, `JSON_GET_PATH`, `JSON_GET_PATH_TEXT`, `JSON_GET_TEXT` |
 | SQLite (json1 ext.) | `JSON`, `JSON_ARRAY`, `JSON_ARRAY_LENGTH`, `JSON_EXTRACT`, `JSON_GROUP_ARRAY`, `JSON_GROUP_OBJECT`, `JSON_INSERT`, `JSON_OBJECT`, `JSON_PATCH`, `JSON_QUOTE`, `JSON_REMOVE`, `JSON_REPLACE`, `JSON_SET`, `JSON_TYPE`, `JSON_VALID` |
 | SQL Server 2016+ | `JSON_VALUE` |
 
@@ -166,7 +166,22 @@ $results = $queryBuilder
     ->andWhere('JSONB_EXISTS(c.data, :key) = true')
     ->setParameter('key', 'active')
     ->getQuery()->getResult();
+
+// Replace the value at a path. The path uses PostgreSQL array literal syntax.
+$results = $queryBuilder
+    ->select("JSONB_SET(c.attributes, '{address,city}', :city) AS updated")
+    ->from('App\Entity\Customer', 'c')
+    ->setParameter('city', '"Amsterdam"')
+    ->getQuery()->getResult();
+
+// Pass false as the fourth argument to leave a missing path alone
+$results = $queryBuilder
+    ->select("JSONB_SET(c.attributes, '{address,city}', '\"Amsterdam\"', false) AS updated")
+    ->from('App\Entity\Customer', 'c')
+    ->getQuery()->getResult();
 ```
+
+> The path argument must be a string literal or a bound parameter. PostgreSQL reads it as `text[]`, and a `text` column cannot be used there.
 
 > PostgreSQL operator chaining (e.g., `col->'a'->'b'`) is not supported. Use `JSON_GET_PATH` (works on both `json` and `jsonb`) or `JSON_EXTRACT_PATH` (`json` columns only) instead.
 
@@ -274,6 +289,7 @@ PostgreSQL JSON operators are wrapped as named functions. SQL output uses the na
 | `JSONB_EXISTS_ANY` | `JsonbExistsAny` | native `jsonb_exists_any(jsonb, text[])` | Returns true if any key exists |
 | `JSONB_INSERT` | `JsonbInsert` | native `jsonb_insert(...)` | Inserts a value into a JSONB document |
 | `JSONB_IS_CONTAINED` | `JsonbIsContained` | `jsonb <@ jsonb` | Returns true if left is contained by right |
+| `JSONB_SET` | `JsonbSet` | native `jsonb_set(...)` | Replaces the value at a path. Creates the key unless the fourth argument is `false`. Returns `NULL` if the new value is `NULL` |
 | `JSON_EXTRACT_PATH` | `JsonExtractPath` | native `json_extract_path(...)` | Extracts a JSON sub-object at a path (`json` columns only, not `jsonb`) |
 | `JSON_GET` | `JsonGet` | `json -> key` (numeric: `->` int, text: `->` 'key') | Returns a JSON field/element |
 | `JSON_GET_TEXT` | `JsonGetText` | `json ->> key` | Returns a JSON field/element as text |

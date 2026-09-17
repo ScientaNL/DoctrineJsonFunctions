@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Scienta\DoctrineJsonFunctions\Query\AST\Functions\Postgresql;
 
 /**
- * "JSONB_INSERT" "(" StringPrimary "," StringPrimary "," StringPrimary ["," NewValue] ")".
+ * "JSONB_SET" "(" StringPrimary "," StringPrimary "," StringPrimary ["," NewValue] ")".
  */
-class JsonbInsert extends PostgresqlJsonFunctionNode
+class JsonbSet extends PostgresqlJsonFunctionNode
 {
-    public const FUNCTION_NAME = 'JSONB_INSERT';
+    public const FUNCTION_NAME = 'JSONB_SET';
 
     /** @var string[] */
     protected $requiredArgumentTypes = [self::STRING_PRIMARY_ARG, self::STRING_PRIMARY_ARG, self::STRING_PRIMARY_ARG];
